@@ -1,6 +1,6 @@
 
-from . import home_bp
+from . import dashboard_bp
 from .home_controller import home
-@home_bp.route('/home')
-def home_route():
+@dashboard_bp.route('/dashboard')
+def dashboard_route():
     return home()

@@ -1,4 +1,4 @@
 from flask import Blueprint
-dashboard_bp = Blueprint('dashboard', __name__)
+account_bp = Blueprint('account', __name__)
 
 from . import route
