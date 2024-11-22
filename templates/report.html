@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/report.css') }}">
+<div class="report-wrapper">
+  <!-- Phần Header -->
+  <header class="report-header">
+    <div class="header-left">
+      <h1>Báo Cáo Tài Chính</h1>
+      <p class="subtitle">Tổng quan hiệu quả tài chính của bạn</p>
+    </div>
+    <div class="header-right">
+      <div class="date-range">
+        <input type="date" class="date-input">
+        <span>đến</span>
+        <input type="date" class="date-input">
+      </div>
+      <button class="btn-export">
+        <i class="fas fa-download"></i>
+        Xuất Báo Cáo
+      </button>
+    </div>
+  </header>
+
+  <!-- Các thẻ chỉ số KPI -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <i class="fas fa-chart-line"></i>
+      </div>
+      <div class="kpi-content">
+        <h3>Tổng Doanh Thu</h3>
+        <p class="kpi-value">1.234.567đ</p>
+        <span class="kpi-trend positive">
+          <i class="fas fa-arrow-up"></i>
+          12.5%
+        </span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <i class="fas fa-wallet"></i>
+      </div>
+      <div class="kpi-content">
+        <h3>Chi Phí</h3>
+        <p class="kpi-value">567.890đ</p>
+        <span class="kpi-trend negative">
+          <i class="fas fa-arrow-down"></i>
+          5.2%
+        </span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <i class="fas fa-coins"></i>
+      </div>
+      <div class="kpi-content">
+        <h3>Lợi Nhuận</h3>
+        <p class="kpi-value">666.677đ</p>
+        <span class="kpi-trend positive">
+          <i class="fas fa-arrow-up"></i>
+          8.3%
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phần Biểu Đồ -->
+  <div class="chart-section">
+    <div class="chart-container main-chart">
+      <div class="chart-header">
+        <h2>Phân Tích Doanh Thu</h2>
+        <div class="chart-controls">
+          <button class="btn-chart active">Ngày</button>
+          <button class="btn-chart">Tuần</button>
+          <button class="btn-chart">Tháng</button>
+        </div>
+      </div>
+      <canvas id="revenueChart"></canvas>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-container">
+        <div class="chart-header">
+          <h2>Cơ Cấu Chi Phí</h2>
+        </div>
+        <canvas id="expenseChart"></canvas>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-header">
+          <h2>Top Sản Phẩm</h2>
+        </div>
+        <canvas id="productsChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/report.js') }}"></script>
+{% endblock %}
