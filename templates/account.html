@@ -1,0 +1,137 @@
+{% extends 'layout.html' %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+<main class="main-content">
+    <header class="page-header">
+        <h2>Quản lý Tài khoản</h2>
+        <button class="add-account-btn">
+            <i class="fas fa-plus"></i>
+            Thêm tài khoản mới
+        </button>
+    </header>
+
+    <!-- Account Summary -->
+    <section class="account-summary">
+        <div class="summary-card total">
+            <h3>Tổng số dư</h3>
+            <p class="amount">50.000.000 ₫</p>
+            <span class="trend positive">+5% so với tháng trước</span>
+        </div>
+        <div class="summary-card bank">
+            <h3>Tài khoản ngân hàng</h3>
+            <p class="amount">35.000.000 ₫</p>
+            <span>3 tài khoản</span>
+        </div>
+        <div class="summary-card ewallet">
+            <h3>Ví điện tử</h3>
+            <p class="amount">10.000.000 ₫</p>
+            <span>2 ví</span>
+        </div>
+        <div class="summary-card cash">
+            <h3>Tiền mặt</h3>
+            <p class="amount">5.000.000 ₫</p>
+            <span>1 ví</span>
+        </div>
+    </section>
+
+    <!-- Account List -->
+    <section class="account-list">
+        <div class="list-header">
+            <h3>Danh sách tài khoản</h3>
+            <div class="list-filters">
+                <select class="filter-select">
+                    <option value="all">Tất cả tài khoản</option>
+                    <option value="bank">Tài khoản ngân hàng</option>
+                    <option value="ewallet">Ví điện tử</option>
+                    <option value="cash">Tiền mặt</option>
+                </select>
+                <input type="text" placeholder="Tìm kiếm tài khoản..." class="search-input">
+            </div>
+        </div>
+
+        <div class="account-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tên tài khoản</th>
+                        <th>Loại</th>
+                        <th>Số dư</th>
+                        <th>Cập nhật lần cuối</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="account-info">
+                                <i class="fas fa-university"></i>
+                                <span>Vietcombank</span>
+                            </div>
+                        </td>
+                        <td>Tài khoản ngân hàng</td>
+                        <td class="amount">20.000.000 ₫</td>
+                        <td>15/03/2024</td>
+                        <td class="actions">
+                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="account-info">
+                                <i class="fas fa-wallet"></i>
+                                <span>Momo</span>
+                            </div>
+                        </td>
+                        <td>Ví điện tử</td>
+                        <td class="amount">5.000.000 ₫</td>
+                        <td>15/03/2024</td>
+                        <td class="actions">
+                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <!-- Thêm các hàng khác tương tự -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Add Account Modal -->
+    <div class="modal" id="addAccountModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Thêm tài khoản mới</h3>
+                <button class="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <form class="account-form">
+                <div class="form-group">
+                    <label>Tên tài khoản</label>
+                    <input type="text" required placeholder="Nhập tên tài khoản">
+                </div>
+                <div class="form-group">
+                    <label>Loại tài khoản</label>
+                    <select required>
+                        <option value="">Chọn loại tài khoản</option>
+                        <option value="bank">Tài khoản ngân hàng</option>
+                        <option value="ewallet">Ví điện tử</option>
+                        <option value="cash">Tiền mặt</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Số dư ban đầu</label>
+                    <input type="number" required placeholder="Nhập số dư ban đầu">
+                </div>
+                <div class="form-group">
+                    <label>Ghi chú</label>
+                    <textarea placeholder="Nhập ghi chú (nếu có)"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn">Hủy</button>
+                    <button type="submit" class="submit-btn">Thêm tài khoản</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}
