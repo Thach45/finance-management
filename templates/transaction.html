@@ -1,0 +1,176 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/transaction.css') }}">
+<div class="transactions-container">
+    <div class="balance-overview">
+        <div class="balance-card total">
+            <div class="balance-icon">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <div class="balance-info">
+                <h3>Tổng số dư</h3>
+                <p class="amount">25,000,000 ₫</p>
+            </div>
+        </div>
+        <div class="balance-card">
+            <div class="balance-icon">
+                <i class="fas fa-university"></i>
+            </div>
+            <div class="balance-info">
+                <h3>Vietcombank</h3>
+                <p class="amount">20,000,000 ₫</p>
+            </div>
+        </div>
+        <div class="balance-card">
+            <div class="balance-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <div class="balance-info">
+                <h3>Momo</h3>
+                <p class="amount">5,000,000 ₫</p>
+            </div>
+        </div>
+    </div>
+
+    <header class="page-header">
+        <h2>Quản lý Giao dịch</h2>
+        <div class="header-actions">
+            <button class="add-transaction-btn">
+                <i class="fas fa-plus"></i>
+                Thêm giao dịch
+            </button>
+        </div>
+    </header>
+
+    <!-- Bộ lọc giao dịch -->
+    <div class="transaction-filters">
+        <div class="filter-group">
+            <label>Thời gian:</label>
+            <select id="timeFilter">
+                <option value="all">Tất cả</option>
+                <option value="today">Hôm nay</option>
+                <option value="week">Tuần này</option>
+                <option value="month">Tháng này</option>
+                <option value="custom">Tùy chỉnh</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Loại giao dịch:</label>
+            <select id="typeFilter">
+                <option value="all">Tất cả</option>
+                <option value="income">Thu nhập</option>
+                <option value="expense">Chi tiêu</option>
+                <option value="transfer">Chuyển khoản</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Tài khoản:</label>
+            <select id="accountFilter">
+                <option value="all">Tất cả tài khoản</option>
+                <option value="1">Vietcombank</option>
+                <option value="2">Momo</option>
+            </select>
+        </div>
+        <button class="search-btn">
+            <i class="fas fa-search"></i>
+            Tìm kiếm
+        </button>
+    </div>
+
+    <!-- Bảng giao dịch -->
+    <div class="transactions-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ngày</th>
+                    <th>Loại</th>
+                    <th>Tài khoản</th>
+                    <th>Danh mục</th>
+                    <th>Mô tả</th>
+                    <th>Số tiền</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>20/03/2024</td>
+                    <td><span class="badge income">Thu nhập</span></td>
+                    <td>Vietcombank</td>
+                    <td>Lương</td>
+                    <td>Lương tháng 3</td>
+                    <td class="amount income">+15,000,000 ₫</td>
+                    <td>
+                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>19/03/2024</td>
+                    <td><span class="badge expense">Chi tiêu</span></td>
+                    <td>Momo</td>
+                    <td>Ăn uống</td>
+                    <td>Ăn trưa</td>
+                    <td class="amount expense">-50,000 ₫</td>
+                    <td>
+                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal thêm/sửa giao dịch -->
+    <div class="modal" id="transactionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Thêm giao dịch mới</h3>
+                <button class="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <form class="transaction-form">
+                <div class="form-group">
+                    <label>Loại giao dịch</label>
+                    <select required name="type">
+                        <option value="income">Thu nhập</option>
+                        <option value="expense">Chi tiêu</option>
+                        <option value="transfer">Chuyển khoản</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tài khoản</label>
+                    <select required name="account">
+                        <option value="1">Vietcombank</option>
+                        <option value="2">Momo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Danh mục</label>
+                    <select required name="category">
+                        <option value="salary">Lương</option>
+                        <option value="food">Ăn uống</option>
+                        <option value="shopping">Mua sắm</option>
+                        <option value="transfer">Chuyển khoản</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Số tiền</label>
+                    <input type="number" required name="amount" placeholder="Nhập số tiền">
+                </div>
+                <div class="form-group">
+                    <label>Ngày giao dịch</label>
+                    <input type="date" required name="date">
+                </div>
+                <div class="form-group">
+                    <label>Mô tả</label>
+                    <textarea name="description" placeholder="Nhập mô tả giao dịch"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn">Hủy</button>
+                    <button type="submit" class="submit-btn">Lưu giao dịch</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
