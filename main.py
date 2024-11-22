@@ -3,7 +3,7 @@ from flask import render_template
 import os
 from flask_pymongo import PyMongo
 from flask import Flask
-from app.dashboard import home_bp
+from app.Dashboard import home_bp
 load_dotenv()
 app = Flask(__name__)
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
