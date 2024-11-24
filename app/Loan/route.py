@@ -5,10 +5,10 @@ from .loan_controller import home, edit_loan, edit_lending
 def loan_route():
     return home()
 
-@loan_bp.route('/edit/loan/<int:id>', methods=['GET'])
+@loan_bp.route('/edit/loan/<string:id>', methods=['GET'])
 def edit_loan_route(id):
     return edit_loan(id)
 
-@loan_bp.route('/edit/lending/<int:id>', methods=['GET'])
+@loan_bp.route('/edit/lending/<string:id>', methods=['GET'])
 def edit_lending_route(id):
     return edit_lending(id)
