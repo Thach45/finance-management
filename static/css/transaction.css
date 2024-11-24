@@ -300,7 +300,9 @@ th {
     cursor: pointer;
     color: #666;
 }
-
+.transfer{
+    color: #004085;
+}
 .close-btn:hover {
     color: #333;
 }
