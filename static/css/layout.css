@@ -49,7 +49,12 @@ body {
 }
 
 .sidebar-nav ul li a:hover,
-.sidebar-nav ul li a.active {
+.btn-dashboard.active,
+.btn-account.active,
+.btn-transaction.active,
+.btn-loan.active,
+.btn-report.active,
+.btn-setting.active {
     background-color: #f3f4f6;
     color: #1f2937;
     border-radius: 0.25rem;
