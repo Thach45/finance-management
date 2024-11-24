@@ -1,7 +1,7 @@
 const loanBtn = document.querySelector('.loan-btn');
 const lendingBtn = document.querySelector('.lending-btn');
-const loanView = document.querySelector('.loan-view');
-const lendingView = document.querySelector('.lending-view');
+const loanView = document.querySelectorAll('.loan-view');
+const lendingView = document.querySelectorAll('.lending-view');
 const addLoanBtn = document.querySelector('.add-loan-btn');
 const addLendingBtn = document.querySelector('.add-lending-btn');
 const formLoan = document.querySelector('.modal');
@@ -15,8 +15,8 @@ if(loanBtn){
     loanBtn.addEventListener('click', () => {
         loanBtn.classList.add('active');
         lendingBtn.classList.remove('active');
-        loanView.classList.add('active');
-        lendingView.classList.remove('active');
+        loanView.forEach(view => view.classList.add('active'));
+        lendingView.forEach(view => view.classList.remove('active'));
         addLoanBtn.classList.add('active');
         addLendingBtn.classList.remove('active');
     });
@@ -25,8 +25,8 @@ if(lendingBtn){
     lendingBtn.addEventListener('click', () => {
         lendingBtn.classList.add('active');
         loanBtn.classList.remove('active');
-        lendingView.classList.add('active');
-        loanView.classList.remove('active');
+        lendingView.forEach(view => view.classList.add('active'));
+        loanView.forEach(view => view.classList.remove('active'));
         addLendingBtn.classList.add('active');
         addLoanBtn.classList.remove('active');
     });

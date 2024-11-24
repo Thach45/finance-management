@@ -9,7 +9,7 @@
             <div class="card-content">
                 <div class="card-info">
                     <h3>Tổng dư nợ</h3>
-                    <p class="amount">150,000,000 ₫</p>
+                    <p class="amount">{{ total_loan }}</p>
                     <span class="trend increase">
                         <i class="fas fa-arrow-up"></i> 12.5% so với tháng trước
                     </span>
@@ -27,7 +27,7 @@
             <div class="card-content">
                 <div class="card-info">
                     <h3>Tổng cho vay</h3>
-                    <p class="amount">80,000,000 ₫</p>
+                    <p class="amount">{{ total_lending }} ₫</p>
                     <span class="trend decrease">
                         <i class="fas fa-arrow-down"></i> 5.2% so với tháng trước
                     </span>
@@ -89,6 +89,7 @@
     
     
     <!-- More loan cards... -->
+    {% for loan in loans %}
     <div class="loans-grid loan-view active mt-10">
         <!-- Loan Card - Cho vay -->
         <div class="loan-card lending border-t-4 border-rose-500 - đỏ">
@@ -96,13 +97,13 @@
                 <div class="header-left">
                     <div class="loan-type">
                         <i class="fas fa-car"></i>
-                        <span>Vay mua xe</span>
+                        <span>{{ loan.type }}</span>
                     </div>
                     <div class="borrower-info">
                         <i class="fas fa-user"></i>
-                        <span>Nguyễn Văn A</span>
+                        <span>{{ loan.borrower }}</span>
                     </div>
-                    <span class="status pending">Chưa đến hạn</span>
+                    <span class="status {{ loan.status }}">{{ loan.status }}</span>
                 </div>
                 <div class="header-right">
                     <button class="menu-btn">
@@ -115,35 +116,35 @@
                 <div class="loan-details">
                     <div class="amount-section">
                         <span class="label">Số tiền vay</span>
-                        <span class="value ">50,000,000 ₫</span>
+                        <span class="value ">{{ loan.amount }}</span>
                     </div>
                     <div class="details-grid">
                         <div class="detail-item">
                             <i class="fas fa-percentage"></i>
                             <div class="text">
                                 <span class="label">Lãi suất</span>
-                                <span class="value">5%/năm</span>
+                                <span class="value">{{ loan.interest_rate }}</span>
                             </div>
                         </div>
                         <div class="detail-item">
                             <i class="fas fa-calendar-alt"></i>
                             <div class="text">
                                 <span class="label">Ngày vay</span>
-                                <span class="value">01/03/2024</span>
+                                <span class="value">{{ loan.loan_date }}</span>
                             </div>
                         </div>
                         <div class="detail-item">
                             <i class="fas fa-phone"></i>
                             <div class="text">
                                 <span class="label">Liên hệ</span>
-                                <span class="value">0912345678</span>
+                                <span class="value">{{ loan.contact }}</span>
                             </div>
                         </div>
                         <div class="detail-item">
                             <i class="fas fa-clock"></i>
                             <div class="text">
                                 <span class="label">Ngày đến hạn</span>
-                                <span class="value">01/09/2024</span>
+                                <span class="value">{{ loan.due_date }}</span>
                             </div>
                         </div>
                     </div>
@@ -151,34 +152,34 @@
                     <div class="payment-summary">
                         <div class="summary-item">
                             <span class="label">Đã thanh toán</span>
-                            <span class="value paid text-emerald-500">20,000,000 ₫</span>
+                            <span class="value paid text-emerald-500">{{ loan.paid }}</span>
                         </div>
                         <div class="summary-item">
                             <span class="label">Tiền lãi</span>
-                            <span class="value interest">1,250,000 ₫</span>
+                            <span class="value interest">{{ loan.interest }}</span>
                         </div>
                         <div class="summary-item">
                             <span class="label">Còn phải trả</span>
-                            <span class="value stock text-rose-400">31,250,000 ₫</span>
+                            <span class="value stock text-rose-400">{{ loan.remaining }}</span>
                         </div>
                     </div>
 
                     <div class="progress-section">
                         <div class="progress-header">
                             <span>Tiến độ thanh toán</span>
-                            <span class="progress-percent">40%</span>
+                            <span class="progress-percent">{{ loan.progress }}%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" style="width: 40%"></div>
+                            <div class="progress" style="width: {{ loan.progress }}%"></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card-footer">
-                <button class="footer-btn primary edit-loan-btn">
+                <a href="/edit/loan/{{ loan.id }}" class="footer-btn primary edit-loan-btn">
                     <i class="fas fa-pencil-alt"></i>
                    Sửa
-                </button>
+                </a>
                 <button class="footer-btn secondary history-loan-btn">
                     <i class="fas fa-history"></i>
                     Lịch sử
@@ -190,10 +191,11 @@
             </div>
         </div>
     </div>
-    
+    {% endfor %}
     
 
     <!-- Lending Cards -->
+    {% for lending in lendings %}
     <div class="loans-grid lending-view mt-10">
         <!-- Loan Card - Cho vay -->
         <div class="loan-card lending border-t-4 border-emerald-500">
@@ -201,13 +203,13 @@
                 <div class="header-left">
                     <div class="loan-type">
                         <i class="fas fa-car"></i>
-                        <span>Cho vay mua xe</span>
+                        <span>{{ lending.type }}</span>
                     </div>
                     <div class="borrower-info">
                         <i class="fas fa-user"></i>
-                        <span>Nguyễn Văn A</span>
+                        <span>{{ lending.lender }}</span>
                     </div>
-                    <span class="status pending">Chưa đến hạn</span>
+                    <span class="status {{ lending.status }}">{{ lending.status }}</span>
                 </div>
                 <div class="header-right">
                     <button class="menu-btn">
@@ -220,35 +222,35 @@
                 <div class="loan-details">
                     <div class="amount-section">
                         <span class="label">Số tiền cho vay</span>
-                        <span class="value text-emerald-500 font-semibold text-xl">50,000,000 ₫</span>
+                        <span class="value text-emerald-500 font-semibold text-xl">{{ lending.amount }}</span>
                     </div>
                     <div class="details-grid">
                         <div class="detail-item">
                             <i class="fas fa-percentage"></i>
                             <div class="text">
                                 <span class="label">Lãi suất</span>
-                                <span class="value">5%/năm</span>
+                                <span class="value">{{ lending.interest_rate }}</span>
                             </div>
                         </div>
                         <div class="detail-item">
                             <i class="fas fa-calendar-alt"></i>
                             <div class="text">
                                 <span class="label">Ngày cho vay</span>
-                                <span class="value">01/03/2024</span>
+                                <span class="value">{{ lending.loan_date }}</span>
                             </div>
                         </div>
                         <div class="detail-item">
                             <i class="fas fa-phone"></i>
                             <div class="text">
                                 <span class="label">Liên hệ</span>
-                                <span class="value">0912345678</span>
+                                <span class="value">{{ lending.contact }}</span>
                             </div>
                         </div>
                         <div class="detail-item">
                             <i class="fas fa-clock"></i>
                             <div class="text">
                                 <span class="label">Ngày đến hạn</span>
-                                <span class="value">01/09/2024</span>
+                                <span class="value">{{ lending.due_date }}</span>
                             </div>
                         </div>
                     </div>
@@ -256,35 +258,35 @@
                     <div class="payment-summary">
                         <div class="summary-item">
                             <span class="label">Đã nhận lại</span>
-                            <span class="value text-emerald-500">20,000,000 ₫</span>
+                            <span class="value text-emerald-500">{{ lending.paid }}</span>
                         </div>
                         <div class="summary-item">
                             <span class="label">Tiền lãi</span>
-                            <span class="value interest">1,250,000 ₫</span>
+                            <span class="value interest">{{ lending.interest }}</span>
                         </div>
                         <div class="summary-item">
                             <span class="label">Còn phải thu</span>
-                            <span class="value remaining text-rose-400">31,250,000 ₫</span>
+                            <span class="value remaining text-rose-400">{{ lending.remaining }}</span>
                         </div>
                     </div>
 
                     <div class="progress-section">
                         <div class="progress-header">
                             <span>Tiến độ thu hồi</span>
-                            <span class="progress-percent">40%</span>
+                            <span class="progress-percent">{{ lending.progress }}%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" style="width: 40%"></div>
+                            <div class="progress" style="width: {{ lending.progress }}%"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="card-footer">
-                <button class="footer-btn primary edit-lending-btn">
+                <a href="/edit/lending/{{ lending.id }}" class="footer-btn primary edit-lending-btn">
                     <i class="fas fa-pencil-alt"></i>
                    Sửa
-                </button>
+                </a>
                 <button class="footer-btn secondary history-lending-btn">
                     <i class="fas fa-history"></i>
                     Lịch sử
@@ -296,6 +298,7 @@
             </div>
         </div>
     </div>
+    {% endfor %}
     <!-- More lending cards... -->
      <!-- Modal thêm khoản vay -->
 <div class="modal" id="addLoanModal">
@@ -397,23 +400,6 @@
                     </div>
                 </div>
 
-                <div class="form-group full-width">
-                    <label>Nhắc nhở</label>
-                    <div class="reminder-options">
-                        <label class="checkbox">
-                            <input type="checkbox" name="reminder" value="before-3">
-                            <span>Trước 3 ngày</span>
-                        </label>
-                        <label class="checkbox">
-                            <input type="checkbox" name="reminder" value="before-1">
-                            <span>Trước 1 ngày</span>
-                        </label>
-                        <label class="checkbox">
-                            <input type="checkbox" name="reminder" value="on-day">
-                            <span>Ngày đến hạn</span>
-                        </label>
-                    </div>
-                </div>
             </div>
 
             <div class="form-actions">

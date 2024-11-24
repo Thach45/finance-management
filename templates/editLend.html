@@ -1,0 +1,106 @@
+{% extends 'layout.html' %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/loan.css') }}"> 
+     <div class="modal active" id="addLoanModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="/loan" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </a>
+            </div>
+    
+            <form class="loan-form" action="/edit/lending/{{ lend.id }}" method="post">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Tên khoản cho vay</label>
+                        <div class="input-icon">
+                            <i class="fas fa-file-signature"></i>
+                            <input type="text" required placeholder="VD: Vay mua nhà" value="{{ lend.type }}">
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label>Số tiền</label>
+                        <div class="input-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <input type="number" required placeholder="Nhập số tiền" value="{{ lend.amount }}">
+                            <span class="currency">₫</span>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label>Người vay</label>
+                        <div class="input-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" required placeholder="Tên người vay" value="{{ lend.lender }}">
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <div class="input-icon">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" placeholder="Số điện thoại liên hệ" value="{{ lend.contact }}">
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label>Lãi suất (%/năm)</label>
+                        <div class="input-icon">
+                            <i class="fas fa-percentage"></i>
+                            <input type="number" step="0.1" placeholder="Nhập lãi suất" value="{{ lend.interest_rate }}">
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label>Loại lãi suất</label>
+                        <div class="radio-group">
+                           {% if lend.interest_type == 'simple' %}
+                                <input type="radio" name="interestType" value="simple" checked>
+                           {% else %}
+                                <input type="radio" name="interestType" value="compound">
+                            {% endif %}
+                            <span>Lãi đơn</span>
+                            {% if lend.interest_type == 'compound' %}
+                                <input type="radio" name="interestType" value="compound" checked>
+                            {% else %}
+                                <input type="radio" name="interestType" value="compound">
+                            {% endif %}
+                            <span>Lãi kép</span>
+
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label>Ngày vay</label>
+                        <div class="input-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                            <input type="date" required value="{{ lend.loan_date }}">
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label>Ngày đến hạn</label>
+                        <div class="input-icon">
+                            <i class="fas fa-calendar-check"></i>
+                            <input type="date" required value="{{ lend.due_date }}">
+                        </div>
+                    </div>
+    
+                    <div class="form-group full-width">
+                        <label>Ghi chú</label>
+                        <div class="input-icon">
+                            <i class="fas fa-sticky-note"></i>
+                            <textarea placeholder="Thêm ghi chú về khoản vay">{{ lend.description }}</textarea>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="form-actions">
+                    <a href="/loan" class="btn cancel">Hủy</a>
+                    <button type="submit" class="btn primary">Lưu khoản cho vay</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

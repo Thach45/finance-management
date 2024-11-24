@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from flask import render_template
 import os
+from models.models import UserModel
 from flask_pymongo import PyMongo
 from flask import Flask
 from app.Dashboard import dashboard_bp
@@ -12,7 +13,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 mongo = PyMongo(app)
-
+app.config['MONGO'] = mongo
 app.register_blueprint(dashboard_bp)
 app.register_blueprint(account_bp)
 app.register_blueprint(transaction_bp)
