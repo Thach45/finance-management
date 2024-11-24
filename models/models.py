@@ -30,8 +30,8 @@ class UserModel:
         return self.mongo.db.transaction.delete_one({"_id": transaction_id})
     
     # Loans
-    def get_loans(self, user_id):
-        return self.mongo.db.loan.find({"user_id": user_id})
+    def get_loans(self, loan_id={}):
+        return self.mongo.db.loan.find(loan_id)
     
     def create_loan(self, loan_data):
         return self.mongo.db.loan.insert_one(loan_data)
@@ -42,8 +42,8 @@ class UserModel:
     def delete_loan(self, loan_id):
         return self.mongo.db.loan.delete_one({"_id": loan_id})
     # Lendings
-    def get_lendings(self, user_id):
-        return self.mongo.db.lendings.find({"user_id": user_id})
+    def get_lendings(self, lending_id={}):
+        return self.mongo.db.lendings.find(lending_id)
     
     def create_lending(self, lending_data):
         return self.mongo.db.lendings.insert_one(lending_data)
