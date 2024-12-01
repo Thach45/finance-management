@@ -31,7 +31,3 @@ class Jar:
             self.__moneyGoal = value
         else: 
             return False
-        
-jar1 = Jar()
-jar1.SetMoneyGoal(10)
-print(jar1.moneyGoal)
