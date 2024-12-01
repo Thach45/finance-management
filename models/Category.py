@@ -8,7 +8,7 @@ from Jar import Jar
 # jar6 = Jar("Quỹ từ thiện")
 
 class Category:
-    def __init__(self,name = '',jar=Jar()):
+    def __init__(self,name = '',money = 0,jar=Jar()):
         self.__name = name
         self.__money = 0
         self.__moneyGoal = 1000000
