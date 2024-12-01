@@ -1,5 +1,6 @@
 from flask import render_template, current_app, url_for, redirect, request
 from flask import jsonify
+from datetime import datetime
 from models.models import UserModel
 from bson.objectid import ObjectId
 def home():
@@ -151,3 +152,12 @@ def edit_lending(id):
     # ]
     lending = [lending for lending in lendings if lending['id'] == id][0]
     return render_template('editLend.html', lend=lending)
+
+def payment_loan(id):
+    loan_model = UserModel()
+    idLoan = {"_id": ObjectId(id)}
+    loans = list(loan_model.get_loans(idLoan))
+    loan = [loan for loan in loans if loan['_id'] == ObjectId(id)][0]
+    loan['loan_date'] = datetime.now().strftime('%Y-%m-%d')
+    print(loan)
+    return render_template('paymentLoan.html', loan=loan)

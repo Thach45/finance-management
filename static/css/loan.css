@@ -333,9 +333,9 @@
     color: white;
 }
 
-.footer-btn.secondary {
-    background: #f8f9fa;
-    color: #6c757d;
+.footer-btn.success {
+    background: #09ac52;
+    color: white;
 }
 
 /* Responsive */
@@ -522,6 +522,21 @@
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
+    transition: all 0.3s ease;
+}
+.modal-payment{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 1;
+    visibility: visible;
     transition: all 0.3s ease;
 }
 

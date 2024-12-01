@@ -10,7 +10,10 @@ const typeLending = document.querySelector('.status-lending');
 const closeBtn = document.querySelector('.close-btn');
 const form = document.querySelector('.loan-form');
 const cancelBtn = document.querySelector('.cancel');
-
+const cancelPaymentBtn = document.querySelector('.cancel-payment-btn');
+const closePaymentBtn = document.querySelector('.close-payment-btn');
+const modalPayment = document.querySelector('.modal-payment');
+const paymentBtn = document.querySelector('.pay-loan-btn');
 if(loanBtn){
     loanBtn.addEventListener('click', () => {
         loanBtn.classList.add('active');
@@ -87,3 +90,20 @@ form.addEventListener('submit', (e) => {
     
     form.submit();
 });
+
+
+if(paymentBtn){
+    paymentBtn.addEventListener('click', () => {
+        modalPayment.classList.add('active');
+    })
+}
+if(cancelPaymentBtn){
+    cancelPaymentBtn.addEventListener('click', () => {
+        modalPayment.classList.remove('active');
+    })
+}
+if(closePaymentBtn){
+    closePaymentBtn.addEventListener('click', () => {
+        modalPayment.classList.remove('active');
+    })
+}
