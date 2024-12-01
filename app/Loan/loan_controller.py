@@ -3,6 +3,7 @@ from flask import jsonify
 from datetime import datetime
 from models.models import UserModel
 from bson.objectid import ObjectId
+
 def home():
     # Dữ liệu trong database
     # loans = [
@@ -159,5 +160,8 @@ def payment_loan(id):
     loans = list(loan_model.get_loans(idLoan))
     loan = [loan for loan in loans if loan['_id'] == ObjectId(id)][0]
     loan['loan_date'] = datetime.now().strftime('%Y-%m-%d')
-    print(loan)
-    return render_template('paymentLoan.html', loan=loan)
+    account_model = UserModel()
+    accounts = list(account_model.get_account())
+
+    print(accounts)
+    return render_template('paymentLoan.html', loan=loan, accounts=accounts)
