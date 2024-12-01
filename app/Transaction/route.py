@@ -5,7 +5,7 @@ from .transaction_controller import home, edit_transaction
 def transaction_route():
     return home()
 
-@transaction_bp.route('/transaction/edit/<int:transaction_id>', methods=['GET'])
+@transaction_bp.route('/transaction/edit/<string:transaction_id>', methods=['GET'])
 def edit_transaction_route(transaction_id):
     return edit_transaction(transaction_id)
 

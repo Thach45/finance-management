@@ -3,12 +3,13 @@ from Category import Category
 from datetime import date
 
 class Transaction:
-    def __init__(self, account=Account(), transactionType=Category(), money=0, transactionDate=date.today(), note =""):
+    def __init__(self,id, account=Account(), transactionType=Category(), money=0, transactionDate=date.today(), note =""):
         self.__account = account
         self.__transactionType = transactionType
         self.__money = money
         self.__transactionDate = transactionDate
         self.__note =note
+        self.__id = id
 
     @property
     def account(self):
@@ -47,3 +48,4 @@ class Transaction:
     @note.setter
     def note(self, value):
         self.__note = value
+
