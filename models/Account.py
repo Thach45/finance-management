@@ -1,6 +1,6 @@
 class Account:
-    def __init__(self,id='',accountType = "") :
-        self.__id = id
+    def __init__(self,name='',accountType = "") :
+        self.__name = name
         self.__money = 0
         self.__accountType = accountType
 
