@@ -34,6 +34,3 @@ class Loan(Transaction):
         else:
             raise ValueError("Rate must be a positive value")
         
-    
-loan1 = Loan(Account(), Category(), 100, date.today(), "loan", "ri", "15/1/2025", 0.001)
-print(loan1.money)
