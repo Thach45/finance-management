@@ -32,6 +32,3 @@ class Jar:
         else: 
             return False
         
-jar1 = Jar()
-jar1.SetMoneyGoal(10)
-print(jar1.moneyGoal)
