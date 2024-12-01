@@ -34,7 +34,7 @@ class Category:
         return self.__money
     @money.setter
     def money(self,value):
-        if value > 0:
+        if value >= 0:
             self.__money = value
         else: 
             return False
