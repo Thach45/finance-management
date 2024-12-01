@@ -180,10 +180,10 @@
                     <i class="fas fa-pencil-alt"></i>
                    Sửa
                 </a>
-                <button class="footer-btn secondary history-loan-btn">
+                <a href="/payment/loan/{{ loan._id }}" class="footer-btn success pay-loan-btn">
                     <i class="fas fa-history"></i>
-                    Lịch sử
-                </button>
+                    Trả tiền
+                </a>
                 <button class="footer-btn bg-rose-500 hover:bg-rose-600 text-white delete-loan-btn">
                     <i class="fas fa-trash"></i>
                     Xoá
@@ -287,10 +287,6 @@
                     <i class="fas fa-pencil-alt"></i>
                    Sửa
                 </a>
-                <button class="footer-btn secondary history-lending-btn">
-                    <i class="fas fa-history"></i>
-                    Lịch sử
-                </button>
                 <button class="footer-btn bg-rose-500 hover:bg-rose-600 text-white delete-lending-btn">
                     <i class="fas fa-trash"></i>
                     Xoá
@@ -300,6 +296,8 @@
     </div>
     {% endfor %}
     <!-- More lending cards... -->
+
+
      <!-- Modal thêm khoản vay -->
 <div class="modal" id="addLoanModal">
     <div class="modal-content">
@@ -409,6 +407,6 @@
         </form>
     </div>
 </div>
-</div>
+
 <script src="{{ url_for('static', filename='js/loan.js') }}"></script>
 {% endblock %}

@@ -104,7 +104,7 @@
                         <td>15/03/2024</td>
                         <td class="actions">
                             <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                            <a class="delete-btn" href="/account/delete/{{account.id}}"><i class="fas fa-trash"></i></a>
+                            <a class="delete-btn" href="/account/delete/{{account._id}}"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -120,7 +120,7 @@
                 <h3>Thêm tài khoản mới</h3>
                 <button class="close-btn close-add-account-btn"><i class="fas fa-times"></i></button>
             </div>
-            <form class="account-form" action="/account/add" method="post">
+            <form class="account-form" action="/account/add/" method="post">
                 <div class="form-group">
                     <label>Tên tài khoản</label>
                     <input type="text" required placeholder="Nhập tên tài khoản" name="name">

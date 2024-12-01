@@ -1,15 +1,18 @@
 class Account:
-    def __init__(self,id='',accountType = "") :
-        self.__name = id
-        self.__money = 0
+    def __init__(self,name='',money = 0,accountType = "") :
+        self.__name = name
+        if money < 0:
+            self.__money = 0
+        else:
+            self.__money = money
         self.__accountType = accountType
 
     @property
-    def id(self):
-        return self.__id
-    @id.setter
-    def id(self,value):
-        self.__id = value
+    def name(self):
+        return self.__name
+    @name.setter
+    def name(self,value):
+        self.__name = value
 
     @property
     def money(self):
@@ -33,3 +36,6 @@ class Account:
             self.money = value
         else:
             return False
+    
+    # def info(self):
+    #     print(f"ten tk:{self.name}, sodu: {self.money}, loai:{self.accountType}")

@@ -31,3 +31,4 @@ class Jar:
             self.__moneyGoal = value
         else: 
             return False
+        
