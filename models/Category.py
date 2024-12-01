@@ -1,18 +1,26 @@
 from Jar import Jar
 
-# jar1 = Jar("Chi tiêu cần thiết")
-# jar2 = Jar("Tiết kiệm dài hạn")
-# jar3 = Jar("Quỹ giáo dục")
-# jar4 = Jar("Quỹ hưởng thụ")
-# jar5 = Jar("Quỹ tự do tài chính")
-# jar6 = Jar("Quỹ từ thiện")
-
 class Category:
-    def __init__(self,name = '',money = 0,jar=Jar()):
+    purpose1 = "Chi tiêu"
+    purpose2 = "Thu nhập"
+    purpose3 = "Chuyển khoản"
+    purposes = [purpose1,purpose2,purpose3]
+    jar1 = Jar("Chi tiêu cần thiết")
+    jar2 = Jar("Tiết kiệm dài hạn")
+    jar3 = Jar("Quỹ giáo dục")
+    jar4 = Jar("Quỹ hưởng thụ")
+    jar5 = Jar("Quỹ tự do tài chính")
+    jar6 = Jar("Quỹ từ thiện")
+    jars = [jar1,jar2,jar3,jar4,jar5,jar6]
+    def __init__(self,name = '',moneyGoal=1000000,jar=jars[0],purpose = purposes[0]):
         self.__name = name
         self.__money = 0
-        self.__moneyGoal = 1000000
+        if moneyGoal < 0:
+            self.moneyGoal = 0
+        else:
+            self.__moneyGoal = moneyGoal
         self.__jar = jar
+        self.__purpose = purpose
 
     @property
     def name(self):
@@ -43,7 +51,11 @@ class Category:
         
     @property
     def jar(self):
-        return self.__jar
+        return self.__jar.name
+    
+    @property
+    def purpose(self):
+        return self.__purpose
     
     
 # def transaction(category:Category,value):
