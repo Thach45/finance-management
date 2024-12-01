@@ -1,11 +1,11 @@
 from Jar import Jar
 
-jar1 = Jar("Chi tiêu cần thiết")
-jar2 = Jar("Tiết kiệm dài hạn")
-jar3 = Jar("Quỹ giáo dục")
-jar4 = Jar("Quỹ hưởng thụ")
-jar5 = Jar("Quỹ tự do tài chính")
-jar6 = Jar("Quỹ từ thiện")
+# jar1 = Jar("Chi tiêu cần thiết")
+# jar2 = Jar("Tiết kiệm dài hạn")
+# jar3 = Jar("Quỹ giáo dục")
+# jar4 = Jar("Quỹ hưởng thụ")
+# jar5 = Jar("Quỹ tự do tài chính")
+# jar6 = Jar("Quỹ từ thiện")
 
 class Category:
     def __init__(self,name = '',jar=Jar()):
