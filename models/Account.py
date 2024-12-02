@@ -19,7 +19,7 @@ class Account:
         return self.__money
     @money.setter
     def money(self,value):
-        if value>0:
+        if value>=0:
             self.__money = value
         else:
             return False
@@ -32,7 +32,7 @@ class Account:
         self.__accountType = value
 
     def SetMoney(self,value):
-        if value>0:
+        if value>=0:
             self.money = value
         else:
             return False
