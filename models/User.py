@@ -2,22 +2,29 @@ from account import Account
 from category import Category
 from jar import Jar 
 from transaction import Transaction
-from loan import Loan
+from credit import Credit
 from datetime import date
 
 class User:
     accounts = {'VCB':Account('VCB',100000,'NH'),
                 'MoMo':Account('Momo',500000,'Vi dien tu')}
-    categorys = {'An uong': Category(name = 'An uong',jar = Category.jar1,),
-                 'Tiet kiem':Category(name = 'Tiet kiem',jar = Category.jar2),
-                 'Vay':Category(name = 'Vay',jar = Category.jar2)}
+    categorys = {'Ăn uống': Category(name = 'Ăn uống',jar = Category.jar1,purpose=Category.purposeSpend), #purpose 1: chi tiêu
+                 'Tiết Kiệm':Category(name = 'Tiết Kiệm',jar = Category.jar2),  
+                 'Vay':Category(name = 'Vay',jar = Category.jar1,purpose=Category.purposeIncome),    #purpose 2: thu nhập
+                 'Cho Vay':Category(name = 'Cho Vay',jar = Category.jar1,purpose=Category.purposeSpend),
+                 'Trả nợ': Category(name = 'Trả nợ',jar = Category.jar1),
+                 'Thu nợ':Category(name = 'Thu nợ',jar = Category.jar1,purpose=Category.purposeIncome)}
     transactions = {}
-
+    loans = {}
+    lends = {}
     def __init__(self):
         self.__id = ""
         self.__name = ""
         self.__phone = ""
         self.__password = ""
+        self.__idTransaction = len(self.transactions)
+        self.__idLoan = len(self.loans)
+        self.__idLend = len(self.lends)
 
     @property
     def id(self):
@@ -57,7 +64,7 @@ class User:
 
     #Operation With Category
     def CreateCategory(self,nameCategory,moneyGoal=100000,jar=Category.jars[0],
-                       purpose = Category.purposes[0]):
+                       purpose = Category.purposeSpend):
         category = Category(nameCategory,moneyGoal,jar,purpose)
         self.categorys.update({nameCategory:category})
 
@@ -66,20 +73,27 @@ class User:
             self.categorys[namecategory].SetMoneyGoal(moneyGoal)
         
     #Operation with Transaction
-    def CreateTransaction(self,id,nameAccount,nameCategory,moneyTransaction,
+    # phan biet Transaction dựa trên id
+    def CreateTransaction(self,nameAccount,nameCategory,moneyTransaction,
                           dateTransaction=date.today(),note=''):
-        transaction = Transaction(id,self.accounts[nameAccount],self.categorys[nameCategory],
-                                  moneyTransaction,dateTransaction,note)
-        self.transactions.update({id:transaction})
-        self.categorys[nameCategory].money += moneyTransaction
-        if self.categorys[nameCategory].purpose == Category.purposes[0]:    # 0 là chi tiêu
-            self.accounts[nameAccount].money -= moneyTransaction
-        elif self.categorys[nameCategory].purpose == Category.purposes[1]:  # 1 là chi tiêu
-            self.accounts[nameAccount].money += moneyTransaction
+        #Việc thêm giao dịch thực hiện khi: mục đích là thu nhập hoặc số tiền trong tài khoản lớn hơn số tiền giao dich
+        if self.categorys[nameCategory].purpose == Category.purposeIncome or self.accounts[nameAccount].money > moneyTransaction:
+            self.__idTransaction+=1
+            transaction = Transaction(self.__idTransaction,self.accounts[nameAccount],self.categorys[nameCategory],
+                                    moneyTransaction,dateTransaction,note)
+            self.transactions.update({id:transaction})
+            self.categorys[nameCategory].money += moneyTransaction
+            if self.categorys[nameCategory].purpose == Category.purposeSpend:    # 0 là chi tiêu
+                self.accounts[nameAccount].money -= moneyTransaction
+            elif self.categorys[nameCategory].purpose == Category.purposeIncome:  # 1 là thu nhập
+                self.accounts[nameAccount].money += moneyTransaction
+        else:
+            return False
 
-    def RemoveTransaction(self, id):
-        if id in self.transactions.keys():
-            oldTransaction = self.transactions[id]
+    def RemoveTransaction(self, idTransaction):
+        # nếu id giao dịch là hợp lệ thì thực hiện
+        if idTransaction in self.transactions.keys():
+            oldTransaction = self.transactions[idTransaction]
             oldNameCategory = oldTransaction.category.name
             oldNameAccount = oldTransaction.account.name
             self.categorys[oldNameCategory].money -= oldTransaction.money
@@ -87,68 +101,132 @@ class User:
                 self.accounts[oldNameAccount].money += oldTransaction.money
             elif self.categorys[oldNameCategory].purpose == Category.purposes[1]:  # 1 là chi tiêu
                 self.accounts[oldNameAccount].money -= oldTransaction.money
-            del self.transactions[id] 
-    def EditTransaction(self,id,newNameAccount,newNameCategory,newMoneyTransaction,
+            del self.transactions[idTransaction] 
+        else: 
+            return False
+        
+    def EditTransaction(self,idTransaction,newNameAccount,newNameCategory,newMoneyTransaction,
                         newDateTransaction=date.today(),newNote=''):
         # xóa giao dịch trước
-        self.RemoveTransaction(id)
+        self.RemoveTransaction(idTransaction)
         # tạo giao dịch mới
-        self.CreateTransaction(id,newNameAccount,newNameCategory,newMoneyTransaction,
+        self.CreateTransaction(idTransaction,newNameAccount,newNameCategory,newMoneyTransaction,
                                newDateTransaction,newNote)
 
     #Operation with Loan
-    def CreateLoan(self,id,nameAccount,nameCategory,moneyTransaction,dateTransaction=date.today(),
-                   note='', spender ="", dateDue= date.today(), rate = 0):
-        transaction = Loan(id,self.accounts[nameAccount],self.categorys[nameCategory],
-                                  moneyTransaction,dateTransaction,note,spender,dateDue,rate)
-        self.transactions.update({id:transaction})
-        self.categorys[nameCategory].money += moneyTransaction
-        self.accounts[nameAccount].money += moneyTransaction
+    def CreateLoan(self,nameLoand,nameAccount,nameCategory='Vay',moneyTransaction=0,dateTransaction=date.today(),
+                   note='', spender ="",phone="", dateDue= date.today(), rate = 0):
+        self.__idLoan +=1
+        loan = Credit(self.__idLoan,nameLoand,self.accounts[nameAccount],self.categorys[nameCategory],
+                                  moneyTransaction,dateTransaction,note,spender,phone,dateDue,rate)
+        self.loans.update({self.__idLoan:loan})
+        # self.categorys[nameCategory].money += moneyTransaction
+        # self.accounts[nameAccount].money += moneyTransaction
+        self.CreateTransaction(nameAccount,nameCategory,moneyTransaction,dateTransaction,note=f'Vay cua {spender}')
 
-    def RemoveLoan(self, id):
-        if id in self.transactions.keys():
-            oldTransaction = self.transactions[id]
-            self.accounts[oldTransaction.account.name] -= oldTransaction.money
-            del self.transactions[id] 
+    def RemoveLoan(self, idLoan):
+        if idLoan in self.loans.keys():
+            oldLoan = self.loans[idLoan]
+            self.accounts[oldLoan.account.name] -= oldLoan.money
+            del self.loans[idLoan] 
+        # cần xử lý các dao dịch liên quan đến khoản vay này
 
-    def EditLoan(self,id,newNameAccount,nameCategory,newMoneyTransaction,newDateTransaction=date.today(),
-                   note='', spender ="", newDateDue= date.today(), newRate = 0):
+    def EditLoan(self,idLoan,newNameLoan,newNameAccount,nameCategory='Vay',newMoneyTransaction=0,newDateTransaction=date.today(),
+                   note='', spender ="",phone="", newDateDue= date.today(), newRate = 0):
         # xóa giao dịch trước
-        self.RemoveLoan(id)
+        self.RemoveLoan(idLoan)
         # tạo giao dịch mới
-        self.CreateLoan(id,id,self.accounts[newNameAccount],self.categorys[nameCategory],
-                                  newMoneyTransaction,newDateTransaction,note,spender,newDateDue,newRate)
+        self.CreateLoan(idLoan,newNameLoan,self.accounts[newNameAccount],self.categorys[nameCategory],
+                                  newMoneyTransaction,newDateTransaction,note,spender,phone,newDateDue,newRate)
+        
+    def PayDebt(self, idloand,idTransaction,moneyPay,accountPay,category = "Trả nợ",datePay=date.today,note=""):
+        # nếu số tiền trong tài khoản lớn hơn số tiền trả nợ thì mới thực hiện giao dịch
+        if self.accounts[accountPay].money >= moneyPay:
+            self.loans[idloand].amountPaid += moneyPay
+            self.CreateTransaction(idTransaction,nameAccount=accountPay,nameCategory=category,moneyTransaction=moneyPay,
+                                   dateTransaction=datePay, note=note)
+        else:
+            return False
+
+    #Operation with Lend
+    def CreateLend(self,nameLend,nameAccount,nameCategory="Cho Vay",moneyTransaction=0,dateTransaction=date.today(),
+                   note='', spender ="",phone="", dateDue= date.today(), rate = 0):
+        #nếu số tiền trong tài khoản lớn hơn số tiền cho vay thì mới thực hiện giao dịch
+        if self.accounts[nameAccount].money >= moneyTransaction:
+            self.__idLend+=1
+            lend = Credit(self.__idLend,nameLend,self.accounts[nameAccount],self.categorys[nameCategory],
+                                    moneyTransaction,dateTransaction,note,spender,phone,dateDue,rate)
+            self.lends.update({self.__idLend:lend})
+            # self.categorys[nameCategory].money += moneyTransaction
+            # self.accounts[nameAccount].money -= moneyTransaction
+            self.CreateTransaction(nameAccount,nameCategory,moneyTransaction,dateTransaction,note=f'cho {spender} vay')
+
+    def RemoveLend(self, idLend):
+        if idLend in self.loans.keys():
+            oldTransaction = self.loans[idLend]
+            self.accounts[oldTransaction.account.name] += oldTransaction.money
+            del self.loans[idLend] 
+
+    def EditLend(self,idLend,newNameLend,newNameAccount,nameCategory='Cho Vay',newMoneyTransaction=0,newDateTransaction=date.today(),
+                   note='', spender ="",phone="", newDateDue= date.today(), newRate = 0):
+        # xóa giao dịch trước
+        self.RemoveLend(idLend)
+        # tạo giao dịch mới
+        self.CreateLend(idLend,newNameLend,self.accounts[newNameAccount],self.categorys[nameCategory],
+                                  newMoneyTransaction,newDateTransaction,note,spender,phone,newDateDue,newRate)
+        
+    def DebtColection(self, idLend,idTransaction,moneyPay,accountPay,category = "Thu nợ",datePay=date.today,note=""):
+        if idLend in self.lends.keys():
+            self.lends[idLend].amountPaid += moneyPay
+            self.CreateTransaction(idTransaction,nameAccount=accountPay,nameCategory=category,moneyTransaction=moneyPay,
+                                   dateTransaction=datePay, note=note)
+        else:
+            return False
+            
+            
+
 
     # Operation with Account
-    def CreateAccount(self,nameAccount,moneyAccount,accountType):
+    def CreateAccount(self,nameAccount,moneyAccount,accountType):   
         if nameAccount in self.accounts.keys():
             return False
         account = Account(nameAccount,moneyAccount,accountType)
         self.accounts.update({nameAccount:account})
+
+    # chon tai khoan edit: theo ten tai khoan, neu theo id thì sửa lại
     def EditAccount(self,nameEditAccount,newNameAccount,moneyAccount,accountType):
         if nameEditAccount in self.accounts.keys():
             self.accounts[nameEditAccount].name = newNameAccount
             self.accounts[nameEditAccount].money = moneyAccount
             self.accounts[nameEditAccount].accountType = accountType
+
+    # sử dụng tên tài khoản để phân biệt giưa các tài khoản
     def RemoveAccount(self,nameAccount):
         if nameAccount in self.accounts.keys():
             idTransactionRemove = [] 
-            for id in self.transactions.keys():
-                if self.transactions[id].account.name == nameAccount:
+            for id in self.loans.keys():
+                if self.loans[id].account.name == nameAccount:
                     idTransactionRemove.append(id)
             for id in idTransactionRemove:
                     self.RemoveTransaction(id)
             del self.accounts[nameAccount]
+
+    def TransferAccount(self,nameSourceAccount,nameDestinationAccount,money,note):
+        if self.accounts[nameSourceAccount].money >= money :
+            self.accounts[nameSourceAccount].money -= money
+            self.accounts[nameDestinationAccount].money += money
+        else:
+            return False
 
 
 
 
 
 # user1 = User()
-# user1.CreateCategory('an uong',500000)
+# user1.CreateCategory('Ăn uống',500000)
 # user1.CreateCategory('di chuyen',purpose=Category.purposes[1])
 
-# # user1.SetMoneyCategory('an uong',10)
+# # user1.SetMoneyCategory('Ăn uống',10)
 # # for nameCategory in user1.categorys.keys():
 # #     print(user1.categorys[nameCategory].purpose)
 
@@ -161,7 +239,7 @@ class User:
 # for acc in user1.accounts.keys():
 #     print(user1.accounts[acc].money)
 
-# user1.CreateTransaction(1,"VCB","an uong",50000,date.today(),'am thuc')
+# user1.CreateTransaction(1,"VCB","Ăn uống",50000,date.today(),'am thuc')
 # user1.CreateTransaction(2,"ACB","di chuyen",100000,date.today(),'di dao')
 
 # for cate in user1.categorys.keys():
