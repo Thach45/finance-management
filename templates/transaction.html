@@ -120,8 +120,8 @@
                     <td class="amount transfer">{{ transaction.amount }}</td>
                     {% endif %}
                     <td>
-                        <a class="action-btn edit" href="/transaction/edit/{{ transaction.id }}"><i class="fas fa-edit"></i></a>
-                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                        <a class="action-btn edit" href="/transaction/edit/{{ transaction._id }}"><i class="fas fa-edit"></i></a>
+                        <a href="/transaction/delete/{{transaction._id}}" class="action-btn delete"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
                 

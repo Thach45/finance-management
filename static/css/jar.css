@@ -1,0 +1,126 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --background-color: #ecf0f1;
+    --text-color: #2c3e50;
+    --jar-1-color: #e74c3c;
+    --jar-2-color: #f39c12;
+    --jar-3-color: #16a085;
+    --jar-4-color: #9b59b6;
+    --jar-5-color: #3498db;
+    --jar-6-color: #1abc9c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+}
+
+.income-input {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.income-input input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px 0 0 5px;
+    width: 200px;
+}
+
+.income-input button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.income-input button:hover {
+    background-color: #2980b9;
+}
+
+.jars-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.jar {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.jar:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.jar-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.jar-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.jar-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.jar-amount {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.jar-percentage {
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+.jar-1 { border-top: 5px solid var(--jar-1-color); }
+.jar-2 { border-top: 5px solid var(--jar-2-color); }
+.jar-3 { border-top: 5px solid var(--jar-3-color); }
+.jar-4 { border-top: 5px solid var(--jar-4-color); }
+.jar-5 { border-top: 5px solid var(--jar-5-color); }
+.jar-6 { border-top: 5px solid var(--jar-6-color); }
+
+.jar-1 .jar-icon { color: var(--jar-1-color); }
+.jar-2 .jar-icon { color: var(--jar-2-color); }
+.jar-3 .jar-icon { color: var(--jar-3-color); }
+.jar-4 .jar-icon { color: var(--jar-4-color); }
+.jar-5 .jar-icon { color: var(--jar-5-color); }
+.jar-6 .jar-icon { color: var(--jar-6-color); }

@@ -16,9 +16,16 @@ class UserModel:
     def delete_account(self, account_id):
         return self.mongo.db.accounts.delete_one({"_id": account_id})
     
+    # Auth
+    def get_auth(self, auth_data):
+        return self.mongo.db.auth.find_one(auth_data)
+    
+    def create_auth(self, auth_data):
+        return self.mongo.db.auth.insert_one(auth_data)
+    
     # Transactions
-    def get_transactions(self, account_id):
-        return self.mongo.db.transaction.find({"account_id": account_id})
+    def get_transactions(self, account_id={}):
+        return self.mongo.db.transaction.find(account_id)
     
     def create_transaction(self, transaction_data):
         return self.mongo.db.transaction.insert_one(transaction_data)
