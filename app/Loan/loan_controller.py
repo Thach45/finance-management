@@ -151,3 +151,8 @@ def edit_lending(id):
     # ]
     lending = [lending for lending in lendings if lending['id'] == id][0]
     return render_template('editLend.html', lend=lending)
+def create_loan():
+    loan_model = UserModel()
+    loan_model.create_loan(request.form.to_dict())
+    
+    return render_template("loan.html")
