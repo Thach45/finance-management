@@ -105,13 +105,30 @@ def home():
                            total_loan=total_loan,
                            total_lending=total_lending)
 
-def edit_loan(id):
+def add_loan():
     loan_model = UserModel()
-    idLoan = {"_id": ObjectId(id)}
-    loans = list(loan_model.get_loans(idLoan))
-    loan = [loan for loan in loans if loan['_id'] == ObjectId(id)][0]
+    data = request.form.to_dict()
+    data['amount'] = int(data['amount'])
+    data['createTime'] = datetime.now() # thời gian tạo 
+    print(data)
+    loan_model.create_loan(data)
+    return redirect(url_for('loan.loan_route'))
 
-    return render_template('editLoan.html', loan=loan)
+
+def edit_loan():
+    id = request.form.get('id')  # Lấy id từ form
+    if not id:
+        return redirect(url_for('loan.loan_route'))
+
+    data = request.form.to_dict()  # Lấy dữ liệu cập nhật từ form
+    loan_model = UserModel()
+
+
+    idLoan = {"_id": ObjectId(id)}
+    loan_model.update_loan(idLoan)  # Gọi phương thức update_loan
+    return redirect(url_for('loan.loan_route'))
+
+
 
 def edit_lending(id):
     loan_model = UserModel()

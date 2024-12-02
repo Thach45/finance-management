@@ -323,7 +323,7 @@
                     <label>Tên khoản vay</label>
                     <div class="input-icon">
                         <i class="fas fa-file-signature"></i>
-                        <input type="text" required placeholder="VD: Vay mua nhà">
+                        <input type="text" required placeholder="VD: Vay mua nhà" name = "type" >
                     </div>
                 </div>
 
@@ -331,7 +331,7 @@
                     <label>Số tiền</label>
                     <div class="input-icon">
                         <i class="fas fa-money-bill-wave"></i>
-                        <input type="number" required placeholder="Nhập số tiền">
+                        <input type="number" required placeholder="Nhập số tiền" name = "amount">
                         <span class="currency">₫</span>
                     </div>
                 </div>
@@ -340,7 +340,7 @@
                     <label>Người cho vay/Người vay</label>
                     <div class="input-icon">
                         <i class="fas fa-user"></i>
-                        <input type="text" required placeholder="Tên người cho vay/người vay">
+                        <input type="text" required placeholder="Tên người cho vay/người vay" name = "borrower">
                     </div>
                 </div>
 
@@ -348,7 +348,7 @@
                     <label>Số điện thoại</label>
                     <div class="input-icon">
                         <i class="fas fa-phone"></i>
-                        <input type="tel" placeholder="Số điện thoại liên hệ">
+                        <input type="tel" placeholder="Số điện thoại liên hệ" name = "contact">
                     </div>
                 </div>
 
@@ -356,7 +356,7 @@
                     <label>Lãi suất (%/năm)</label>
                     <div class="input-icon">
                         <i class="fas fa-percentage"></i>
-                        <input type="number" step="0.1" placeholder="Nhập lãi suất">
+                        <input type="number" step="0.1" placeholder="Nhập lãi suất" name = "interest_rate">
                     </div>
                 </div>
 
@@ -364,7 +364,7 @@
                     <label>Loại lãi suất</label>
                     <div class="radio-group">
                         <label class="radio">
-                            <input type="radio" name="interestType" value="simple" checked>
+                            <input type="radio" name="interestType" value="simple" checked name = "interest_type">
                             <span>Lãi đơn</span>
                         </label>
                         <label class="radio">
@@ -378,7 +378,7 @@
                     <label>Ngày vay</label>
                     <div class="input-icon">
                         <i class="fas fa-calendar-alt"></i>
-                        <input type="date" required>
+                        <input type="date" required name = "loan_date">
                     </div>
                 </div>
 
@@ -386,7 +386,7 @@
                     <label>Ngày đến hạn</label>
                     <div class="input-icon">
                         <i class="fas fa-calendar-check"></i>
-                        <input type="date" required>
+                        <input type="date" required name = "due_date">
                     </div>
                 </div>
 
@@ -394,7 +394,7 @@
                     <label>Ghi chú</label>
                     <div class="input-icon">
                         <i class="fas fa-sticky-note"></i>
-                        <textarea placeholder="Thêm ghi chú về khoản vay"></textarea>
+                        <textarea placeholder="Thêm ghi chú về khoản vay" name = "description"></textarea>
                     </div>
                 </div>
 
