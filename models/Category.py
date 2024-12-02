@@ -1,4 +1,4 @@
-from Jar import Jar
+from jar import Jar
 
 class Category:
     purpose1 = "Chi tiêu"
