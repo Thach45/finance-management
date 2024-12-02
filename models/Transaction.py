@@ -1,14 +1,17 @@
-from Account import Account 
-from Category import Category
+from account import Account 
+from category import Category
 from datetime import date
 
+
 class Transaction:
-    def __init__(self, account=Account(), transactionType=Category(), money=0, transactionDate=date.today(), note =""):
+    def __init__(self,id, account=Account(), category=Category(),
+                  money=0, transactionDate=date.today(), note =""):
         self.__account = account
-        self.__transactionType = transactionType
+        self.__category = category
         self.__money = money
         self.__transactionDate = transactionDate
         self.__note =note
+        self.__id = id
 
     @property
     def account(self):
@@ -18,11 +21,11 @@ class Transaction:
         self.__account = value
 
     @property
-    def transactionType(self):
-        return self.__transactionType
-    @transactionType.setter
-    def transactionType(self, value:Category):
-        self.__transactionType= value
+    def category(self):
+        return self.__category
+    @category.setter
+    def category(self, value:Category):
+        self.__category= value
 
     @property
     def money(self):
