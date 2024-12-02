@@ -91,19 +91,13 @@ form.addEventListener('submit', (e) => {
     form.submit();
 });
 
-
-if(paymentBtn){
-    paymentBtn.addEventListener('click', () => {
-        modalPayment.classList.add('active');
-    })
-}
 if(cancelPaymentBtn){
     cancelPaymentBtn.addEventListener('click', () => {
-        modalPayment.classList.remove('active');
+        window.location.href = '/loan';
     })
 }
 if(closePaymentBtn){
     closePaymentBtn.addEventListener('click', () => {
-        modalPayment.classList.remove('active');
+        window.location.href = '/loan';
     })
 }

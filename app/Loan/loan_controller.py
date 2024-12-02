@@ -96,6 +96,7 @@ def home():
     loan_model = UserModel()
     loans = list(loan_model.get_loans())
     lendings = list(loan_model.get_lendings())
+    account = list(UserModel().get_account())
 
     total_loan = sum(loan['amount'] for loan in loans)
     total_lending = sum(lending['amount'] for lending in lendings)
@@ -103,7 +104,9 @@ def home():
                            loans=loans,
                            lendings=lendings,
                            total_loan=total_loan,
-                           total_lending=total_lending)
+                           total_lending=total_lending,
+                           accounts=account
+                           )
 
 def edit_loan(id):
     loan_model = UserModel()
