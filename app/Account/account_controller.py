@@ -11,7 +11,7 @@ def home():
     #     {"name": "Vietcombank", "type": "bank", "balance": 1},
     #     {"name": "SeABank", "type": "bank", "balance": 2},
     #     {"name": "TPBank", "type": "bank", "balance": 3},
-    #     {"name": "BIDV", "type": "bank", "balance": 5},
+    #     {"name": "BIDV",  "type": "bank", "balance": 5},
     #     {"name": "ZaloPay", "type": "ewallet", "balance": 1},
     #     {"name": "VNPay", "type": "ewallet", "balance": 2},
     #     {"name": "Tiền mặt", "type": "cash", "balance": 10}
