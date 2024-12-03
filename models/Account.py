@@ -1,11 +1,11 @@
 class Account:
-    def __init__(self,name='',money = 0,accountType = "") :
+    def __init__(self,name='',type = "",balance = 0) :
         self.__name = name
-        if money < 0:
-            self.__money = 0
+        if balance < 0:
+            self.__balance = 0
         else:
-            self.__money = money
-        self.__accountType = accountType
+            self.__balance = balance
+        self.__accountType = type
 
     @property
     def name(self):
@@ -16,11 +16,11 @@ class Account:
 
     @property
     def money(self):
-        return self.__money
+        return self.__balance
     @money.setter
     def money(self,value):
         if value>=0:
-            self.__money = value
+            self.__balance = value
         else:
             return False
         
@@ -36,6 +36,3 @@ class Account:
             self.money = value
         else:
             return False
-    
-    # def info(self):
-    #     print(f"ten tk:{self.name}, sodu: {self.money}, loai:{self.accountType}")

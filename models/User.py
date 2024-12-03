@@ -249,11 +249,6 @@ class User:
             return False
 
 
-
-user1 = User()
-user1.get_account()
-for account in user1.accountss:
-    print(account['name'])
 # user1 = User()
 # user1.CreateCategory('Ăn uống',500000)
 # user1.CreateCategory('di chuyen',purpose=Category.purposes[1])
