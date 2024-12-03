@@ -1,6 +1,6 @@
-from transaction import Transaction
-from account import Account
-from category import Category
+from Transaction import Transaction
+from Account import Account
+from Category import Category
 from datetime import date
 
 class Loan(Transaction):

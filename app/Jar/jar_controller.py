@@ -24,13 +24,41 @@ def home():
         UserModel().create_jar({"idJar": 5, "name": "Jar 5", "balance": 0, "category": id5, "type":"expense"})
     if id6:
         UserModel().create_jar({"idJar": 6, "name": "Jar 6", "balance": 0, "category": id6, "type":"expense"})
-
+    
+    
+    total = (request.args.get('total')) 
+    if total:
+        total = float(total)
+        UserModel().update_total({"total": total})
+       
+    else:
+        total = 0
+    total = (UserModel().get_total())
+    total = total["total"]
 
     jar_model = UserModel()
     jars = list(jar_model.get_jars())
-     
-    
-    return render_template('jar.html', categories=jars, reset=" ")
+    jar1 = [jar for jar in jars if jar["idJar"] == 1]
+    sum1 = sum(jar["balance"] for jar in jar1)
+    jar2 = [jar for jar in jars if jar["idJar"] == 2]
+    sum2 = sum(jar["balance"] for jar in jar2)
+    jar3 = [jar for jar in jars if jar["idJar"] == 3]
+    sum3 = sum(jar["balance"] for jar in jar3)
+    jar4 = [jar for jar in jars if jar["idJar"] == 4]
+    sum4 = sum(jar["balance"] for jar in jar4)
+    jar5 = [jar for jar in jars if jar["idJar"] == 5]
+    sum5 = sum(jar["balance"] for jar in jar5)
+    jar6 = [jar for jar in jars if jar["idJar"] == 6]
+    sum6 = sum(jar["balance"] for jar in jar6)
+    return render_template('jar.html', categories=jars,
+                            jar1=sum1,
+                            jar2=sum2,
+                            jar3=sum3,
+                            jar4=sum4,
+                            jar5=sum5,
+                            jar6=sum6,
+                            total=total
+                           )
 
 def delete(id):
     jar_model = UserModel()

@@ -121,7 +121,10 @@
                     {% endif %}
                     <td>
                         <a class="action-btn edit" href="/transaction/edit/{{ transaction._id }}"><i class="fas fa-edit"></i></a>
-                        <a href="/transaction/delete/{{transaction._id}}" class="action-btn delete"><i class="fas fa-trash"></i></a>
+                        <form class="delete-form" action="/transaction/delete/{{ transaction._id }}" method="post">
+                            <button type="submit" class="action-btn delete"><i class="fas fa-trash"></i></button>
+                        </form>
+                        
                     </td>
                 </tr>
                 
@@ -157,17 +160,18 @@
                 </div>
                 <div class="form-group">
                     <label>Danh mục</label>
-                    <select required class="categoryIncome" name="category" >
-                        <option value="salary" selected>Lương</option>
+                    <select required class="categoryIncome" name="category" disabled>
+                        <option value="salary">Lương</option>
                     </select>
-
-                    <select required  class="categoryExpense hidden" name="category">
-                        {%for category in categories%}
+                    
+                    <select required class="categoryExpense hidden" name="category" disabled>
+                        {% for category in categories %}
                             <option value="{{ category.category }}">{{ category.category }}</option>
                         {% endfor %}
                     </select>
-                    <select required class="categoryTransfer hidden" name="category" >
-                        <option value="None" selected>Khác</option>
+                    
+                    <select required class="categoryTransfer hidden" name="category" disabled>
+                        <option value="none" selected>Khác</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -191,6 +195,7 @@
     </div>
 
     <!-- Modal sửa giao dịch -->
+     
    
 </div>
 <script src="{{ url_for('static', filename='js/transaction.js') }}"></script>

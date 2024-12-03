@@ -48,11 +48,34 @@ const editModal = document.getElementById('editTransactionModal');
 const btnEdit = document.querySelectorAll('.edit');
 if(btnEdit){
     btnEdit.forEach(btn => {
-        btn.addEventListener('click', () => {
-            editModal.classList.add('active');
-            const transactionId = btn.getAttribute('data-id');
-        })
-    })
+    btn.addEventListener('click', () => {
+        const transactionId = btn.getAttribute('data-id');
+        editModal.classList.add('active');
+
+        // Fetch thông tin giao dịch từ backend
+        fetch(`/api/transaction/${transactionId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    // Điền dữ liệu vào form sửa
+                    document.querySelector('#editTransactionModal [name="type"]').value = data.type;
+                    document.querySelector('#editTransactionModal [name="account"]').value = data.account;
+                    document.querySelector('#editTransactionModal [name="category"]').value = data.category;
+                    document.querySelector('#editTransactionModal [name="amount"]').value = data.amount;
+                    document.querySelector('#editTransactionModal [name="date"]').value = data.date.split('T')[0];
+                    document.querySelector('#editTransactionModal [name="description"]').value = data.description;
+                }
+            })
+            .catch(err => console.error('Error fetching transaction:', err));
+    });
+});
+
+    // btnEdit.forEach(btn => {
+    //     btn.addEventListener('click', () => {
+    //         editModal.classList.add('active');
+    //         const transactionId = btn.getAttribute('data-id');
+    //     })
+    // })
 }
 if(editCloseBtn){
     editCloseBtn.addEventListener('click', () => {
@@ -88,26 +111,32 @@ amounts.forEach(amount => {
 });
 
 
-const type = document.querySelector('.typeTransaction');
-const categoryIncome = document.querySelector('.categoryIncome');
-const categoryExpense = document.querySelector('.categoryExpense');
-const categoryTransfer = document.querySelector('.categoryTransfer');
-if(type){
-    type.addEventListener('change', () => {
-        if(type.value === 'income'){
-            categoryIncome.style.display = 'block';
-            categoryExpense.style.display = 'none';
-            categoryTransfer.style.display = 'none';
+const typeSelect = document.querySelector('.typeTransaction');
+    const categoryIncome = document.querySelector('.categoryIncome');
+    const categoryExpense = document.querySelector('.categoryExpense');
+    const categoryTransfer = document.querySelector('.categoryTransfer');
+
+    typeSelect.addEventListener('change', () => {
+        // Reset tất cả danh mục
+        categoryIncome.classList.add('hidden');
+        categoryExpense.classList.add('hidden');
+        categoryTransfer.classList.add('hidden');
+        categoryIncome.disabled = true;
+        categoryExpense.disabled = true;
+        categoryTransfer.disabled = true;
+
+        // Hiển thị danh mục phù hợp
+        const selectedType = typeSelect.value;
+        if (selectedType === 'income') {
+            categoryIncome.classList.remove('hidden');
+            categoryIncome.disabled = false;
+        } else if (selectedType === 'expense') {
+            categoryExpense.classList.remove('hidden');
+            categoryExpense.disabled = false;
+        } else if (selectedType === 'transfer') {
+            categoryTransfer.classList.remove('hidden');
+            categoryTransfer.disabled = false;
         }
-        if(type.value === 'expense'){
-            categoryIncome.style.display = 'none';
-            categoryExpense.style.display = 'block';
-            categoryTransfer.style.display = 'none';
-        }
-        if(type.value === 'transfer'){
-            categoryIncome.style.display = 'none';
-            categoryExpense.style.display = 'none';
-            categoryTransfer.style.display = 'block';
-        }
-    })
-}
+    });
+
+

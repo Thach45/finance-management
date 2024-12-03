@@ -1,15 +1,15 @@
-function calculateJars() {
-    const income = parseFloat(document.getElementById('income-input').value);
-    if (isNaN(income)) return;
+// function calculateJars() {
+//     const income = parseFloat(document.getElementById('income-input').value);
+//     if (isNaN(income)) return;
 
-    const percentages = [55, 10, 10, 10, 10, 5];
-    const jarAmounts = document.querySelectorAll('.jar-amount');
+//     const percentages = [55, 10, 10, 10, 10, 5];
+//     const jarAmounts = document.querySelectorAll('.jar-amount');
 
-    jarAmounts.forEach((jarAmount, index) => {
-        const amount = (income * percentages[index] / 100).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-        jarAmount.textContent = amount;
-    });
-}
+//     jarAmounts.forEach((jarAmount, index) => {
+//         const amount = (income * percentages[index] / 100).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+//         jarAmount.textContent = amount;
+//     });
+// }
 
 // function addCategory(event, jarIndex) {
 //     event.preventDefault();
