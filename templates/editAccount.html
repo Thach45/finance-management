@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}"> 
+<div id="editAccountModal" class="modal-content">
+    <div class="modal-header font-bold">
+        <h3>Chỉnh sửa tài khoản</h3>
+        <button class="close-btn close-edit-account-btn"><i class="fas fa-times"></i></button>
+    </div>
+    <form class="account-form" action="/account/edit/{{account._id}}">
+        <div class="form-group">
+            <label>Tên tài khoản</label>
+            <input type="text" required placeholder="Nhập tên tài khoản" name="name" id="editAccountName">
+        </div>
+        <div class="form-group">
+            <label>Loại tài khoản</label>
+            <select required name="type" id="editAccountType">
+                <option value="">Chọn loại tài khoản</option>
+                <option value="bank">Tài khoản ngân hàng</option>
+                <option value="ewallet">Ví điện tử</option>
+                <option value="cash">Tiền mặt</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Số dư</label>
+            <input type="number" required placeholder="Nhập số dư" name="balance" id="editAccountBalance">
+        </div>
+        <div class="form-group">
+            <label>Ghi chú</label>
+            <textarea placeholder="Nhập ghi chú (nếu có)" name="note" id="editAccountNote"></textarea>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="cancel-btn cancel-edit-btn">Hủy</button>
+            <button type="submit" class="submit-btn submit-edit-btn">Lưu thay đổi</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

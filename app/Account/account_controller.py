@@ -1,7 +1,9 @@
 from flask import render_template, current_app, url_for, request, redirect
 from flask import jsonify
+from app import Account
 from models.models import UserModel
 from datetime import datetime
+from bson import ObjectId
 
 def home():
     account_model = UserModel()
@@ -34,6 +36,26 @@ def add_account():
     data = request.form.to_dict()
     data['balance'] = int(data['balance'])
     data['createTime'] = datetime.now() # thời gian tạo 
-    print(data)
     account_model.create_account(data)
     return redirect(url_for('account.account_route'))
+
+def delete_account(id):
+    account_model = UserModel()
+    account_id = ObjectId(id)
+    if id:
+        account_model.delete_account(account_id)
+    return redirect(url_for('account.account_route'))
+
+def index_account(id):
+    account_model = UserModel()
+    accounts = list(account_model.get_account())
+    account = [account for account in accounts if account['_id'] == ObjectId(id)][0]
+    return render_template('editAccount.html',account=account)
+   
+def edit_account(id):
+    account_model = UserModel()
+    data = request.form.to_dict()
+    data['balance'] = int(data['balance'])
+    data['createTime'] = datetime.now()
+    account_model.update_account(ObjectId(id), data)
+    return redirect(url_for('account.account_route')) 
