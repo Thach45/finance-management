@@ -233,3 +233,10 @@ def edit_lend_post(id):
     data['createTime'] = datetime.now() # thời gian tạo 
     loan_model.update_lending(ObjectId(id), data)
     return redirect(url_for('loan.loan_route'))
+
+def delete_lend(id):
+    lend_model = UserModel()
+    lend_id = ObjectId(id)
+    if id:
+        lend_model.delete_lending(lend_id)
+    return redirect(url_for('loan.loan_route'))

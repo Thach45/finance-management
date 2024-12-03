@@ -1,7 +1,7 @@
 
 from . import loan_bp
 from .loan_controller import home, edit_loan,add_loan, payment_loan, edit_loan_post, payment_loan_post,delete_loan
-from .loan_controller import  add_lend,edit_lending,edit_lend_post
+from .loan_controller import  add_lend,edit_lending,edit_lend_post,delete_lend
 @loan_bp.route('/loan')
 def loan_route():
     return home()
@@ -41,3 +41,7 @@ def payment_loan_post_route(id):
 @loan_bp.route('/loan/delete/<string:id>', methods=['POST'])
 def delete_loan_route(id):
     return delete_loan(id)
+
+@loan_bp.route('/lending/delete/<string:id>', methods=['POST'])
+def delete_lend_route(id):
+    return delete_lend(id)

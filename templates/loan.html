@@ -288,10 +288,12 @@
                     <i class="fas fa-pencil-alt"></i>
                    Sửa
                 </a>
-                <a href="/lending/delete/{{ lending._id }}" class="footer-btn bg-rose-500 hover:bg-rose-600 text-white delete-lending-btn">
-                    <i class="fas fa-trash"></i>
-                    Xoá
-                </a>
+                <form method="POST" action="/lending/delete/{{lending._id}}">
+                    <button type="submit" class="footer-btn bg-rose-500 hover:bg-rose-600 text-white delete-loan-btn">
+                        <i class="fas fa-trash"></i>
+                        Xoá
+                    </button>
+                </form>
             </div>
         </div>
     </div>
