@@ -217,3 +217,11 @@ def edit_loan_post(id):
     data['createTime'] = datetime.now() # thời gian tạo 
     loan_model.update_loan(ObjectId(id), data)
     return redirect(url_for('loan.loan_route'))
+
+def edit_lend_post(id):
+    loan_model = UserModel()
+    data = request.form.to_dict()
+    data['amount'] = int(data['amount'])
+    data['createTime'] = datetime.now() # thời gian tạo 
+    loan_model.update_lending(ObjectId(id), data)
+    return redirect(url_for('loan.loan_route'))
