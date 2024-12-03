@@ -61,14 +61,17 @@ def edit_account(id):
     account_model.update_account(ObjectId(id), data)
     return redirect(url_for('account.account_route')) 
 
-# def transfer_account():
-#     account_model = UserModel()
-#     source_account_id = request.form.get('sourceAccount')  
-#     target_account_id = request.form.get('targetAccount')
-#     amount = int(request.form.get('amount'))  
-#     note = request.form.get('note')  
+def transfer_account():
+    account_model = UserModel()
+    source_account_id = request.form.get('sourceAccount')  
+    target_account_id = request.form.get('targetAccount')
+    # amount = int(request.form.get('amount'))  
+    # note = request.form.get('note')  
     
-#     source_account = account_model.get_account(source_account_id)
-#     target_account = account_model.get_account(target_account_id)
+    # source_account = account_model.get_account(source_account_id)
+    # target_account = account_model.get_account(target_account_id)
+
+    print(request.form.to_dict())
+    return request.form.to_dict()
     
     

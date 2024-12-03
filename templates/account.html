@@ -164,7 +164,7 @@
                     <select required name="sourceAccount">
                         <option value="">Chọn tài khoản nguồn</option>
                         {% for account in accounts %}
-                            <option value="{{account.id}}">{{account.name}} - {{account.balance}} ₫</option>
+                            <option value="{{account._id}}">{{account.name}} - {{account.balance}} ₫</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -173,7 +173,7 @@
                     <select required name="targetAccount">
                         <option value="">Chọn tài khoản đích</option>
                         {% for account in accounts %}
-                            <option value="{{account.id}}">{{account.name}} - {{account.balance}} ₫</option>
+                            <option value="{{account._id}}">{{account.name}} - {{account.balance}} ₫</option>
                         {% endfor %}
                     </select>
                 </div>
