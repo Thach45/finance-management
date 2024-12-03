@@ -1,65 +1,126 @@
 {% extends 'layout.html' %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/jar.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>Quản lý Tài chính - Phương pháp 6 Lọ</h1>
-        <div class="income-input">
-            <input type="number" placeholder="Nhập thu nhập của bạn" id="income-input">
-            <button>Tính toán</button>
-        </div>
+<div class="container">
+    <h1>Quản lý Tài chính - Phương pháp 6 Lọ</h1>
+    <div class="income-input">
+        <input type="number" placeholder="Nhập thu nhập của bạn" id="income-input">
+        <button onclick="calculateJars()">Tính toán</button>
+    </div>
 
-        <div class="jars-container">
-            <div class="jar jar-1">
-                <div class="jar-header">
-                    <i class="jar-icon fas fa-home"></i>
-                    <span class="jar-title">Thiết yếu</span>
-                </div>
-                <div class="jar-amount">0 đ</div>
-                <div class="jar-percentage">55%</div>
+    <div class="jars-container">
+        <div class="jar jar-1">
+            <div class="jar-header">
+                <i class="jar-icon fas fa-home"></i>
+                <span class="jar-title">Thiết yếu</span>
             </div>
-            <div class="jar jar-2">
-                <div class="jar-header">
-                    <i class="jar-icon fas fa-piggy-bank"></i>
-                    <span class="jar-title">Tiết kiệm dài hạn</span>
-                </div>
-                <div class="jar-amount">0 đ</div>
-                <div class="jar-percentage">10%</div>
+            <div class="jar-amount">0 đ</div>
+            <div class="jar-percentage">55%</div>
+            <div class="jar-categories">
+                <h3>Danh mục:</h3>
+                <ul id="categories-1"></ul>
+                <form onsubmit="addCategory(event, 1)">
+                    <ul class="categogy-1">
+                        <li value="xin chao">xin chao</li>
+                    </ul>
+                    <input type="text" placeholder="Thêm danh mục" name="1-55" required>
+                    <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                </form>
             </div>
-            <div class="jar jar-3">
-                <div class="jar-header">
-                    <i class="jar-icon fas fa-graduation-cap"></i>
-                    <span class="jar-title">Giáo dục</span>
-                </div>
-                <div class="jar-amount">0 đ</div>
-                <div class="jar-percentage">10%</div>
+        </div>
+        <div class="jar jar-2">
+            <div class="jar-header">
+                <i class="jar-icon fas fa-piggy-bank"></i>
+                <span class="jar-title">Tiết kiệm dài hạn</span>
             </div>
-            <div class="jar jar-4">
-                <div class="jar-header">
-                    <i class="jar-icon fas fa-heart"></i>
-                    <span class="jar-title">Hưởng thụ</span>
-                </div>
-                <div class="jar-amount">0 đ</div>
-                <div class="jar-percentage">10%</div>
+            <div class="jar-amount">0 đ</div>
+            <div class="jar-percentage">10%</div>
+            <div class="jar-categories">
+                <h3>Danh mục:</h3>
+                <ul class="categogy-2">
+                    <li value="xin chao">xin chao</li>
+                </ul>
+                <form onsubmit="addCategory(event, 2)">
+                    <input type="text" placeholder="Thêm danh mục" name="2-10" required>
+                    <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                </form>
             </div>
-            <div class="jar jar-5">
-                <div class="jar-header">
-                    <i class="jar-icon fas fa-chart-line"></i>
-                    <span class="jar-title">Đầu tư</span>
-                </div>
-                <div class="jar-amount">0 đ</div>
-                <div class="jar-percentage">10%</div>
+        </div>
+        <div class="jar jar-3">
+            <div class="jar-header">
+                <i class="jar-icon fas fa-graduation-cap"></i>
+                <span class="jar-title">Giáo dục</span>
             </div>
-            <div class="jar jar-6">
-                <div class="jar-header">
-                    <i class="jar-icon fas fa-gift"></i>
-                    <span class="jar-title">Từ thiện</span>
-                </div>
-                <div class="jar-amount">0 đ</div>
-                <div class="jar-percentage">5%</div>
+            <div class="jar-amount">0 đ</div>
+            <div class="jar-percentage">10%</div>
+            <div class="jar-categories">
+                <h3>Danh mục:</h3>
+                <ul class="categogy-3">
+                    <li value="xin chao">xin chao</li>
+                </ul>
+                <form onsubmit="addCategory(event, 3)">
+                    <input type="text" placeholder="Thêm danh mục" name="3-10" required>
+                    <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="jar jar-4">
+            <div class="jar-header">
+                <i class="jar-icon fas fa-heart"></i>
+                <span class="jar-title">Hưởng thụ</span>
+            </div>
+            <div class="jar-amount">0 đ</div>
+            <div class="jar-percentage">10%</div>
+            <div class="jar-categories">
+                <h3>Danh mục:</h3>
+                <ul class="categogy-1">
+                    <li value="xin chao">xin chao</li>
+                </ul>
+                <form onsubmit="addCategory(event, 4)">
+                    <input type="text" placeholder="Thêm danh mục" name="4-10" required>
+                    <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="jar jar-5">
+            <div class="jar-header">
+                <i class="jar-icon fas fa-chart-line"></i>
+                <span class="jar-title">Đầu tư</span>
+            </div>
+            <div class="jar-amount">0 đ</div>
+            <div class="jar-percentage">10%</div>
+            <div class="jar-categories">
+                <h3>Danh mục:</h3>
+                <ul class="categogy-1">
+                    <li value="xin chao">xin chao</li>
+                </ul>
+                <form onsubmit="addCategory(event, 5)">
+                    <input type="text" placeholder="Thêm danh mục" name="5-10" required>
+                    <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="jar jar-6">
+            <div class="jar-header">
+                <i class="jar-icon fas fa-gift"></i>
+                <span class="jar-title">Từ thiện</span>
+            </div>
+            <div class="jar-amount">0 đ</div>
+            <div class="jar-percentage">5%</div>
+            <div class="jar-categories">
+                <h3>Danh mục:</h3>
+                <ul class="categogy-1">
+                    <li value="xin chao">xin chao</li>
+                </ul>
+                <form onsubmit="addCategory(event, 6)">
+                    <input type="text" placeholder="Thêm danh mục" name="6" required>
+                    <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
 </body>
+<script src="{{ url_for('static', filename='js/jar.js') }}"></script>
 {% endblock %}
