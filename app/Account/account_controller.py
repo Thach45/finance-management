@@ -1,7 +1,7 @@
 from flask import flash, render_template, current_app, url_for, request, redirect
 from flask import jsonify
 from app import Account
-from models.models import UserModel
+from models.models import UserModel #from models.User import User
 from datetime import datetime
 from bson import ObjectId
 
@@ -61,14 +61,29 @@ def edit_account(id):
     account_model.update_account(ObjectId(id), data)
     return redirect(url_for('account.account_route')) 
 
-# def transfer_account():
-#     account_model = UserModel()
-#     source_account_id = request.form.get('sourceAccount')  
-#     target_account_id = request.form.get('targetAccount')
-#     amount = int(request.form.get('amount'))  
-#     note = request.form.get('note')  
+def transfer_account():
+    account_model = UserModel()
+    source_account_id = request.form.get('sourceAccount')  
+    target_account_id = request.form.get('targetAccount')
+    amount = int(request.form.get('amount'))  
+    note = request.form.get('note')  
+   
+    source_id = ObjectId(source_account_id)
+    target_id = ObjectId(target_account_id)
     
-#     source_account = account_model.get_account(source_account_id)
-#     target_account = account_model.get_account(target_account_id)
+    source_account = account_model.get_account({'_id': source_id})
+    target_account = account_model.get_account({'_id': target_id})
     
+    source_account = source_account[0]
+    target_account = target_account[0]
     
+    source_account['balance'] = int(source_account['balance'])    
+    target_account['balance'] = int(target_account['balance'])
+    
+    source_account['balance'] -= amount
+    target_account['balance'] += amount
+    
+    account_model.update_account(source_id,source_account)
+    account_model.update_account(target_id,target_account)
+
+    return redirect(url_for('account.account_route'))

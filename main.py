@@ -4,7 +4,7 @@ import os
 from models.models import UserModel
 from flask_pymongo import PyMongo
 from flask import Flask
-from app.Dashboard import dashboard_bp
+from app.dashboard import dashboard_bp
 from app.Account import account_bp
 from app.Jar import jar_bp
 from app.Transaction import transaction_bp
