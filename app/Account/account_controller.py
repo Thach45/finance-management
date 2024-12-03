@@ -35,7 +35,7 @@ def add_account():
     account_model = UserModel()
     data = request.form.to_dict()
     data['balance'] = int(data['balance'])
-    data['createTime'] = datetime.now() # thời gian tạo 
+    data['createTime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     account_model.create_account(data)
     return redirect(url_for('account.account_route'))
 
@@ -57,7 +57,7 @@ def edit_account(id):
     account_model = UserModel()
     data = request.form.to_dict()
     data['balance'] = int(data['balance'])
-    data['createTime'] = datetime.now()
+    data['createTime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     account_model.update_account(ObjectId(id), data)
     return redirect(url_for('account.account_route')) 
 

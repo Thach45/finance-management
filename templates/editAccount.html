@@ -6,7 +6,7 @@
     <div id="editAccountModal" class="modal-content">
         <div class="modal-header font-bold">
             <h3>Chỉnh sửa tài khoản</h3>
-            <button class="close-btn close-edit-account-btn"><i class="fas fa-times"></i></button>
+            <a href="/account" class="close-btn close-edit-account-btn"><i class="fas fa-times"></i></a>
         </div>
         <form class="account-form" action="/account/edit/{{account._id}}" method="post">
             <div class="form-group">
@@ -26,12 +26,8 @@
                 <label>Số dư</label>
                 <input type="number" required placeholder="Nhập số dư" value="{{account.balance}}" name="balance" id="editAccountBalance">
             </div>
-            <div class="form-group">
-                <label>Ghi chú</label>
-                <textarea placeholder="Nhập ghi chú (nếu có)" name="note" id="editAccountNote"></textarea>
-            </div>
             <div class="form-actions">
-                <button type="button" class="cancel-btn cancel-edit-btn">Hủy</button>
+                <a href="/account" type="button" class="cancel-btn cancel-edit-btn">Hủy</a>
                 <button type="submit" class="submit-btn submit-edit-btn">Lưu thay đổi</button>
             </div>
         </form>

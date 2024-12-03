@@ -57,7 +57,6 @@
                     <option value="ewallet">Ví điện tử</option>
                     <option value="cash">Tiền mặt</option>
                 </select>
-                <input type="text" placeholder="Tìm kiếm tài khoản..." class="search-input">
             </div>
         </div>
 
@@ -101,7 +100,7 @@
                         <td>Tiền mặt</td>
                         {% endif %}
                         <td class="amount">{{account.balance}} ₫</td>
-                        <td>15/03/2024</td>
+                        <td>{{account.createTime}}</td>
                         <td class="actions">
                             <form action="/account/edit/{{account._id}}">
                                 <button class="edit-btn"><i class="fas fa-edit"></i></button>
@@ -143,10 +142,6 @@
                 <div class="form-group">
                     <label>Số dư ban đầu</label>
                     <input type="number" required placeholder="Nhập số dư ban đầu" name="balance">
-                </div>
-                <div class="form-group">
-                    <label>Ghi chú</label>
-                    <textarea placeholder="Nhập ghi chú (nếu có)" name="note"></textarea>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="cancel-btn cancel-add-btn">Hủy</button>
