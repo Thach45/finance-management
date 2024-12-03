@@ -110,7 +110,7 @@ class User:
         # xóa giao dịch trước
         self.RemoveTransaction(idTransaction)
         # tạo giao dịch mới
-        self.CreateTransaction(idTransaction,newNameAccount,newNameCategory,newMoneyTransaction,
+        self.CreateTransaction(newNameAccount,newNameCategory,newMoneyTransaction,
                                newDateTransaction,newNote)
 
     #Operation with Loan
@@ -125,25 +125,42 @@ class User:
         self.CreateTransaction(nameAccount,nameCategory,moneyTransaction,dateTransaction,note=f'Vay cua {spender}')
 
     def RemoveLoan(self, idLoan):
-        if idLoan in self.loans.keys():
-            oldLoan = self.loans[idLoan]
-            self.accounts[oldLoan.account.name] -= oldLoan.money
-            del self.loans[idLoan] 
-        # cần xử lý các dao dịch liên quan đến khoản vay này
+        oldLoan = self.loans[idLoan]
+        # nếu muốn xóa khoản vay thì số nợ phải được thanh toán xong, 
+        # nếu chưa xong tài khoản tự động trừ tiền tương ứng với số nợ còn lại
+        # trường hợp 1: khoản vay tạo bị sai và chưa có bất kỳ giao dịch trả nợ nào
+        if oldLoan.amountPaid == 0:
+            self.PayDebt(idLoan,moneyPay=(oldLoan.money-oldLoan.amountPaid),category="Trả nợ",
+                            datePay=date.today(),note="Thanh toan xong khoan vay")
+            # sau khi thanh toán thành công thì có thể xóa khoản vay
+            if oldLoan.money == oldLoan.amountPaid:
+                del self.loans[idLoan]
+            else:
+                return False
+        # trường hợp 2: khoản vay đã có hiệu lực nhưng muốn xóa khoản vay này => khác nhau chỗ tiền lãi suất
+        else:
+            self.PayDebt(idLoan,moneyPay=(oldLoan.money + oldLoan.interes - oldLoan.amountPaid),category="Trả nợ",
+                            datePay=date.today(),note="Thanh toan xong khoan vay")
+            # sau khi thanh toán thành công thì có thể xóa khoản vay
+            if oldLoan.money == oldLoan.amountPaid:
+                del self.loans[idLoan]
+            else:
+                return False
+
 
     def EditLoan(self,idLoan,newNameLoan,newNameAccount,nameCategory='Vay',newMoneyTransaction=0,newDateTransaction=date.today(),
                    note='', spender ="",phone="", newDateDue= date.today(), newRate = 0):
         # xóa giao dịch trước
-        self.RemoveLoan(idLoan)
-        # tạo giao dịch mới
-        self.CreateLoan(idLoan,newNameLoan,self.accounts[newNameAccount],self.categorys[nameCategory],
-                                  newMoneyTransaction,newDateTransaction,note,spender,phone,newDateDue,newRate)
+        if self.RemoveLoan(idLoan) != False:
+            # tạo giao dịch mới
+            self.CreateLoan(newNameLoan,self.accounts[newNameAccount],self.categorys[nameCategory],
+                                    newMoneyTransaction,newDateTransaction,note,spender,phone,newDateDue,newRate)
         
-    def PayDebt(self, idloand,idTransaction,moneyPay,accountPay,category = "Trả nợ",datePay=date.today,note=""):
+    def PayDebt(self, idloand,moneyPay,accountPay,category = "Trả nợ",datePay=date.today,note=""):
         # nếu số tiền trong tài khoản lớn hơn số tiền trả nợ thì mới thực hiện giao dịch
         if self.accounts[accountPay].money >= moneyPay:
             self.loans[idloand].amountPaid += moneyPay
-            self.CreateTransaction(idTransaction,nameAccount=accountPay,nameCategory=category,moneyTransaction=moneyPay,
+            self.CreateTransaction(nameAccount=accountPay,nameCategory=category,moneyTransaction=moneyPay,
                                    dateTransaction=datePay, note=note)
         else:
             return False
