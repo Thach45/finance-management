@@ -86,3 +86,28 @@ amounts.forEach(amount => {
         console.error('Invalid number in textContent:', amount.textContent);
     }
 });
+
+
+const type = document.querySelector('.typeTransaction');
+const categoryIncome = document.querySelector('.categoryIncome');
+const categoryExpense = document.querySelector('.categoryExpense');
+const categoryTransfer = document.querySelector('.categoryTransfer');
+if(type){
+    type.addEventListener('change', () => {
+        if(type.value === 'income'){
+            categoryIncome.style.display = 'block';
+            categoryExpense.style.display = 'none';
+            categoryTransfer.style.display = 'none';
+        }
+        if(type.value === 'expense'){
+            categoryIncome.style.display = 'none';
+            categoryExpense.style.display = 'block';
+            categoryTransfer.style.display = 'none';
+        }
+        if(type.value === 'transfer'){
+            categoryIncome.style.display = 'none';
+            categoryExpense.style.display = 'none';
+            categoryTransfer.style.display = 'block';
+        }
+    })
+}

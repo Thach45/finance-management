@@ -35,6 +35,7 @@ def home():
     # ]
     transactions =  list(UserModel().get_transactions())
     accounts = list(UserModel().get_account())
+    categories = list(UserModel().get_jars())
     # Example dynamic data
     bank_accounts = [account for account in accounts if account["type"] == "bank"]
     ewallet_accounts = [account for account in accounts if account["type"] == "ewallet"]
@@ -46,7 +47,9 @@ def home():
                          total_balance=total_balance,
                          bank_accounts=bank_accounts,
                          ewallet_accounts=ewallet_accounts,
-                         cash_accounts=cash_accounts)
+                         cash_accounts=cash_accounts,
+                         categories=categories
+                         )
 
 def edit_transaction(transaction_id):
     transactions = list(UserModel().get_transactions())

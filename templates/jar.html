@@ -19,12 +19,17 @@
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
                 <ul id="categories-1"></ul>
-                <form onsubmit="addCategory(event, 1)">
+                <form  class="formCategogy" >
                     <ul class="categogy-1">
-                        <li value="xin chao">xin chao</li>
+                        {% for category in categories %}
+                            {% if category["idJar"] == 1 %}
+                                <li value="{{ category.category }}">{{ category.category }}</li>
+                            {% endif %}
+                        {% endfor %}
                     </ul>
-                    <input type="text" placeholder="Thêm danh mục" name="1-55" required>
+                    <input type="text" placeholder="Thêm danh mục" name="1" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/1"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -38,11 +43,16 @@
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
                 <ul class="categogy-2">
-                    <li value="xin chao">xin chao</li>
+                    {% for category in categories %}
+                        {% if category["idJar"] == 2 %}
+                            <li value="{{ category.category }}">{{ category.category }}</li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 2)">
-                    <input type="text" placeholder="Thêm danh mục" name="2-10" required>
+                <form  class="formCategogy" action="/jar/add/categogy">
+                    <input type="text" placeholder="Thêm danh mục" name="2" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/2"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -56,11 +66,16 @@
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
                 <ul class="categogy-3">
-                    <li value="xin chao">xin chao</li>
+                    {% for category in categories %}
+                        {% if category["idJar"] == 3 %}
+                            <li value="{{ category.category }}">{{ category.category }}</li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 3)">
-                    <input type="text" placeholder="Thêm danh mục" name="3-10" required>
+                <form  class="formCategogy" action="/jar/add/categogy">
+                    <input type="text" placeholder="Thêm danh mục" name="3" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/3"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -73,12 +88,17 @@
             <div class="jar-percentage">10%</div>
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
-                <ul class="categogy-1">
-                    <li value="xin chao">xin chao</li>
+                <ul class="categogy-4">
+                    {% for category in categories %}
+                        {% if category["idJar"] == 4 %}
+                            <li value="{{ category.category }}">{{ category.category }}</li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 4)">
-                    <input type="text" placeholder="Thêm danh mục" name="4-10" required>
+                <form  class="formCategogy" action="/jar/add/categogy">
+                    <input type="text" placeholder="Thêm danh mục" name="4" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/4"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -91,12 +111,17 @@
             <div class="jar-percentage">10%</div>
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
-                <ul class="categogy-1">
-                    <li value="xin chao">xin chao</li>
+                <ul class="categogy-5">
+                    {% for category in categories %}
+                        {% if category["idJar"] == 5 %}
+                            <li value="{{ category.category }}">{{ category.category }}</li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 5)">
-                    <input type="text" placeholder="Thêm danh mục" name="5-10" required>
+                <form  class="formCategogy" action="/jar/add/categogy">
+                    <input type="text" placeholder="Thêm danh mục" name="5" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/5"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -109,12 +134,17 @@
             <div class="jar-percentage">5%</div>
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
-                <ul class="categogy-1">
-                    <li value="xin chao">xin chao</li>
+                <ul class="categogy-6">
+                    {% for category in categories %}
+                        {% if category["idJar"] == 6 %}
+                            <li value="{{ category.category }}">{{ category.category }}</li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 6)">
+                <form  class="formCategogy" action="/jar/add/categogy">
                     <input type="text" placeholder="Thêm danh mục" name="6" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/6"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -122,5 +152,9 @@
 </div>
 
 </body>
+<script>
+    form = document.querySelector('.formCategogy' action="/jar/add/categogy");
+    form.value = " "
+</script>
 <script src="{{ url_for('static', filename='js/jar.js') }}"></script>
 {% endblock %}
