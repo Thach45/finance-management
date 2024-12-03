@@ -3,7 +3,7 @@ from flask import jsonify
 from datetime import datetime
 from models.models import UserModel
 from bson.objectid import ObjectId
-
+from helper.TopLoan import get_loan_due_dates,compare_loan_debt,compare_lend_debt
 def home():
     # Dữ liệu trong database
     # loans = [
@@ -98,14 +98,25 @@ def home():
     lendings = list(loan_model.get_lendings())
     account = list(UserModel().get_account())
 
-    total_loan = sum(int(loan['amount']) for loan in loans)
-    total_lending = sum(lending['amount'] for lending in lendings)
+    total_loan = sum(float(loan['amount']) for loan in loans)
+    total_lending = sum(float(lending['amount']) for lending in lendings)
+
+    due_date = get_loan_due_dates(loans)
+    amount_due = due_date['amount_due']
+    day_left = due_date['days_left']
+    compare_loan = compare_loan_debt(loans)
+    compare_lend = compare_lend_debt(lendings)
+    
     return render_template('loan.html',
                            loans=loans,
                            lendings=lendings,
                            total_loan=total_loan,
                            total_lending=total_lending,
-                           accounts=account
+                           accounts=account,
+                           amount_due = amount_due,
+                           day_left = day_left,
+                           compareloan=compare_loan,
+                           comparelend=compare_lend
                            )
 
 def add_loan():
@@ -113,7 +124,7 @@ def add_loan():
     data = request.form.to_dict()
     data['paid'] = 0
     data['createTime'] = datetime.now() # thời gian tạo 
-    principal = int(data['amount'])  # Số tiền vay ban đầu
+    principal = float(data['amount'])  # Số tiền vay ban đầu
     interest_rate = float(data['interest_rate'])
     interest_type = data['interestType']
     due_date = datetime.strptime(data['due_date'], '%Y-%m-%d')  # Ngày đến hạn, chuyển đổi từ chuỗi thành datetime
@@ -251,7 +262,7 @@ def payment_loan_post(id):
 def edit_loan_post(id):
     loan_model = UserModel()
     data = request.form.to_dict()
-    data['amount'] = int(data['amount'])
+    data['amount'] = float(data['amount'])
     data['createTime'] = datetime.now() # thời gian tạo 
     loan_model.update_loan(ObjectId(id), data)
     
@@ -260,15 +271,35 @@ def edit_loan_post(id):
 def add_lend():
     loan_model = UserModel()
     data = request.form.to_dict()
-    data['amount'] = int(data['amount'])
     data['createTime'] = datetime.now() # thời gian tạo 
+    loan_model = UserModel()
+    data = request.form.to_dict()
+    data['paid'] = 0
+    data['createTime'] = datetime.now() # thời gian tạo 
+    principal = float(data['amount'])  # Số tiền vay ban đầu
+    interest_rate = float(data['interest_rate'])
+    interest_type = data['interestType']
+    due_date = datetime.strptime(data['due_date'], '%Y-%m-%d')  # Ngày đến hạn, chuyển đổi từ chuỗi thành datetime
+    current_date = datetime.strptime(data['loan_date'], '%Y-%m-%d') 
+    if interest_type == 'simple':
+        # Công thức tính lãi đơn: Lãi = Số tiền vay * Lãi suất * Thời gian (tính theo năm)
+        time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
+        interest = principal * (interest_rate / 100) * (time_in_years)  # Tính lãi đơn
+    elif interest_type == 'compound':
+            # Công thức tính lãi kép: A = P * (1 + r/n)^(nt), trong đó n = 1 (lãi kép hàng năm)
+        time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
+        interest = principal * ((1 + interest_rate / 100) ** (time_in_years - 1))  # Tính lãi kép
+    data['interest'] = interest    
+    total_due = principal + interest
+    data['remaining'] = total_due
+    data["progress"] = (data['paid']/total_due)* 100  # Tính tỷ lệ tiến độ thanh toán (%)
     loan_model.create_lending(data)
     return redirect(url_for('loan.loan_route'))
 
 def edit_lend_post(id):
     loan_model = UserModel()
     data = request.form.to_dict()
-    data['amount'] = int(data['amount'])
+    data['amount'] = float(data['amount'])
     data['createTime'] = datetime.now() # thời gian tạo 
     loan_model.update_lending(ObjectId(id), data)
     return redirect(url_for('loan.loan_route'))
