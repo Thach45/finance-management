@@ -65,6 +65,7 @@ def transfer_account():
     account_model = UserModel()
     source_account_id = request.form.get('sourceAccount')  
     target_account_id = request.form.get('targetAccount')
+<<<<<<< HEAD
     amount = int(request.form.get('amount'))  
     note = request.form.get('note')  
    
@@ -73,6 +74,16 @@ def transfer_account():
     
     source_account = account_model.get_account({'_id': source_id})
     target_account = account_model.get_account({'_id': target_id})
+=======
+    # amount = int(request.form.get('amount'))  
+    # note = request.form.get('note')  
+    
+    # source_account = account_model.get_account(source_account_id)
+    # target_account = account_model.get_account(target_account_id)
+
+    print(request.form.to_dict())
+    return request.form.to_dict()
+>>>>>>> 1a830ece15bce533d07c808cd5c169734bb09239
     
     source_account = source_account[0]
     target_account = target_account[0]
