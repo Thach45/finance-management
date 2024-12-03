@@ -26,6 +26,7 @@ def add_loan():
     data = request.form.to_dict()
     data['paid'] = 0
     data['createTime'] = datetime.now() # thời gian tạo 
+    data['amount'] = int(data['amount'])
     principal = int(data['amount'])  # Số tiền vay ban đầu
     interest_rate = float(data['interest_rate'])
     interest_type = data['interestType']
@@ -43,6 +44,16 @@ def add_loan():
     total_due = principal + interest
     data['remaining'] = total_due
     data["progress"] = (data['paid']/total_due)* 100  # Tính tỷ lệ tiến độ thanh toán (%)
+
+    loan_transaction = {
+        "account": data['account'],
+        "type": "income",
+        "amount": data['amount'],
+        "category": "Vay",
+        "description": "Vay tiền",
+        "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+    UserModel().create_transaction(loan_transaction)
     loan_model.create_loan(data)
     return redirect(url_for('loan.loan_route'))
 
@@ -152,6 +163,16 @@ def payment_loan_post(id):
             "remaining": remaining_balance,  # Cập nhật số tiền còn lại cần trả
             "progress": (total_paid / total_due) * 100  # Tính tỷ lệ tiến độ thanh toán (%)
         }
+        payment_transaction = {
+            "account": data['account_id'],
+            "type": "expense",
+            "amount": data['amount'],
+            "category": "Trả nợ",
+            "description": "Trả nợ khoản vay",
+            "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        }
+        UserModel().create_transaction(payment_transaction)
 
         # Cập nhật thông tin khoản vay vào database
     loan_model.update_loan(ObjectId(id), updated_loan)
@@ -175,6 +196,15 @@ def add_lend():
     data = request.form.to_dict()
     data['amount'] = int(data['amount'])
     data['createTime'] = datetime.now() # thời gian tạo 
+    lend_transaction = {
+        "account": data['account'],
+        "type": "expense",
+        "amount": data['amount'],
+        "category": "Cho vay",
+        "description": "Cho vay tiền",
+        "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+    UserModel().create_transaction(lend_transaction)
     loan_model.create_lending(data)
     return redirect(url_for('loan.loan_route'))
 
