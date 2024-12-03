@@ -183,11 +183,13 @@
                 <button class="footer-btn  pay-loan-btn">
                     <i class="fas fa-history"></i>
                     Trả tiền
-                </button>
-                <button class="footer-btn bg-rose-500 hover:bg-rose-600 text-white delete-loan-btn">
-                    <i class="fas fa-trash"></i>
-                    Xoá
-                </a>
+                <form method="POST" action="/loan/delete/{{loan._id}}">
+                    <button type="submit" class="footer-btn bg-rose-500 hover:bg-rose-600 text-white delete-loan-btn">
+                        <i class="fas fa-trash"></i>
+                        Xoá
+                    </button>
+                </form>
+                
             </div>
         </div>
     </div>

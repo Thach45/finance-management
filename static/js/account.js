@@ -19,6 +19,9 @@ if (addAccountBtn && addAccountModal && closeAddAccountBtn && cancelAddBtn) {
     console.error('Xem lỗi ở file account.js line 1-19');
 }
 
+//edit account
+
+
 // transfer money
 const addTransferBtn = document.querySelector('.transfer-btn');
 const addTransferModal = document.querySelector('.add-transfer-modal');

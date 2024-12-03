@@ -125,7 +125,12 @@ def edit_loan(id):
     loan = [loan for loan in loans if loan['_id'] == ObjectId(id)][0]
     return render_template('editLoan.html', loan=loan)
 
-
+def delete_loan(id):
+    loan_model = UserModel()
+    loan_id = ObjectId(id)
+    if id:
+        loan_model.delete_loan(loan_id)
+    return redirect(url_for('loan.loan_route'))
 
 def edit_lending(id):
     loan_model = UserModel()
