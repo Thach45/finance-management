@@ -141,7 +141,7 @@
             <form class="transaction-form" action="/transaction/add" method="post">
                 <div class="form-group">
                     <label>Loại giao dịch</label>
-                    <select required name="type">
+                    <select required class="typeTransaction" name="type">
                         <option value="income">Thu nhập</option>
                         <option value="expense">Chi tiêu</option>
                         <option value="transfer">Chuyển khoản</option>
@@ -150,17 +150,24 @@
                 <div class="form-group">
                     <label>Tài khoản</label>
                     <select required name="account">
-                        <option value="1">Vietcombank</option>
-                        <option value="2">Momo</option>
+                       {% for account in accounts %}
+                            <option value="{{ account.name }}">{{ account.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Danh mục</label>
-                    <select required name="category">
-                        <option value="salary" >Lương</option>
-                        <option value="food">Ăn uống</option>
-                        <option value="shopping">Mua sắm</option>
-                        <option value="transfer">Chuyển khoản</option>
+                    <select required class="categoryIncome" name="category" >
+                        <option value="salary" selected>Lương</option>
+                    </select>
+
+                    <select required  class="categoryExpense hidden" name="category">
+                        {%for category in categories%}
+                            <option value="{{ category.category }}">{{ category.category }}</option>
+                        {% endfor %}
+                    </select>
+                    <select required class="categoryTransfer hidden" name="category" >
+                        <option value="None" selected>Khác</option>
                     </select>
                 </div>
                 <div class="form-group">

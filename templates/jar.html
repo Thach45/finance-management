@@ -19,7 +19,7 @@
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
                 <ul id="categories-1"></ul>
-                <form onsubmit="addCategory(event, 1)">
+                <form  class="formCategogy" >
                     <ul class="categogy-1">
                         {% for category in categories %}
                             {% if category["idJar"] == 1 %}
@@ -29,6 +29,7 @@
                     </ul>
                     <input type="text" placeholder="Thêm danh mục" name="1" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/1"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -48,9 +49,10 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 2)">
+                <form  class="formCategogy" action="/jar/add/categogy">
                     <input type="text" placeholder="Thêm danh mục" name="2" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/2"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -70,9 +72,10 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 3)">
+                <form  class="formCategogy" action="/jar/add/categogy">
                     <input type="text" placeholder="Thêm danh mục" name="3" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/3"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -92,9 +95,10 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 4)">
+                <form  class="formCategogy" action="/jar/add/categogy">
                     <input type="text" placeholder="Thêm danh mục" name="4" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/4"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -114,11 +118,10 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 5)">
+                <form  class="formCategogy" action="/jar/add/categogy">
                     <input type="text" placeholder="Thêm danh mục" name="5" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
-                </form>
-                    <a type="submit" href="jar/delete/5"><i class="fas fa-plus-circle"></i></a>
+                    <a type="submit" href="jar/delete/5"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -138,9 +141,10 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 6)">
+                <form  class="formCategogy" action="/jar/add/categogy">
                     <input type="text" placeholder="Thêm danh mục" name="6" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/6"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -149,25 +153,8 @@
 
 </body>
 <script>
-    function addCategory(event, jarId) {
-        event.preventDefault(); // Ngăn form nạp lại trang
-        const form = event.target; // Lấy form hiện tại
-        const input = form.querySelector('input[name="' + jarId + '"]'); // Tìm input liên quan
-        const category = input.value.trim(); // Lấy giá trị danh mục
-    
-        if (category) {
-            // Thêm danh mục vào danh sách
-            const ul = document.querySelector(`.categogy-${jarId}`);
-            const li = document.createElement('li');
-            li.textContent = category;
-            ul.appendChild(li);
-    
-            // Xoá giá trị input
-            input.value = '';
-        } else {
-            alert('Vui lòng nhập danh mục!');
-        }
-    }
+    form = document.querySelector('.formCategogy' action="/jar/add/categogy");
+    form.value = " "
 </script>
 <script src="{{ url_for('static', filename='js/jar.js') }}"></script>
 {% endblock %}
