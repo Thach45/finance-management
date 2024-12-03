@@ -60,3 +60,11 @@ class UserModel:
     
     def delete_lending(self, lending_id):
         return self.mongo.db.lendings.delete_one({"_id": lending_id})
+    
+    # Jars
+    def get_jars(self, jar_id={}):
+        return self.mongo.db.jar.find(jar_id)
+    def create_jar(self, jar_data):
+        return self.mongo.db.jar.insert_one(jar_data)
+    def delete_jar(self, jar_id):
+        return self.mongo.db.jar.delete_many({"idJar": jar_id})
