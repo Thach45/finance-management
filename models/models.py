@@ -4,8 +4,8 @@ class UserModel:
     def __init__(self):
         self.mongo = current_app.config['MONGO']
     # Account
-        def get_account(self, account_id={}):
-            return self.mongo.db.accounts.find(account_id)
+    def get_account(self, account_id={}):
+        return self.mongo.db.accounts.find(account_id)
 
     def create_account(self, account_data):
         return self.mongo.db.accounts.insert_one(account_data)

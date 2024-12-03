@@ -2,8 +2,8 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <header class="main-header">
-    <h2><i class="fas fa-user-circle"></i> Xin chào, Quận đẹp trai</h2>
-    <p class="total-balance"> Tổng số dư: <span>17.000.000.000 ₫</span></p>
+    <h2><i class="fas fa-user-circle"></i> Xin chào, Thạch đẹp trai</h2>
+    <p class="total-balance"> Tổng số dư: <span>{{total_amount}} ₫</span></p>
 </header>  
 <div class="account-cards">
     <div class="card">
@@ -12,7 +12,7 @@
             <i class="fas fa-credit-card"></i>
         </div>
         <div class="card-body">
-            <p class="balance">10.000.000 ₫</p>
+            <p class="balance">{{total_balance_bank}} ₫</p>
         </div>
     </div>
 
@@ -22,7 +22,7 @@
             <i class="fas fa-wallet"></i>
         </div>
         <div class="card-body">
-            <p class="balance">5.000.000 ₫</p>
+            <p class="balance">{{total_balance_ewallet}} ₫</p>
         </div>
     </div>
 
@@ -32,7 +32,7 @@
             <i class="fas fa-money-bill-alt"></i>
         </div>
         <div class="card-body">
-            <p class="balance">2.000.000 ₫</p>
+            <p class="balance">{{total_balance_cash}} ₫</p>
         </div>
     </div>
 </div> 
@@ -44,17 +44,17 @@
         <ul class="transaction-list">
             <li>
                 <div class="transaction-info">
-                    <p class="transaction-title">Mua sắm tạp hóa</p>
-                    <p class="transaction-date ">15/05/2023</p>
+                    <p class="transaction-title">{{description_transaction1}}</p>
+                    <p class="transaction-date ">{{date_transaction1}}</p>
                 </div>
-                <p class="transaction-amount expense">-500.000 ₫</p>
+                <p class="transaction-amount expense">{{amount_transaction1}} ₫</p>
             </li>
             <li>
                 <div class="transaction-info">
-                    <p class="transaction-title">Tiền lương</p>
-                    <p class="transaction-date">01/05/2023</p>
+                    <p class="transaction-title">{{description_transaction2}}</p>
+                    <p class="transaction-date">{{date_transaction2}}</p>
                 </div>
-                <p class="transaction-amount income">+30.000.000 ₫</p>
+                <p class="transaction-amount income">{{amount_transaction2}} ₫</p>
             </li>
         </ul>
     </div>
