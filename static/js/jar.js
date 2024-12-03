@@ -11,16 +11,16 @@ function calculateJars() {
     });
 }
 
-function addCategory(event, jarIndex) {
-    event.preventDefault();
-    const input = event.target.querySelector('input');
-    const category = input.value.trim();
-    if (category) {
-        const ul = document.getElementById(`categories-${jarIndex}`);
-        const li = document.createElement('li');
-        li.textContent = category;
-        ul.appendChild(li);
-        input.value = '';
-    }
-}
+// function addCategory(event, jarIndex) {
+//     event.preventDefault();
+//     const input = event.target.querySelector('input');
+//     const category = input.value.trim();
+//     if (category) {
+//         const ul = document.getElementById(`categories-${jarIndex}`);
+//         const li = document.createElement('li');
+//         li.textContent = category;
+//         ul.appendChild(li);
+//         input.value = '';
+//     }
+// }
 
