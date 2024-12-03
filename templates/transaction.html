@@ -121,7 +121,10 @@
                     {% endif %}
                     <td>
                         <a class="action-btn edit" href="/transaction/edit/{{ transaction._id }}"><i class="fas fa-edit"></i></a>
-                        <a href="/transaction/delete/{{transaction._id}}" class="action-btn delete"><i class="fas fa-trash"></i></a>
+                        <form class="delete-form" action="/transaction/delete/{{ transaction._id }}" method="post">
+                            <button type="submit" class="action-btn delete"><i class="fas fa-trash"></i></button>
+                        </form>
+                        
                     </td>
                 </tr>
                 
@@ -184,6 +187,7 @@
     </div>
 
     <!-- Modal sửa giao dịch -->
+     
    
 </div>
 <script src="{{ url_for('static', filename='js/transaction.js') }}"></script>
