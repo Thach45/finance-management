@@ -32,3 +32,8 @@ def register_post():
     auth_model = UserModel()
     auth_model.create_auth(data)
     return redirect(url_for("auth.auth_route"))
+
+def logout():
+    response = make_response(redirect(url_for("auth.auth_route")))
+    response.delete_cookie("token")
+    return response

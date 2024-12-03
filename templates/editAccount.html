@@ -7,23 +7,23 @@
         <h3>Chỉnh sửa tài khoản</h3>
         <button class="close-btn close-edit-account-btn"><i class="fas fa-times"></i></button>
     </div>
-    <form class="account-form" action="/account/edit/{{account._id}}">
+    <form class="account-form" action="/account/edit/{{account._id}}" method="post">
         <div class="form-group">
             <label>Tên tài khoản</label>
-            <input type="text" required placeholder="Nhập tên tài khoản" name="name" id="editAccountName">
+            <input type="text" required placeholder="Nhập tên tài khoản" value="{{account.name}}" name="name" id="editAccountName">
         </div>
         <div class="form-group">
             <label>Loại tài khoản</label>
             <select required name="type" id="editAccountType">
-                <option value="">Chọn loại tài khoản</option>
-                <option value="bank">Tài khoản ngân hàng</option>
-                <option value="ewallet">Ví điện tử</option>
-                <option value="cash">Tiền mặt</option>
+                <option value="" {% if account.type == "" %}selected{% endif %}>Chọn loại tài khoản</option>
+                <option value="bank" {% if account.type == "bank" %}selected{% endif %}>Tài khoản ngân hàng</option>
+                <option value="ewallet" {% if account.type == "ewallet" %}selected{% endif %}>Ví điện tử</option>
+                <option value="cash" {% if account.type == "cash" %}selected{% endif %}>Tiền mặt</option>
             </select>
         </div>
         <div class="form-group">
             <label>Số dư</label>
-            <input type="number" required placeholder="Nhập số dư" name="balance" id="editAccountBalance">
+            <input type="number" required placeholder="Nhập số dư" value="{{account.balance}}" name="balance" id="editAccountBalance">
         </div>
         <div class="form-group">
             <label>Ghi chú</label>

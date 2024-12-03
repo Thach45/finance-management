@@ -1,4 +1,4 @@
-from flask import render_template, current_app, url_for, request, redirect
+from flask import flash, render_template, current_app, url_for, request, redirect
 from flask import jsonify
 from app import Account
 from models.models import UserModel
@@ -13,7 +13,7 @@ def home():
     #     {"name": "Vietcombank", "type": "bank", "balance": 1},
     #     {"name": "SeABank", "type": "bank", "balance": 2},
     #     {"name": "TPBank", "type": "bank", "balance": 3},
-    #     {"name": "BIDV", "type": "bank", "balance": 5},
+    #     {"name": "BIDV",  "type": "bank", "balance": 5},
     #     {"name": "ZaloPay", "type": "ewallet", "balance": 1},
     #     {"name": "VNPay", "type": "ewallet", "balance": 2},
     #     {"name": "Tiền mặt", "type": "cash", "balance": 10}
@@ -48,7 +48,8 @@ def delete_account(id):
 
 def index_account(id):
     account_model = UserModel()
-    accounts = list(account_model.get_account())
+    account_id = {"_id": ObjectId(id)}
+    accounts = list(account_model.get_account(account_id))
     account = [account for account in accounts if account['_id'] == ObjectId(id)][0]
     return render_template('editAccount.html',account=account)
    
@@ -59,3 +60,15 @@ def edit_account(id):
     data['createTime'] = datetime.now()
     account_model.update_account(ObjectId(id), data)
     return redirect(url_for('account.account_route')) 
+
+# def transfer_account():
+#     account_model = UserModel()
+#     source_account_id = request.form.get('sourceAccount')  
+#     target_account_id = request.form.get('targetAccount')
+#     amount = int(request.form.get('amount'))  
+#     note = request.form.get('note')  
+    
+#     source_account = account_model.get_account(source_account_id)
+#     target_account = account_model.get_account(target_account_id)
+    
+    

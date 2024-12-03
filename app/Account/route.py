@@ -20,3 +20,7 @@ def edit_account_index(id):
 @account_bp.route('/account/edit/<string:id>', methods=['POST'])
 def edit_account_route(id):
     return edit_account(id)
+
+# @account_bp.route('/account/transfer/',methods=['POST'])
+# def tranfer_account_route():
+#     return transfer_account()

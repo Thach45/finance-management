@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/jar.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Quản lý Tài chính - Phương pháp 6 Lọ</h1>
+        <div class="income-input">
+            <input type="number" placeholder="Nhập thu nhập của bạn" id="income-input">
+            <button>Tính toán</button>
+        </div>
+
+        <div class="jars-container">
+            <div class="jar jar-1">
+                <div class="jar-header">
+                    <i class="jar-icon fas fa-home"></i>
+                    <span class="jar-title">Thiết yếu</span>
+                </div>
+                <div class="jar-amount">0 đ</div>
+                <div class="jar-percentage">55%</div>
+            </div>
+            <div class="jar jar-2">
+                <div class="jar-header">
+                    <i class="jar-icon fas fa-piggy-bank"></i>
+                    <span class="jar-title">Tiết kiệm dài hạn</span>
+                </div>
+                <div class="jar-amount">0 đ</div>
+                <div class="jar-percentage">10%</div>
+            </div>
+            <div class="jar jar-3">
+                <div class="jar-header">
+                    <i class="jar-icon fas fa-graduation-cap"></i>
+                    <span class="jar-title">Giáo dục</span>
+                </div>
+                <div class="jar-amount">0 đ</div>
+                <div class="jar-percentage">10%</div>
+            </div>
+            <div class="jar jar-4">
+                <div class="jar-header">
+                    <i class="jar-icon fas fa-heart"></i>
+                    <span class="jar-title">Hưởng thụ</span>
+                </div>
+                <div class="jar-amount">0 đ</div>
+                <div class="jar-percentage">10%</div>
+            </div>
+            <div class="jar jar-5">
+                <div class="jar-header">
+                    <i class="jar-icon fas fa-chart-line"></i>
+                    <span class="jar-title">Đầu tư</span>
+                </div>
+                <div class="jar-amount">0 đ</div>
+                <div class="jar-percentage">10%</div>
+            </div>
+            <div class="jar jar-6">
+                <div class="jar-header">
+                    <i class="jar-icon fas fa-gift"></i>
+                    <span class="jar-title">Từ thiện</span>
+                </div>
+                <div class="jar-amount">0 đ</div>
+                <div class="jar-percentage">5%</div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}
