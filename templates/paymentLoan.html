@@ -7,17 +7,17 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3>Thanh toán khoản vay</h3>
-            <button class="close-payment-btn">
+            <a href="/loan" class="close-payment-btn">
                 <i class="fas fa-times"></i>
-            </button>
+            </a>
         </div>
-        <form class="payment-form loan-form" action="" method="post">
+        <form class="payment-form loan-form"  method="post">
             <div class="form-grid">
                 <div class="form-group">
                     <label>Số tiền thanh toán</label>
                     <div class="input-icon">
                         <i class="fas fa-money-bill-wave"></i>
-                        <input type="number" required placeholder="Nhập số tiền thanh toán">
+                        <input type="number" name="amount" required placeholder="Nhập số tiền thanh toán">
                         <span class="currency">₫</span>
                     </div>
                 </div>
@@ -26,15 +26,15 @@
                     <label>Ngày thanh toán</label>
                     <div class="input-icon">
                         <i class="fas fa-calendar-alt"></i>
-                        <input type="date" required value={{loan.loan_date}}>
+                        <input type="date" name="date" required value={{loan.loan_date}}>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Người toán đến</label>
+                    <label>Thanh toán đến</label>
                     <div class="input-icon">
                         <i class="fas fa-user"></i>
-                        <input type="text" required placeholder="Tên người thanh toán" value="{{ loan.borrower }}">
+                        <input type="text" required placeholder="Tên người thanh toán" name="borrower" value="{{ loan.borrower }}">
                     </div>
                 </div>
 
@@ -42,7 +42,7 @@
                     <label>Tài khoản thanh toán</label>
                         <select required name="account_id" class="px-2 pt-2">
                             {% for account in accounts %}
-                                <option value="{{ account.id }}">{{ account.name }}</option>
+                                <option value="{{ account._id }}">{{ account.name }}</option>
                             {% endfor %}
                         </select>
                 </div>
@@ -51,13 +51,13 @@
                     <label>Ghi chú</label>
                     <div class="input-icon">
                         <i class="fas fa-sticky-note"></i>
-                        <textarea placeholder="Thêm ghi chú về thanh toán"></textarea>
+                        <textarea name="discription" placeholder="Thêm ghi chú về thanh toán"></textarea>
                     </div>
                 </div>
             </div>
 
             <div class="form-actions">
-                <button type="button" class="btn cancel-payment-btn">Hủy</button>
+                <a type="button" href="/loan" class="btn cancel-payment-btn">Hủy</a>
                 <button type="submit" class="btn primary">Xác nhận thanh toán</button>
             </div>
         </form>

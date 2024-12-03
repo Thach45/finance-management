@@ -1,6 +1,6 @@
 
 from . import auth_bp
-from .auth_controller import home, login, register, register_post
+from .auth_controller import home, login, register, register_post, logout
 @auth_bp.route('/')
 def auth_route():
     return home()
@@ -18,3 +18,7 @@ def register_post_route():
 @auth_bp.route('/login', methods=['POST'])
 def login_route():
     return login()
+
+@auth_bp.route('/logout', methods=['GET'])
+def logout_route():
+    return logout()

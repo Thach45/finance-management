@@ -1,4 +1,4 @@
-from jar import Jar
+from Jar import Jar
 
 class Category:
     purposeSpend = "Chi tiêu"
@@ -10,6 +10,7 @@ class Category:
     jar3 = Jar("Quỹ giáo dục")
     jar4 = Jar("Quỹ hưởng thụ")
     jar5 = Jar("Quỹ tự do tài chính")
+    
     jar6 = Jar("Quỹ từ thiện")
     jars = [jar1,jar2,jar3,jar4,jar5,jar6]
     def __init__(self,name = '',moneyGoal=1000000,jar=jars[0],purpose = purposes[0]):

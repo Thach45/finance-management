@@ -20,12 +20,14 @@
                     <li><a href="/account" class="btn-account {{'active' if request.path == '/account' else ''}}"><i class="fas fa-user w-8"></i> Quản lý tài khoản</a></li>
                     <li><a href="/transaction" class="btn-transaction {{'active' if request.path == '/transaction' else ''}}"><i class="fas fa-exchange-alt w-8"></i> Quản lý giao dịch</a></li>
                     <li><a href="/loan" class="btn-loan {{'active' if request.path == '/loan' else ''}}"><i class="fas fa-hand-holding-usd w-8"></i> Quản lý khoản vay</a></li>
+                    <li><a href="/jar" class="btn-report {{'active' if request.path == '/jar' else ''}}"><i class="fas fa-chart-bar w-8"></i>Phương pháp 6 chiếc lọ</a></li>
                     <li><a href="/report" class="btn-report {{'active' if request.path == '/report' else ''}}"><i class="fas fa-chart-bar w-8"></i> Báo cáo</a></li>
+
                     <li><a href="#" class="btn-setting {{'active' if request.path == '/setting' else ''}}"><i class="fas fa-cog w-8"></i> Cài đặt</a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
-                <a href="#" class="logout-button"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                <a href="/logout" class="logout-button"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
             </div>
         </aside>
         <main class="main-content">
