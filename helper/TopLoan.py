@@ -117,3 +117,57 @@ def compare_lend_debt(lendings):
     else:
         compare = float('inf')
     return compare
+
+def caculator_interest(data):
+    principal = float(data['amount'])
+    interest_rate = float(data['interest_rate'])
+    interest_type = data['interestType']
+    due_date = datetime.strptime(data['due_date'], '%Y-%m-%d')  # Ngày đến hạn, chuyển đổi từ chuỗi thành datetime
+    current_date = datetime.strptime(data['loan_date'], '%Y-%m-%d') 
+    if interest_type == 'simple':
+        # Công thức tính lãi đơn: Lãi = Số tiền vay * Lãi suất * Thời gian (tính theo năm)
+        time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
+        interest = principal * (interest_rate / 100) * (time_in_years)  # Tính lãi đơn
+        print(interest)
+    elif interest_type == 'compound':
+            # Công thức tính lãi kép: A = P * (1 + r/n)^(nt), trong đó n = 1 (lãi kép hàng năm)
+        time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
+        interest = principal * ((1 + interest_rate / 100) ** time_in_years - 1)  # Tính lãi kép
+        
+    print(interest_type)
+    
+    return interest
+
+def updated_interest_Loan(loan,data):
+    paid = loan['paid']  # Số tiền đã trả
+    principal = float(loan['amount'])
+    interest_rate = float(loan['interest_rate'])  # Lãi suất
+    interest_type = loan['interestType']  # Loại lãi suất (lãi đơn hay lãi kép)
+    due_date = datetime.strptime(loan['due_date'], '%Y-%m-%d')  # Ngày đến hạn, chuyển đổi từ chuỗi thành datetime
+    current_date = datetime.strptime(data['date'], '%Y-%m-%d')  # Ngày thanh toán, chuyển đổi từ chuỗi thành datetime
+    
+    # Tính toán số tiền lãi cần trả dựa trên loại lãi suất (lãi đơn hay lãi kép)
+    if interest_type == 'simple':
+        # Công thức tính lãi đơn: Lãi = Số tiền vay * Lãi suất * Thời gian (tính theo năm)
+        time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
+        interest = principal * (interest_rate / 100) * time_in_years  # Tính lãi đơn
+    elif interest_type == 'compound':
+        # Công thức tính lãi kép: A = P * (1 + r/n)^(nt), trong đó n = 1 (lãi kép hàng năm)
+        time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
+        interest = principal * ((1 + interest_rate / 100) ** time_in_years - 1)  # Tính lãi kép
+    
+    # Tính tổng số tiền cần trả (gồm cả lãi)
+    total_due = principal + interest  # Tổng số tiền cần trả (gồm cả lãi)
+    total_paid = paid + float(data['amount'])  # Số tiền đã trả cộng thêm số tiền thanh toán hiện tại
+
+    # Cập nhật số tiền còn lại cần phải trả
+    remaining_balance = total_due - total_paid  # Số tiền còn lại
+
+    # Chuẩn bị dữ liệu để cập nhật thông tin khoản vay
+    updated_loan = {
+        "paid": total_paid,  # Cập nhật số tiền đã trả
+        "interest": interest,  # Cập nhật số tiền lãi
+        "remaining": remaining_balance,  # Cập nhật số tiền còn lại cần trả
+        "progress": (total_paid / total_due) * 100  # Tính tỷ lệ tiến độ thanh toán (%)
+    }
+    return updated_loan

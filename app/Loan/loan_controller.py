@@ -3,7 +3,7 @@ from flask import jsonify
 from datetime import datetime
 from models.models import UserModel
 from bson.objectid import ObjectId
-from helper.TopLoan import get_loan_due_dates,compare_loan_debt,compare_lend_debt
+from helper.TopLoan import get_loan_due_dates,compare_loan_debt,compare_lend_debt,caculator_interest,updated_interest_Loan
 def home():
     # Dữ liệu trong database
     # loans = [
@@ -124,19 +124,8 @@ def add_loan():
     data = request.form.to_dict()
     data['paid'] = 0
     data['createTime'] = datetime.now() # thời gian tạo 
-    principal = float(data['amount'])  # Số tiền vay ban đầu
-    interest_rate = float(data['interest_rate'])
-    interest_type = data['interestType']
-    due_date = datetime.strptime(data['due_date'], '%Y-%m-%d')  # Ngày đến hạn, chuyển đổi từ chuỗi thành datetime
-    current_date = datetime.strptime(data['loan_date'], '%Y-%m-%d') 
-    if interest_type == 'simple':
-        # Công thức tính lãi đơn: Lãi = Số tiền vay * Lãi suất * Thời gian (tính theo năm)
-        time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
-        interest = principal * (interest_rate / 100) * (time_in_years)  # Tính lãi đơn
-    elif interest_type == 'compound':
-            # Công thức tính lãi kép: A = P * (1 + r/n)^(nt), trong đó n = 1 (lãi kép hàng năm)
-        time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
-        interest = principal * ((1 + interest_rate / 100) ** (time_in_years - 1))  # Tính lãi kép
+    principal = float(data['amount'])
+    interest = caculator_interest(data)
     data['interest'] = interest    
     total_due = principal + interest
     data['remaining'] = total_due
@@ -149,6 +138,7 @@ def edit_loan(id):
     loan_model = UserModel()
     idLoan = {"_id": ObjectId(id)}
     loans = list(loan_model.get_loans(idLoan))
+    
     loan = [loan for loan in loans if loan['_id'] == ObjectId(id)][0]
     return render_template('editLoan.html', loan=loan)
 
@@ -216,41 +206,7 @@ def payment_loan_post(id):
 
     if loan:
         loan = loan[0] 
-        
-        # Trích xuất các thông tin cần thiết từ khoản vay
-        principal = int(loan['amount'])  # Số tiền vay ban đầu
-        interest_rate = float(loan['interest_rate'])  # Lãi suất
-        interest_type = loan['interestType']  # Loại lãi suất (lãi đơn hay lãi kép)
-        paid = loan['paid']  # Số tiền đã trả
-        remaining = loan['remaining']  # Số tiền còn lại cần trả
-        due_date = datetime.strptime(loan['due_date'], '%Y-%m-%d')  # Ngày đến hạn, chuyển đổi từ chuỗi thành datetime
-        current_date = datetime.strptime(data['date'], '%Y-%m-%d')  # Ngày thanh toán, chuyển đổi từ chuỗi thành datetime
-        
-        # Tính toán số tiền lãi cần trả dựa trên loại lãi suất (lãi đơn hay lãi kép)
-        if interest_type == 'simple':
-            # Công thức tính lãi đơn: Lãi = Số tiền vay * Lãi suất * Thời gian (tính theo năm)
-            time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
-            interest = principal * (interest_rate / 100) * time_in_years  # Tính lãi đơn
-        elif interest_type == 'compound':
-            # Công thức tính lãi kép: A = P * (1 + r/n)^(nt), trong đó n = 1 (lãi kép hàng năm)
-            time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
-            interest = principal * ((1 + interest_rate / 100) ** time_in_years - 1)  # Tính lãi kép
-        
-        # Tính tổng số tiền cần trả (gồm cả lãi)
-        total_due = principal + interest  # Tổng số tiền cần trả (gồm cả lãi)
-        total_paid = paid + float(data['amount'])  # Số tiền đã trả cộng thêm số tiền thanh toán hiện tại
-
-        # Cập nhật số tiền còn lại cần phải trả
-        remaining_balance = total_due - total_paid  # Số tiền còn lại
-
-        # Chuẩn bị dữ liệu để cập nhật thông tin khoản vay
-        updated_loan = {
-            "paid": total_paid,  # Cập nhật số tiền đã trả
-            "interest": interest,  # Cập nhật số tiền lãi
-            "remaining": remaining_balance,  # Cập nhật số tiền còn lại cần trả
-            "progress": (total_paid / total_due) * 100  # Tính tỷ lệ tiến độ thanh toán (%)
-        }
-
+        updated_loan = updated_interest_Loan(loan,data)
         # Cập nhật thông tin khoản vay vào database
     loan_model.update_loan(ObjectId(id), updated_loan)
 
@@ -262,48 +218,46 @@ def payment_loan_post(id):
 def edit_loan_post(id):
     loan_model = UserModel()
     data = request.form.to_dict()
-    data['amount'] = float(data['amount'])
+    loan = list(loan_model.get_loans({"_id": ObjectId(id)}))
+    loan = loan[0]
+    data['paid'] = loan['paid']
     data['createTime'] = datetime.now() # thời gian tạo 
+    interest =  caculator_interest(data)
+    data['interest'] = interest
+    total_due = (float(data['amount'])- data['paid'] ) + interest
+    data['remaining'] = total_due
+    data["progress"] = (data['paid']/float(data['amount']))* 100  # Tính tỷ lệ tiến độ thanh toán (%)
     loan_model.update_loan(ObjectId(id), data)
-    
     return redirect(url_for('loan.loan_route'))
 
 def add_lend():
-    loan_model = UserModel()
-    data = request.form.to_dict()
-    data['createTime'] = datetime.now() # thời gian tạo 
-    loan_model = UserModel()
+    lend_model = UserModel()
     data = request.form.to_dict()
     data['paid'] = 0
     data['createTime'] = datetime.now() # thời gian tạo 
-    principal = float(data['amount'])  # Số tiền vay ban đầu
-    interest_rate = float(data['interest_rate'])
-    interest_type = data['interestType']
-    due_date = datetime.strptime(data['due_date'], '%Y-%m-%d')  # Ngày đến hạn, chuyển đổi từ chuỗi thành datetime
-    current_date = datetime.strptime(data['loan_date'], '%Y-%m-%d') 
-    if interest_type == 'simple':
-        # Công thức tính lãi đơn: Lãi = Số tiền vay * Lãi suất * Thời gian (tính theo năm)
-        time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
-        interest = principal * (interest_rate / 100) * (time_in_years)  # Tính lãi đơn
-    elif interest_type == 'compound':
-            # Công thức tính lãi kép: A = P * (1 + r/n)^(nt), trong đó n = 1 (lãi kép hàng năm)
-        time_in_years = (due_date - current_date).days / 365  # Thời gian tính theo năm
-        interest = principal * ((1 + interest_rate / 100) ** (time_in_years - 1))  # Tính lãi kép
+    principal = float(data['amount'])
+    interest = caculator_interest(data)
     data['interest'] = interest    
     total_due = principal + interest
     data['remaining'] = total_due
     data["progress"] = (data['paid']/total_due)* 100  # Tính tỷ lệ tiến độ thanh toán (%)
-    loan_model.create_lending(data)
+    lend_model.create_lending(data)
     return redirect(url_for('loan.loan_route'))
 
 def edit_lend_post(id):
-    loan_model = UserModel()
+    lend_model = UserModel()
     data = request.form.to_dict()
-    data['amount'] = float(data['amount'])
+    lend = list(lend_model.get_lendings({"_id": ObjectId(id)}))
+    lend = lend[0]
+    data['paid'] = lend['paid']
     data['createTime'] = datetime.now() # thời gian tạo 
-    loan_model.update_lending(ObjectId(id), data)
+    interest =  caculator_interest(data)
+    data['interest'] = interest
+    total_due = (float(data['amount'])- data['paid'] ) + interest
+    data['remaining'] = total_due
+    data["progress"] = (data['paid']/float(data['amount']))* 100  # Tính tỷ lệ tiến độ thanh toán (%)
+    lend_model.update_lending(ObjectId(id), data)
     return redirect(url_for('loan.loan_route'))
-
 def delete_lend(id):
     lend_model = UserModel()
     lend_id = ObjectId(id)
