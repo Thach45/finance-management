@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, url_for
 from datetime import datetime
 from flask import make_response
 from models.models import UserModel
+from bson.objectid import ObjectId
 import uuid as uuid
 import hashlib
 
@@ -15,6 +16,7 @@ def login():
     if auth:
         response = make_response(redirect(url_for("dashboard.dashboard_route")))
         response.set_cookie("token", auth["token"])
+        response.set_cookie("user_id", str(auth["_id"]))
         return response
     return render_template('auth.html', error="Số điện thoại hoặc mật khẩu không đúng")
 

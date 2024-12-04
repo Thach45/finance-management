@@ -7,9 +7,9 @@ from helper.TopLoan import get_loan_due_dates,compare_loan_debt,compare_lend_deb
 def home():
     
     loan_model = UserModel()
-    loans = list(loan_model.get_loans())
-    lendings = list(loan_model.get_lendings())
-    account = list(UserModel().get_account())
+    loans = list(loan_model.get_loans({"user_id": ObjectId(request.cookies.get('user_id'))}))
+    lendings = list(loan_model.get_lendings({"user_id": ObjectId(request.cookies.get('user_id'))}))
+    account = list(UserModel().get_account({"user_id": ObjectId(request.cookies.get('user_id'))}))
     total_loan = 0
     total_lending = 0
     amount_due = 0
@@ -46,6 +46,7 @@ def home():
 def add_loan():
     loan_model = UserModel()
     data = request.form.to_dict()
+    data['user_id'] = ObjectId(request.cookies.get('user_id'))
     data['paid'] = 0
     data['createTime'] = datetime.now() # thời gian tạo 
     data['amount'] = int(data['amount'])
@@ -57,6 +58,7 @@ def add_loan():
     data["progress"] = round((data['paid']/total_due))* 100  # Tính tỷ lệ tiến độ thanh toán (%)
 
     loan_transaction = {
+        "user_id": ObjectId(request.cookies.get('user_id')),
         "account": data['account'],
         "type": "income",
         "amount": data['amount'],
@@ -95,7 +97,7 @@ def edit_lending(id):
 def payment_loan(id):
     loan_model = UserModel()
     idLoan = {"_id": ObjectId(id)}
-    account = UserModel().get_account()
+    account = UserModel().get_account({"user_id": ObjectId(request.cookies.get('user_id'))})
     loans = list(loan_model.get_loans(idLoan))
     loan = [loan for loan in loans if loan['_id'] == ObjectId(id)][0]
     return render_template('paymentLoan.html', loan=loan, accounts=account)
@@ -110,6 +112,7 @@ def payment_loan_post(id):
     if loan:
         loan = loan[0] 
         payment_transaction = {
+            "user_id": ObjectId(request.cookies.get('user_id')),
             "account": data['account_id'],
             "type": "expense",
             "amount": int(data['amount']),
@@ -148,8 +151,10 @@ def add_lend():
     lend_model = UserModel()
     data = request.form.to_dict()
     data['paid'] = 0
+    data['user_id'] = ObjectId(request.cookies.get('user_id'))
     data['createTime'] = datetime.now() # thời gian tạo 
     lend_transaction = {
+        "user_id": ObjectId(request.cookies.get('user_id')),
         "account": data['account'],
         "type": "expense",
         "amount": data['amount'],

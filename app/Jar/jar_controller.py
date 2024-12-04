@@ -1,4 +1,5 @@
 from flask import render_template, current_app, url_for, send_file, request, redirect
+from bson.objectid import ObjectId
 from models.models import UserModel
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -13,17 +14,17 @@ def home():
     id5 = request.args.get('5')
     id6 = request.args.get('6')
     if id1:
-        UserModel().create_jar({"idJar": 1, "name": "Jar 1", "balance": 0, "category": id1, "type":"expense"}) 
+        UserModel().create_jar({"idJar": 1, "name": "Jar 1", "balance": 0, "category": id1, "type":"expense", "user_id": ObjectId(request.cookies.get('user_id'))}) 
     if id2:
-        UserModel().create_jar({"idJar": 2, "name": "Jar 2", "balance": 0, "category": id2, "type":"expense"})
+        UserModel().create_jar({"idJar": 2, "name": "Jar 2", "balance": 0, "category": id2, "type":"expense", "user_id": ObjectId(request.cookies.get('user_id'))})
     if id3:
-        UserModel().create_jar({"idJar": 3, "name": "Jar 3", "balance": 0, "category": id3, "type":"expense"})
+        UserModel().create_jar({"idJar": 3, "name": "Jar 3", "balance": 0, "category": id3, "type":"expense", "user_id": ObjectId(request.cookies.get('user_id'))})
     if id4:
-        UserModel().create_jar({"idJar": 4, "name": "Jar 4", "balance": 0, "category": id4, "type":"expense"})
+        UserModel().create_jar({"idJar": 4, "name": "Jar 4", "balance": 0, "category": id4, "type":"expense", "user_id": ObjectId(request.cookies.get('user_id'))})
     if id5:
-        UserModel().create_jar({"idJar": 5, "name": "Jar 5", "balance": 0, "category": id5, "type":"expense"})
+        UserModel().create_jar({"idJar": 5, "name": "Jar 5", "balance": 0, "category": id5, "type":"expense", "user_id": ObjectId(request.cookies.get('user_id'))})
     if id6:
-        UserModel().create_jar({"idJar": 6, "name": "Jar 6", "balance": 0, "category": id6, "type":"expense"})
+        UserModel().create_jar({"idJar": 6, "name": "Jar 6", "balance": 0, "category": id6, "type":"expense", "user_id": ObjectId(request.cookies.get('user_id'))})
     
     
     total = (request.args.get('total')) 
@@ -34,7 +35,10 @@ def home():
     else:
         total = 0
     total = (UserModel().get_total())
-    total = total["total"]
+    if not total:
+        total = 0
+    else:
+        total = total["total"]
 
     jar_model = UserModel()
     jars = list(jar_model.get_jars())

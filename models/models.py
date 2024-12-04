@@ -1,5 +1,6 @@
 from flask_pymongo import PyMongo
 from flask import current_app
+from flask import request
 from bson.objectid import ObjectId
 class UserModel:
     def __init__(self):
@@ -69,10 +70,15 @@ class UserModel:
     def create_jar(self, jar_data):
         return self.mongo.db.jar.insert_one(jar_data)
     def delete_jar(self, jar_id):
-        return self.mongo.db.jar.delete_many({"idJar": jar_id})
+        return self.mongo.db.jar.delete_many({"idJar": jar_id,
+                                              "user_id": ObjectId(request.cookies.get('user_id'))})
     
     #total
     def get_total(self):
-        return self.mongo.db.total.find_one({"id": 1})
+        return self.mongo.db.total.find_one({"user_id": ObjectId(request.cookies.get('user_id'))})
     def update_total(self, total_data):
-        return self.mongo.db.total.update_one({"id": 1}, {"$set": total_data})
+        return self.mongo.db.total.update_one(
+            {"user_id": ObjectId(request.cookies.get('user_id'))},
+            {"$set": total_data},
+            upsert=True
+        )

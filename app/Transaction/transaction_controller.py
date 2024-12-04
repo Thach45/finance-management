@@ -3,9 +3,9 @@ from models.models import UserModel
 from bson.objectid import ObjectId
 from datetime import datetime
 def home():
-    transactions =  list(UserModel().get_transactions())
-    accounts = list(UserModel().get_account())
-    categories = list(UserModel().get_jars())
+    transactions =  list(UserModel().get_transactions({"user_id": ObjectId(request.cookies.get('user_id'))}))
+    accounts = list(UserModel().get_account({"user_id": ObjectId(request.cookies.get('user_id'))}))
+    categories = list(UserModel().get_jars({"user_id": ObjectId(request.cookies.get('user_id'))}))
     # Example dynamic data
     bank_accounts = [account for account in accounts if account["type"] == "bank"]
     ewallet_accounts = [account for account in accounts if account["type"] == "ewallet"]
@@ -25,6 +25,7 @@ def add_transaction():
     if request.method == 'POST':
         data = request.form
         new_transaction = {
+            "user_id": ObjectId(request.cookies.get('user_id')),
             "date": datetime.strptime(data.get('date'), '%Y-%m-%d'),
             "type": data.get('type'),
             "account": data.get('account'),
@@ -32,12 +33,13 @@ def add_transaction():
             "description": data.get('description'),
             "amount": float(data.get('amount'))
         }
-        jar = list(UserModel().get_jars({"category": data.get('category')}))
+        jar = list(UserModel().get_jars({"category": data.get('category'), "user_id": ObjectId(request.cookies.get('user_id'))}))
         jar = jar[0]
         idJar = jar["idJar"]
         name = jar["name"]
 
         deduct_money = {
+            "user_id": ObjectId(request.cookies.get('user_id')),
             "idJar": idJar,
             "category": data.get('category'),
             "balance": float(data.get('amount'))*-1,
@@ -66,19 +68,6 @@ def edit_transaction(transaction_id):
         # Lấy thông tin giao dịch để hiển thị trong form
         transaction = UserModel().get_transactions({"_id": ObjectId(transaction_id)}).next()
         return render_template('editTransaction.html', transaction=transaction)
-
-
-# def delete_transaction(transaction_id):
-#     try:
-#         transaction_id = ObjectId(transaction_id)
-#         # Kiểm tra nếu giao dịch tồn tại trước khi xóa
-#         if UserModel().get_transaction(transaction_id):
-#             UserModel().delete_transaction(transaction_id)
-#     except Exception as e:
-#         print(f"Error: {e}")
-    
-#     return redirect(url_for('transaction.transaction_route'))  # Quay lại trang giao dịch
-
 
 def delete_transaction(transaction_id):
     try:

@@ -7,17 +7,8 @@ from bson import ObjectId
 
 def home():
     account_model = UserModel()
-    accounts = list(account_model.get_account())
-    # ví dụ trong database đuọc lưu như sau:
-    # accounts = [
-    #     {"name": "Vietcombank", "type": "bank", "balance": 1},
-    #     {"name": "SeABank", "type": "bank", "balance": 2},
-    #     {"name": "TPBank", "type": "bank", "balance": 3},
-    #     {"name": "BIDV",  "type": "bank", "balance": 5},
-    #     {"name": "ZaloPay", "type": "ewallet", "balance": 1},
-    #     {"name": "VNPay", "type": "ewallet", "balance": 2},
-    #     {"name": "Tiền mặt", "type": "cash", "balance": 10}
-    # ]
+    checkid = request.cookies.get('user_id')
+    accounts = list(account_model.get_account({"user_id": ObjectId(checkid)}))
     bank_accounts = [account for account in accounts if account["type"] == "bank"]
     ewallet_accounts = [account for account in accounts if account["type"] == "ewallet"]
     cash_accounts = [account for account in accounts if account["type"] == "cash"]
@@ -36,6 +27,7 @@ def add_account():
     data = request.form.to_dict()
     data['balance'] = int(data['balance'])
     data['createTime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data['user_id'] = ObjectId(request.cookies.get('user_id'))
     account_model.create_account(data)
     return redirect(url_for('account.account_route'))
 
@@ -66,7 +58,6 @@ def transfer_account():
     source_account_id = request.form.get('sourceAccount')  
     target_account_id = request.form.get('targetAccount')
     amount = int(request.form.get('amount'))  
-    note = request.form.get('note')  
    
     source_id = ObjectId(source_account_id)
     target_id = ObjectId(target_account_id)
@@ -83,7 +74,10 @@ def transfer_account():
     
     source_account['balance'] -= amount
     target_account['balance'] += amount
+    source_account["user_id"] = ObjectId(request.cookies.get('user_id'))
+    target_account["user_id"] = ObjectId(request.cookies.get('user_id'))
     src_transaction= {
+        "user_id": ObjectId(request.cookies.get('user_id')),
         "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "type": "expense",
         "account": src_bank,
@@ -94,6 +88,7 @@ def transfer_account():
     }
     UserModel().create_transaction(src_transaction)
     target_transaction = {
+        "user_id": ObjectId(request.cookies.get('user_id')),
         "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "type": "income",
         "account": target_bank,
