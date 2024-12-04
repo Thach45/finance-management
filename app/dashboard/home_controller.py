@@ -18,6 +18,7 @@ def home():
     total_balance_ewallet = sum(account["balance"] for account in ewallet_accounts)
     total_balance_cash = sum(account["balance"] for account in cash_accounts)
     total_amount = total_balance_bank+total_balance_ewallet+total_balance_cash
+    
     return render_template('dashboard.html',
                             total_amount=total_amount,
                            total_balance_bank=total_balance_bank,

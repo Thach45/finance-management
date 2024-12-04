@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/report.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="report-wrapper">
   <!-- Phần Header -->
   <header class="report-header">
@@ -9,15 +10,10 @@
       <p class="subtitle">Tổng quan hiệu quả tài chính của bạn</p>
     </div>
     <div class="header-right">
-      <div class="date-range">
-        <input type="date" class="date-input">
-        <span>đến</span>
-        <input type="date" class="date-input">
-      </div>
-      <button class="btn-export">
+      <a href="/report/download" class="btn-export">
         <i class="fas fa-download"></i>
         Xuất Báo Cáo
-      </button>
+      </a>
     </div>
   </header>
 
@@ -30,9 +26,6 @@
       <div class="kpi-content">
         <h3>Tổng Doanh Thu</h3>
         <p class="kpi-value">{{total_income}}đ</p>
-        <!-- <span class="kpi-trend positive">
-          <i class="fas fa-arrow-up"></i> -->
-          <!-- 12.5% -->
         </span>
       </div>
     </div>
@@ -44,23 +37,6 @@
       <div class="kpi-content">
         <h3>Chi Phí</h3>
         <p class="kpi-value">{{total_expense}}</p>
-        <!-- <span class="kpi-trend negative">
-          <i class="fas fa-arrow-down"></i> -->
-          <!--5.2%-->
-        </span>
-      </div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-icon">
-        <i class="fas fa-coins"></i>
-      </div>
-      <div class="kpi-content">
-        <h3>Lợi Nhuận</h3>
-        <p class="kpi-value">{{total_profit}}</p>
-        <!-- <span class="kpi-trend positive">
-          <i class="fas fa-arrow-up"></i> -->
-          <!-- 8.3% -->
         </span>
       </div>
     </div>
@@ -71,11 +47,6 @@
     <div class="chart-container main-chart">
       <div class="chart-header">
         <h2>Phân Tích Doanh Thu</h2>
-        <div class="chart-controls">
-          <button class="btn-chart active">Ngày</button>
-          <button class="btn-chart">Tuần</button>
-          <button class="btn-chart">Tháng</button>
-        </div>
       </div>
       <canvas id="revenueChart"></canvas>
     </div>
@@ -85,7 +56,6 @@
         <div class="chart-header">
           <h2>Cơ Cấu Chi Phí</h2>
         </div>
-        <img src="D:/VS Code/C++/OOP/finance-management/pieCategory.png" alt="Biểu đồ cơ cấu chi phí" style="width: 100%; height: auto;">
       </div>
 
       <div class="chart-container">
@@ -97,5 +67,42 @@
     </div>
   </div>
 </div>
+<script>
+  // Lấy dữ liệu doanh thu từ Flask (sử dụng Jinja2 để nhúng vào JavaScript)
+  const monthlyRevenue = {{ monthly_revenue | tojson }};
+
+  // Vẽ biểu đồ với Chart.js
+  const ctx = document.getElementById('revenueChart').getContext('2d');
+  const revenueChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(monthlyRevenue),  // Tháng
+      datasets: [{
+        label: 'Revenue',
+        data: Object.values(monthlyRevenue),  // Doanh thu
+        backgroundColor: 'rgba(135, 206, 235, 0.6)',
+        borderColor: 'rgba(135, 206, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Monthly Revenue'
+        },
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
 <script src="{{ url_for('static', filename='js/report.js') }}"></script>
 {% endblock %}

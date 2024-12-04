@@ -26,7 +26,7 @@ def add_transaction():
         data = request.form
         new_transaction = {
             "user_id": ObjectId(request.cookies.get('user_id')),
-            "date": datetime.fromisoformat(data.get('date')),
+            "date": str(datetime.fromisoformat(data.get('date'))),
             "type": data.get('type'),
             "account": data.get('account'),
             "category": data.get('category'),

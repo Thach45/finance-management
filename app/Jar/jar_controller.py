@@ -41,7 +41,7 @@ def home():
         total = total["total"]
 
     jar_model = UserModel()
-    jars = list(jar_model.get_jars())
+    jars = list(jar_model.get_jars({"user_id": ObjectId(request.cookies.get('user_id'))}))
     jar1 = [jar for jar in jars if jar["idJar"] == 1]
     sum1 = sum(jar["balance"] for jar in jar1)
     jar2 = [jar for jar in jars if jar["idJar"] == 2]
