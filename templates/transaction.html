@@ -10,7 +10,7 @@
             </div>
             <div class="balance-info">
                 <h3>Tổng số dư</h3>
-                <p class="amount">{{ total_balance }}</p>
+                <p class="amount">{{ total_balance }} </p>
             </div>
         </div>
         {% for bank_account in bank_accounts %}
@@ -60,16 +60,7 @@
 
     <!-- Bộ lọc giao dịch -->
     <div class="transaction-filters">
-        <div class="filter-group">
-            <label>Thời gian:</label>
-            <select id="timeFilter">
-                <option value="all">Tất cả</option>
-                <option value="today">Hôm nay</option>
-                <option value="week">Tuần này</option>
-                <option value="month">Tháng này</option>
-                <option value="custom">Tùy chỉnh</option>
-            </select>
-        </div>
+        
         <div class="filter-group">
             <label>Loại giao dịch:</label>
             <select id="typeFilter">
@@ -82,7 +73,8 @@
         <div class="filter-group">
             <label>Tài khoản:</label>
             <select id="accountFilter">
-                <option value="all">Tất cả tài khoản</option>
+                <option value="">Tài khoản</option>
+                <option value="">Tất cả tài khoản</option>
                 {% for account in accounts %}
                 <option value="{{ account.name }}">{{ account.name }}</option>
                 {% endfor %}

@@ -18,13 +18,15 @@ def home():
     total_balance_ewallet = sum(account["balance"] for account in ewallet_accounts)
     total_balance_cash = sum(account["balance"] for account in cash_accounts)
     total_amount = total_balance_bank+total_balance_ewallet+total_balance_cash
-    
+    user = (UserModel().get_auth({"_id": ObjectId(request.cookies.get('user_id'))}))
+    name = user['name']
     return render_template('dashboard.html',
                             total_amount=total_amount,
                            total_balance_bank=total_balance_bank,
                            total_balance_ewallet=total_balance_ewallet,
                            total_balance_cash=total_balance_cash,
                             transactions=transactions,
+                            name=name
                            )
 
     

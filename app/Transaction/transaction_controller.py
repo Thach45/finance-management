@@ -3,10 +3,25 @@ from models.models import UserModel
 from bson.objectid import ObjectId
 from datetime import datetime
 def home():
+
     transactions =  list(UserModel().get_transactions({"user_id": ObjectId(request.cookies.get('user_id'))}))
     accounts = list(UserModel().get_account({"user_id": ObjectId(request.cookies.get('user_id'))}))
     categories = list(UserModel().get_jars({"user_id": ObjectId(request.cookies.get('user_id'))}))
     # Example dynamic data
+    if request.args.get('type') == "income":
+            transactions = [transaction for transaction in transactions if transaction["type"] == "income"]
+    elif request.args.get('type') == "expense":
+            transactions = [transaction for transaction in transactions if transaction["type"] == "expense"]
+    elif request.args.get('type') == "transfer":
+            transactions = [transaction for transaction in transactions if transaction["type"] == "transfer"]
+    else:
+        transactions = transactions
+    if request.args.get('account'):
+        transactions = [transaction for transaction in transactions if transaction["account"] == request.args.get('account')]
+    else:
+        transactions = transactions
+   
+        
     bank_accounts = [account for account in accounts if account["type"] == "bank"]
     ewallet_accounts = [account for account in accounts if account["type"] == "ewallet"]
     cash_accounts = [account for account in accounts if account["type"] == "cash"]
