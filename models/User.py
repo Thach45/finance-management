@@ -1,23 +1,55 @@
-# from account import Account
-# from category import Category
-# from jar import Jar 
-# from transaction import Transaction
-# from credit import Credit
-# from datetime import date
+from flask import render_template, current_app, url_for
+from flask import jsonify
+from account import Account
+from category import Category
+from jar import Jar 
+from transaction import Transaction
+from credit import Credit
+from datetime import date
+from models import UserModel
+from flask_pymongo import PyMongo
+from flask import current_app
 
-# class User:
-#     # accounts = {'VCB':Account('VCB',100000,'NH'),
-#     #             'MoMo':Account('Momo',500000,'Vi dien tu')}
-#     # categorys = {'Ăn uống': Category(name = 'Ăn uống',jar = Category.jar1,purpose=Category.purposeSpend), #purpose 1: chi tiêu
-#     #              'Tiết Kiệm':Category(name = 'Tiết Kiệm',jar = Category.jar2),  
-#     #              'Vay':Category(name = 'Vay',jar = Category.jar1,purpose=Category.purposeIncome),    #purpose 2: thu nhập
-#     #              'Cho Vay':Category(name = 'Cho Vay',jar = Category.jar1,purpose=Category.purposeSpend),
-#     #              'Trả nợ': Category(name = 'Trả nợ',jar = Category.jar1),
-#     #              'Thu nợ':Category(name = 'Thu nợ',jar = Category.jar1,purpose=Category.purposeIncome)}
+class User:
+    # accounts = {'VCB':Account('VCB',100000,'NH'),
+    #             'MoMo':Account('Momo',500000,'Vi dien tu')}
+    # categorys = {'Ăn uống': Category(name = 'Ăn uống',jar = Category.jar1,purpose=Category.purposeSpend), #purpose 1: chi tiêu
+    #              'Tiết Kiệm':Category(name = 'Tiết Kiệm',jar = Category.jar2),  
+    #              'Vay':Category(name = 'Vay',jar = Category.jar1,purpose=Category.purposeIncome),    #purpose 2: thu nhập
+    #              'Cho Vay':Category(name = 'Cho Vay',jar = Category.jar1,purpose=Category.purposeSpend),
+    #              'Trả nợ': Category(name = 'Trả nợ',jar = Category.jar1),
+    #              'Thu nợ':Category(name = 'Thu nợ',jar = Category.jar1,purpose=Category.purposeIncome)}
+    #usermodel = UserModel()
+    def __init__(self):
+        self.mongo = current_app.config['MONGO']
+    transactions = {}
+    accounts = {}
+    loans = {}
+    lends = {}
+    #with current_app.app_context():
+    list_data_transaction = list(UserModel().get_transactions())
+    list_data_account = list(UserModel().get_account())
+    list_data_loan = list(UserModel().get_loans())
+    list_data_lend = list(UserModel().get_lends())
+    for transaction in list_data_transaction:
+        transactions.update({transaction['id']:Transaction(id = transaction[id],date=transaction['date'],type=transaction['type'],
+                                                           account=transaction['account'],category=transaction['category'],
+                                                           description=transaction['description'])})
+    for account in list_data_account:
+        accounts.update({account['name']:Account(name = account['name'],balance=account['balance'],type=account['type'])})
+                                                           
+    for loan in list_data_loan:
+        loans.update({loan['id']:Credit(id=loan['id'],type=loan['type'],crediter=loan['lender'],amount=loan['amount'],
+                                        interest_rate=loan['interest_rate'],interes_type=loan['interes_type'],credit_date=loan['credit_date'],
+                                        due_date=loan['due_date'],contact=loan['contact'],paid=loan['paid'],interest=loan['interest'],
+                                        remaining=loan['remaining'],progress=loan['progress'],description=loan['description'])})
+        
+    for lend in list_data_lend:
+        loans.update({lend['id']:Credit(id=lend['id'],type=lend['type'],crediter=lend['lender'],amount=lend['amount'],
+                                        interest_rate=lend['interest_rate'],interes_type=lend['interes_type'],credit_date=lend['credit_date'],
+                                        due_date=lend['due_date'],contact=lend['contact'],paid=lend['paid'],interest=lend['interest'],
+                                        remaining=lend['remaining'],progress=lend['progress'],description=lend['description'])}) 
     
-#     transactions = {}
-#     loans = {}
-#     lends = {}
 
     
 
