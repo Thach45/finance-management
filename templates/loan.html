@@ -10,9 +10,17 @@
                 <div class="card-info">
                     <h3>Tổng dư nợ</h3>
                     <p class="amount">{{ total_loan }}</p>
-                    <span class="trend increase">
-                        <i class="fas fa-arrow-up"></i> 12.5% so với tháng trước
-                    </span>
+                    {% if compareloan < 0 %}
+                        <span class="trend decrease">
+                            <i class="fas fa-arrow-down"></i>
+                            {{compareloan * -1}}% so với tháng trước
+                        </span>
+                        {% else %}
+                        <span class="trend increase">
+                            <i class="fas fa-arrow-up"></i> 
+                            {{compareloan}}% so với tháng trước
+                        </span>
+                        {% endif %}</span>
                 </div>
                 <div class="card-icon">
                     <i class="fas fa-hand-holding-usd"></i>
@@ -28,9 +36,18 @@
                 <div class="card-info">
                     <h3>Tổng cho vay</h3>
                     <p class="amount">{{ total_lending }} ₫</p>
-                    <span class="trend decrease">
-                        <i class="fas fa-arrow-down"></i> 5.2% so với tháng trước
-                    </span>
+                    {% if comparelend < 0 %}
+                        <span class="trend decrease">
+                            <i class="fas fa-arrow-down"></i>
+                            {{comparelend*-1}}% so với tháng trước
+                        </span>
+                        {% else %}
+                        <span class="trend increase">
+                            <i class="fas fa-arrow-up"></i> 
+                            {{comparelend}}% so với tháng trước
+                        </span>
+                        {% endif %}</span>
+                   
                 </div>
                 <div class="card-icon">
                     <i class="fas fa-money-bill-wave"></i>
@@ -45,8 +62,13 @@
             <div class="card-content">
                 <div class="card-info">
                     <h3>Đến hạn tháng này</h3>
-                    <p class="amount">5,000,000 ₫</p>
-                    <span class="due-date">Còn 5 ngày</span>
+                    <p class="amount">{{amount_due}} ₫</p>
+                    <span class="due-date">
+                        {% if day_left < 0 %}
+                            Đã trễ {{ day_left * -1 }} ngày
+                        {% else %}
+                            Còn {{ day_left }} ngày
+                        {% endif %}</span>
                 </div>
                 <div class="card-icon">
                     <i class="fas fa-clock"></i>
