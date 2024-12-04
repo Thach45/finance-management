@@ -9,16 +9,16 @@
             <div class="card-content">
                 <div class="card-info">
                     <h3>Tổng dư nợ</h3>
-                    <p class="amount">{{ total_loan }}</p>
+                    <p class="amount">{{ "{:,.0f}".format(total_loan) }}</p>
                     {% if compareloan < 0 %}
                         <span class="trend decrease">
                             <i class="fas fa-arrow-down"></i>
-                            {{compareloan * -1}}% so với tháng trước
+                            {{"{:,.0f}".format(compareloan * -1) }}% so với tháng trước
                         </span>
                         {% else %}
                         <span class="trend increase">
                             <i class="fas fa-arrow-up"></i> 
-                            {{compareloan}}% so với tháng trước
+                            {{"{:,.0f}".format(compareloan) }}% so với tháng trước
                         </span>
                         {% endif %}</span>
                 </div>
@@ -35,16 +35,16 @@
             <div class="card-content">
                 <div class="card-info">
                     <h3>Tổng cho vay</h3>
-                    <p class="amount">{{ total_lending }} ₫</p>
+                    <p class="amount">{{ "{:,.0f}".format(total_lending)}} ₫</p>
                     {% if comparelend < 0 %}
                         <span class="trend decrease">
                             <i class="fas fa-arrow-down"></i>
-                            {{comparelend*-1}}% so với tháng trước
+                            {{"{:,.0f}".format(comparelend*-1)}}% so với tháng trước
                         </span>
                         {% else %}
                         <span class="trend increase">
                             <i class="fas fa-arrow-up"></i> 
-                            {{comparelend}}% so với tháng trước
+                            {{"{:,.0f}".format(comparelend) }}% so với tháng trước
                         </span>
                         {% endif %}</span>
                    
@@ -62,12 +62,12 @@
             <div class="card-content">
                 <div class="card-info">
                     <h3>Đến hạn tháng này</h3>
-                    <p class="amount">{{amount_due}} ₫</p>
+                    <p class="amount">{{"{:,.0f}".format(amount_due)}} ₫</p>
                     <span class="due-date">
                         {% if day_left < 0 %}
-                            Đã trễ {{ day_left * -1 }} ngày
+                            Đã trễ {{ "{:,.0f}".format(day_left * -1) }} ngày
                         {% else %}
-                            Còn {{ day_left }} ngày
+                            Còn {{ "{:,.0f}".format(day_left) }} ngày
                         {% endif %}</span>
                 </div>
                 <div class="card-icon">
@@ -138,14 +138,14 @@
                 <div class="loan-details">
                     <div class="amount-section">
                         <span class="label">Số tiền vay</span>
-                        <span class="value ">{{ loan.amount }}</span>
+                        <span class="value ">{{ loan.amount}}</span>
                     </div>
                     <div class="details-grid">
                         <div class="detail-item">
                             <i class="fas fa-percentage"></i>
                             <div class="text">
                                 <span class="label">Lãi suất</span>
-                                <span class="value">{{ loan.interest_rate }}</span>
+                                <span class="value">{{ loan.interest_rate}}</span>
                             </div>
                         </div>
                         <div class="detail-item">
@@ -178,7 +178,7 @@
                         </div>
                         <div class="summary-item">
                             <span class="label">Tiền lãi</span>
-                            <span class="value interest">{{ loan.interest }}</span>
+                            <span class="value interest">{{loan.interest}}</span>
                         </div>
                         <div class="summary-item">
                             <span class="label">Còn phải trả</span>

@@ -55,9 +55,9 @@
                 <div class="form-group">
                     <label>Loại lãi suất</label>
                     <div class="radio-group">
-                        <input type="radio" name="interestType" value="simple" {% if lend.interest_type == 'simple' %}checked{% endif %}>
+                        <input type="radio" name="interestType" value="simple" {% if lend.interestType == 'simple' %}checked{% endif %}>
                         <span>Lãi đơn</span>
-                        <input type="radio" name="interestType" value="compound" {% if lend.interest_type == 'compound' %}checked{% endif %}>
+                        <input type="radio" name="interestType" value="compound" {% if lend.interestType == 'compound' %}checked{% endif %}>
                         <span>Lãi kép</span>
                     </div>
                 </div>

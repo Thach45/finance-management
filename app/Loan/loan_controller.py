@@ -102,7 +102,7 @@ def home():
     total_lending = sum(float(lending['amount']) for lending in lendings)
 
     due_date = get_loan_due_dates(loans)
-    amount_due = due_date['amount_due']
+    amount_due = float(due_date['amount_due'])
     day_left = due_date['days_left']
     compare_loan = compare_loan_debt(loans)
     compare_lend = compare_lend_debt(lendings)

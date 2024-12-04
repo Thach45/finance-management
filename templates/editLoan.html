@@ -55,17 +55,13 @@
     
                     <div class="form-group">
                         <label>Loại lãi suất</label>
-                    <div class="radio-group">
-                        <label class="radio">
-                            <input type="radio" name="interestType" value="simple" checked>
+                        <div class="radio-group">
+                            <input type="radio" name="interestType" value="simple" {% if loan.interestType == 'simple' %}checked{% endif %}>
                             <span>Lãi đơn</span>
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="interestType" value="compound">
+                            <input type="radio" name="interestType" value="compound" {% if loan.interestType == 'compound' %}checked{% endif %}>
                             <span>Lãi kép</span>
-                        </label>
+                        </div>
                     </div>
-                </div>
 
                     <div class="form-group">
                         <label>Ngày vay</label>
@@ -91,7 +87,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="form-actions">
                     <a href="/loan" class="btn cancel">Hủy</a>
                     <button type="submit" class="btn primary">Lưu khoản vay</button>
