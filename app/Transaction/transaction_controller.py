@@ -28,27 +28,34 @@ def add_transaction():
         data = request.form
         new_transaction = {
             "user_id": ObjectId(request.cookies.get('user_id')),
-            "date": datetime.strptime(data.get('date'), '%Y-%m-%d'),
+            "date": datetime.fromisoformat(data.get('date')),
             "type": data.get('type'),
             "account": data.get('account'),
             "category": data.get('category'),
             "description": data.get('description'),
             "amount": float(data.get('amount'))
         }
-        jar = list(UserModel().get_jars({"category": data.get('category'), "user_id": ObjectId(request.cookies.get('user_id'))}))
-        jar = jar[0]
-        idJar = jar["idJar"]
-        name = jar["name"]
-
-        deduct_money = {
-            "user_id": ObjectId(request.cookies.get('user_id')),
-            "idJar": idJar,
-            "category": data.get('category'),
-            "balance": float(data.get('amount'))*-1,
-            "name": name,
-            "type": "expense"
-        }
-        UserModel().create_jar(deduct_money)
+        account = list(UserModel().get_account({"name": (data.get('account')),"user_id": ObjectId(request.cookies.get('user_id'))}))
+        account = account[0]
+        if data.get('type') == "income":
+            account["balance"] += float(data.get('amount'))
+        else:
+            account["balance"] -= float(data.get('amount'))
+        UserModel().update_account(account["_id"], account)
+        if data.get('type') == "expense":
+            jar = list(UserModel().get_jars({"category": data.get('category'), "user_id": ObjectId(request.cookies.get('user_id'))}))
+            jar = jar[0]
+            idJar = jar["idJar"]
+            name = jar["name"]
+            deduct_money = {
+                "user_id": ObjectId(request.cookies.get('user_id')),
+                "idJar": idJar,
+                "category": data.get('category'),
+                "balance": float(data.get('amount'))*-1,
+                "name": name,
+                "type": "expense"
+            }
+            UserModel().create_jar(deduct_money)
         UserModel().create_transaction(new_transaction)  # Giả sử bạn có hàm này trong model
         return redirect(url_for('transaction.transaction_route'))  # Quay lại trang chính sau khi thêm
     
