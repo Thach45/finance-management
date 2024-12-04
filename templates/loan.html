@@ -62,7 +62,7 @@
             <div class="card-content">
                 <div class="card-info">
                     <h3>Đến hạn tháng này</h3>
-                    <p class="amount">{{"{:,.0f}".format(amount_due)}} ₫</p>
+                    <p class="amount">{{amount_due}} ₫</p>
                     <span class="due-date">
                         {% if day_left < 0 %}
                             Đã trễ {{ "{:,.0f}".format(day_left * -1) }} ngày
