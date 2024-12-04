@@ -21,27 +21,27 @@
     <section class="account-summary">
         <div class="summary-card total">
             <h3>Tổng số dư</h3>
-            <p class="amount total-balance">{{total_balance}} ₫</p>
+            <p class="amount total-balance">{{"{:,.0f}".format(total_balance)}} ₫</p>
             <span class="trend positive">+5% so với tháng trước</span>
         </div>
         <div class="summary-card bank">
             <h3>Tài khoản ngân hàng</h3>
             <p class="amount total-bank-balance">
-                {{ bank_accounts|sum(attribute="balance") }} ₫
+                {{ "{:,.0f}".format(bank_accounts|sum(attribute="balance")) }} ₫
             </p>
             <span>{{ bank_accounts|length }} tài khoản</span>
         </div>
         <div class="summary-card ewallet">
             <h3>Ví điện tử</h3>
             <p class="amount total-ewallet-balance">
-                {{ ewallet_accounts|sum(attribute="balance") }} ₫
+                {{ "{:,.0f}".format(ewallet_accounts|sum(attribute="balance")) }} ₫
             </p>
             <span>{{ ewallet_accounts|length }} ví</span>
         </div>
         <div class="summary-card cash">
             <h3>Tiền mặt</h3>
             {% set total_cash_balance = 0 %}
-            <p class="amount total-cash-balance">{{ cash_accounts|sum(attribute="balance") }} ₫</p>
+            <p class="amount total-cash-balance">{{ "{:,.0f}".format(cash_accounts|sum(attribute="balance")) }} ₫</p>
             <span>{{ cash_accounts|length }} ví</span>
         </div>
     </section>
@@ -99,7 +99,7 @@
                         {% elif account.type == "cash" %}
                         <td>Tiền mặt</td>
                         {% endif %}
-                        <td class="amount">{{account.balance}} ₫</td>
+                        <td class="amount">{{"{:,.0f}".format(account.balance)}} ₫</td>
                         <td>{{account.createTime}}</td>
                         <td class="actions">
                             <form action="/account/edit/{{account._id}}">

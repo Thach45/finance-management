@@ -29,7 +29,7 @@
       </div>
       <div class="kpi-content">
         <h3>Tổng Doanh Thu</h3>
-        <p class="kpi-value">{{total_income}}đ</p>
+        <p class="kpi-value">{{"{:,.0f}".format(total_income)}} đ</p>
         <!-- <span class="kpi-trend positive">
           <i class="fas fa-arrow-up"></i> -->
           <!-- 12.5% -->
@@ -43,7 +43,7 @@
       </div>
       <div class="kpi-content">
         <h3>Chi Phí</h3>
-        <p class="kpi-value">{{total_expense}}</p>
+        <p class="kpi-value">{{"{:,.0f}".format(total_expense)}} đ</p>
         <!-- <span class="kpi-trend negative">
           <i class="fas fa-arrow-down"></i> -->
           <!--5.2%-->
@@ -57,7 +57,7 @@
       </div>
       <div class="kpi-content">
         <h3>Lợi Nhuận</h3>
-        <p class="kpi-value">{{total_profit}}</p>
+        <p class="kpi-value">{{"{:,.0f}".format(total_profit)}} đ</p>
         <!-- <span class="kpi-trend positive">
           <i class="fas fa-arrow-up"></i> -->
           <!-- 8.3% -->

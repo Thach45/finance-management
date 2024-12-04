@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <header class="main-header">
     <h2><i class="fas fa-user-circle"></i> Xin chào, Thạch đẹp trai</h2>
-    <p class="total-balance"> Tổng số dư: <span>{{total_amount}} ₫</span></p>
+    <p class="total-balance"> Tổng số dư: <span>{{"{:,.0f}".format(total_amount)}} ₫</span></p>
 </header>  
 <div class="account-cards">
     <div class="card">
@@ -12,7 +12,7 @@
             <i class="fas fa-credit-card"></i>
         </div>
         <div class="card-body">
-            <p class="balance">{{total_balance_bank}} ₫</p>
+            <p class="balance">{{"{:,.0f}".format(total_balance_bank)}} ₫</p>
         </div>
     </div>
 
@@ -22,7 +22,7 @@
             <i class="fas fa-wallet"></i>
         </div>
         <div class="card-body">
-            <p class="balance">{{total_balance_ewallet}} ₫</p>
+            <p class="balance">{{"{:,.0f}".format(total_balance_ewallet)}} ₫</p>
         </div>
     </div>
 
@@ -32,7 +32,7 @@
             <i class="fas fa-money-bill-alt"></i>
         </div>
         <div class="card-body">
-            <p class="balance">{{total_balance_cash}} ₫</p>
+            <p class="balance">{{"{:,.0f}".format(total_balance_cash)}} ₫</p>
         </div>
     </div>
 </div> 
@@ -48,7 +48,7 @@
                     <p class="transaction-title">{{transaction.description}}</p>
                     <p class="transaction-date ">{{transaction.date}}</p>
                 </div>
-                <p class="transaction-amount expense">{{transaction.amount}} ₫</p>
+                <p class="transaction-amount expense">{{"{:,.0f}".format(transaction.amount)}} ₫</p>
             </li>
             {% endfor %}
         </ul>
