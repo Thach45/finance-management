@@ -16,8 +16,12 @@ def home():
     day_left = 0
     compare_loan = 0
     compare_lend = 0
+    current_month = datetime.now().month
+    current_year = datetime.now().year
     if loans:   
-        total_loan = sum(float(loan['amount']) for loan in loans)
+        total_loan = sum(float(loan['amount']) for loan in loans if datetime.strptime(loan['loan_date'], '%Y-%m-%d').month == current_month 
+                         and datetime.strptime(loan['loan_date'], '%Y-%m-%d').year == current_year)
+
        
 
         due_date = get_loan_due_dates(loans)
@@ -28,7 +32,9 @@ def home():
         compare_loan = compare_loan_debt(loans)
        
     if lendings:
-        total_lending = sum(float(lending['amount']) for lending in lendings)
+        total_lending = sum(float(lend['amount']) for lend in lendings if datetime.strptime(lend['loan_date'], '%Y-%m-%d').month == current_month 
+                         and datetime.strptime(lend['loan_date'], '%Y-%m-%d').year == current_year)
+
         compare_lend = compare_lend_debt(lendings)
     
     return render_template('loan.html',

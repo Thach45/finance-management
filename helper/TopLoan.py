@@ -16,11 +16,11 @@ def get_loan_due_dates(loans):
         # Kiểm tra nếu ngày đến hạn nằm trong tháng và năm hiện tại
         if due_date.year == current_year and due_date.month == current_month:
             # Tính số ngày còn lại hoặc quá hạn
-            days_left = (due_date - current_date).days
+            days_left = (due_date - current_date).days + 1
 
             loan_due_dates.append({
                 'loan_id': loan['_id'],  # ID khoản vay
-                'amount_due': loan['amount'],  # Số tiền cần trả
+                'amount_due': loan['remaining'],  # Số tiền cần trả
                 'days_left': days_left,  # Số ngày còn lại đến hạn
                 'due_date': due_date_str  # Ngày đến hạn
             })
