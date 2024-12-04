@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <main class="main-content">
     <header class="page-header">
         <h2>Quản lý Tài khoản</h2>
@@ -50,17 +51,15 @@
         <div class="list-header">
             <h3>Danh sách tài khoản</h3>
             <div class="list-filters">
-                <select class="filter-select">
+                <select class="filter-select" id="filter-select">
                     <option value="">Tài khoản</option>
                     <option value="">Tất cả tài khoản</option>
                     <option value="bank">Tài khoản ngân hàng</option>
                     <option value="ewallet">Ví điện tử</option>
                     <option value="cash">Tiền mặt</option>
                 </select>
-                <input type="text" placeholder="Tìm kiếm tài khoản..." class="search-input">
             </div>
         </div>
-
         <div class="account-table">
             <table>
                 <thead>
@@ -101,10 +100,16 @@
                         <td>Tiền mặt</td>
                         {% endif %}
                         <td class="amount">{{account.balance}} ₫</td>
-                        <td>15/03/2024</td>
+                        <td>{{account.createTime}}</td>
                         <td class="actions">
-                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
-                            <a class="delete-btn" href="/account/delete/{{account._id}}"><i class="fas fa-trash"></i></a>
+                            <form action="/account/edit/{{account._id}}">
+                                <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                            </form>
+                            <form action="/account/delete/{{account._id}}" method="POST"  style="display:inline;">
+                                <button type="submit" class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     {% endfor %}
@@ -138,10 +143,6 @@
                     <label>Số dư ban đầu</label>
                     <input type="number" required placeholder="Nhập số dư ban đầu" name="balance">
                 </div>
-                <div class="form-group">
-                    <label>Ghi chú</label>
-                    <textarea placeholder="Nhập ghi chú (nếu có)" name="note"></textarea>
-                </div>
                 <div class="form-actions">
                     <button type="button" class="cancel-btn cancel-add-btn">Hủy</button>
                     <button type="submit" class="submit-btn submit-add-btn">Thêm tài khoản</button>
@@ -149,42 +150,7 @@
             </form>
         </div>
     </div>
-    <div class="edit-account-modal" id="editAccountModal">
-        <div class="modal-content ">
-            <div class="modal-header font-bold">
-                <h3>Chỉnh sửa tài khoản</h3>
-                <button class="close-btn close-edit-account-btn"><i class="fas fa-times"></i></button>
-            </div>
-            <form class="account-form" action="/account/edit" method="post">
-                <input type="hidden" name="id" id="editAccountId">
-                <div class="form-group">
-                    <label>Tên tài khoản</label>
-                    <input type="text" required placeholder="Nhập tên tài khoản" name="name" id="editAccountName">
-                </div>
-                <div class="form-group">
-                    <label>Loại tài khoản</label>
-                    <select required name="type" id="editAccountType">
-                        <option value="">Chọn loại tài khoản</option>
-                        <option value="bank">Tài khoản ngân hàng</option>
-                        <option value="ewallet">Ví điện tử</option>
-                        <option value="cash">Tiền mặt</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Số dư</label>
-                    <input type="number" required placeholder="Nhập số dư" name="balance" id="editAccountBalance">
-                </div>
-                <div class="form-group">
-                    <label>Ghi chú</label>
-                    <textarea placeholder="Nhập ghi chú (nếu có)" name="note" id="editAccountNote"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="cancel-btn cancel-edit-btn">Hủy</button>
-                    <button type="submit" class="submit-btn submit-edit-btn">Lưu thay đổi</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    
     <!-- Transfer Money Modal -->
     <div class="add-transfer-modal" id="transferModal">
         <div class="modal-content">
@@ -195,30 +161,36 @@
             <form class="transfer-form" action="/account/transfer" method="post">
                 <div class="form-group">
                     <label>Tài khoản nguồn</label>
-                    <select required name="sourceAccount">
+                    <select id="sourceAccount" required name="sourceAccount" onchange="MaxAmount(); validateAccounts();">
                         <option value="">Chọn tài khoản nguồn</option>
                         {% for account in accounts %}
-                            <option value="{{account.id}}">{{account.name}} - {{account.balance}} ₫</option>
+                            <option value="{{ account._id }}" source-balance="{{ account.balance }}">{{ account.name }} - {{ account.balance }} ₫</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Tài khoản đích</label>
-                    <select required name="targetAccount">
+                    <select id="targetAccount" required name="targetAccount" onchange="validateAccounts();">
                         <option value="">Chọn tài khoản đích</option>
                         {% for account in accounts %}
-                            <option value="{{account.id}}">{{account.name}} - {{account.balance}} ₫</option>
+                            <option value="{{ account._id }}">{{ account.name }} - {{ account.balance }} ₫</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Số tiền chuyển</label>
-                    <input type="number" required name="amount" placeholder="Nhập số tiền cần chuyển">
+                    <input type="number" required name="amount" id="amount" placeholder="Nhập số tiền cần chuyển" min="1" step="1">
+                </div>
+                <div id="error-message" class="alert alert-danger" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>
+                        Tài khoản nguồn và tài khoản đích không được giống nhau!<br>
+                    </span>
                 </div>
                 <div class="form-group">
                     <label>Ghi chú</label>
                     <textarea name="note" placeholder="Nhập ghi chú cho giao dịch (nếu có)"></textarea>
-                </div>
+                </div>    
                 <div class="form-actions">
                     <button type="button" class="cancel-btn cancel-transfer-btn">Hủy</button>
                     <button type="submit" class="submit-btn submit-transfer-btn">Xác nhận chuyển khoản</button>

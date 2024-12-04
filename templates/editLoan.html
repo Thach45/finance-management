@@ -10,7 +10,7 @@
                 </a>
             </div>
     
-            <form class="loan-form" action="/loan/edit/{{ loan._id }}" method="post">
+            <form class="loan-form" action="/edit/loan/{{ loan._id }}" method="post">
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Tên khoản vay</label>
@@ -55,23 +55,18 @@
     
                     <div class="form-group">
                         <label>Loại lãi suất</label>
-                        <div class="radio-group">
-                           {% if loan.interest_type == 'simple' %}
-                                <input type="radio" name="interestType" value="simple" checked>
-                           {% else %}
-                                <input type="radio" name="interestType" value="compound">
-                            {% endif %}
+                    <div class="radio-group">
+                        <label class="radio">
+                            <input type="radio" name="interestType" value="simple" checked>
                             <span>Lãi đơn</span>
-                            {% if loan.interest_type == 'compound' %}
-                                <input type="radio" name="interestType" value="compound" checked name = "interest_type">
-                            {% else %}
-                                <input type="radio" name="interestType" value="compound">
-                            {% endif %}
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="interestType" value="compound">
                             <span>Lãi kép</span>
-
-                        </div>
+                        </label>
                     </div>
-    
+                </div>
+
                     <div class="form-group">
                         <label>Ngày vay</label>
                         <div class="input-icon">

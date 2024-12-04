@@ -198,6 +198,32 @@ amounts.forEach(amount => {
 });
 
 
+const typeSelect = document.querySelector('.typeTransaction');
+    const categoryIncome = document.querySelector('.categoryIncome');
+    const categoryExpense = document.querySelector('.categoryExpense');
+    const categoryTransfer = document.querySelector('.categoryTransfer');
 
+    typeSelect.addEventListener('change', () => {
+        // Reset tất cả danh mục
+        categoryIncome.classList.add('hidden');
+        categoryExpense.classList.add('hidden');
+        categoryTransfer.classList.add('hidden');
+        categoryIncome.disabled = true;
+        categoryExpense.disabled = true;
+        categoryTransfer.disabled = true;
+
+        // Hiển thị danh mục phù hợp
+        const selectedType = typeSelect.value;
+        if (selectedType === 'income') {
+            categoryIncome.classList.remove('hidden');
+            categoryIncome.disabled = false;
+        } else if (selectedType === 'expense') {
+            categoryExpense.classList.remove('hidden');
+            categoryExpense.disabled = false;
+        } else if (selectedType === 'transfer') {
+            categoryTransfer.classList.remove('hidden');
+            categoryTransfer.disabled = false;
+        }
+    });
 
 

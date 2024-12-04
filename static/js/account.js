@@ -40,8 +40,43 @@ if (addTransferBtn && addTransferModal && closeTransferBtn && cancelTransferBtn)
     console.error('Xem lỗi ở file account.js line 25-31');
 }
 
-const filterSelect = document.querySelector('.filter-select');
-const searchInput = document.querySelector('.search-input');
+document.addEventListener('DOMContentLoaded', function () {
+    const filterSelect = document.getElementById('filter-select');
+
+    filterSelect.addEventListener('change', function () {
+        let accountType = filterSelect.value;  
+        window.location.href = `/account/filter?type=${accountType}`;
+    });
+});
+
+// Check Source - Target Account
+function validateAccounts() {
+    var sourceAccount = document.getElementById('sourceAccount').value;
+    var targetAccount = document.getElementById('targetAccount').value;
+    
+    if (sourceAccount && targetAccount && sourceAccount === targetAccount) {
+
+        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('targetAccount').value = "";  
+    } else {
+        document.getElementById('error-message').style.display = 'none';
+    }
+}
+
+// Check MaxAmount
+function MaxAmount() {
+    var sourceAccount = document.getElementById('sourceAccount');
+    var selectedOption = sourceAccount.options[sourceAccount.selectedIndex];
+    var maxAmount = parseInt(selectedOption.getAttribute('source-balance'));
+    
+    var amountInput = document.getElementById('amount');
+    amountInput.setAttribute('max', maxAmount);
+    
+    if (parseInt(amountInput.value) > maxAmount) {
+        amountInput.value = maxAmount;
+    }
+}
+
 const deleteBtn = document.querySelector('.delete-btn');
 const editBtn = document.querySelector('.edit-btn');
 const editAccountModal = document.querySelector('.edit-account-modal');

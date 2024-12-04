@@ -6,6 +6,12 @@
     margin-bottom: 30px;
 }
 
+.page-header h2 {
+    color: blue;
+    font-size: 30px; 
+    font-weight: bold; 
+}
+
 .add-account-btn {
     background-color: #4f46e5;
     color: white;
@@ -67,21 +73,38 @@
     margin-bottom: 20px;
 }
 
+.list-header h3 {
+    color: blue;
+    font-size: 30px; 
+    font-weight: bold; 
+}
+
 .list-filters {
     display: flex;
     gap: 15px;
 }
 
-.filter-select,
-.search-input {
+.filter-select {
     padding: 8px 12px;
     border: 1px solid #e5e7eb;
     border-radius: 6px;
     outline: none;
 }
 
-.search-input {
-    width: 250px;
+#error-message {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+#error-message i {
+    margin-right: 10px;
+    font-size: 20px;
 }
 
 /* Account Table */
@@ -167,6 +190,7 @@ th {
     visibility: visible;
 }
 
+
 .modal-content {
     background: white;
     padding: 30px;
@@ -177,10 +201,17 @@ th {
 
 .modal-header {
     display: flex;
+    font-size: 20px;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
+
+.modal-header h3 {
+    margin: 0;
+    text-align: center;
+}
+
 
 .close-add-account-btn {
     background: none;
@@ -304,6 +335,15 @@ th {
     z-index: 1000;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
+
+#addAccountModal .modal-header h3 {
+    color:#4338ca;
+}
+
+#transferModal .modal-header h3 {
+    color: #45a049;
+}
+
 .edit-account-modal {
     position: fixed;
     top: 0;
@@ -436,8 +476,13 @@ th {
     background-color: #eee;
 }
 
-.submit-btn {
-    background-color: #4CAF50;
+.submit-btn.submit-add-btn {
+    background-color: rgb(86, 86, 202);
+    color: white;
+}
+
+.submit-btn.submit-transfer-btn {
+    background-color: rgb(67, 170, 72);
     color: white;
 }
 
@@ -468,3 +513,4 @@ th {
     background-color: #cccccc;
     cursor: not-allowed;
 }
+
