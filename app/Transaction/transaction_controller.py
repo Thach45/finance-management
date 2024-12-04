@@ -59,6 +59,8 @@ def add_transaction():
         UserModel().create_transaction(new_transaction)  # Giả sử bạn có hàm này trong model
         return redirect(url_for('transaction.transaction_route'))  # Quay lại trang chính sau khi thêm
     
+from datetime import datetime
+
 def edit_transaction(transaction_id):
     if request.method == 'POST':
         data = request.form
@@ -76,7 +78,13 @@ def edit_transaction(transaction_id):
     else:
         # Lấy thông tin giao dịch để hiển thị trong form
         transaction = UserModel().get_transactions({"_id": ObjectId(transaction_id)}).next()
+
+        # Chuyển đổi 'date' sang datetime nếu cần
+        if isinstance(transaction.get('date'), str):
+            transaction['date'] = datetime.strptime(transaction['date'], '%Y-%m-%d %H:%M:%S')
+
         return render_template('editTransaction.html', transaction=transaction)
+
 
 def delete_transaction(transaction_id):
     try:
@@ -101,13 +109,12 @@ def delete_transaction(transaction_id):
     return redirect(url_for('transaction.transaction_route'))  # Quay lại trang giao dịch
 
 
-
 def get_filtered_transactions():
     # Lấy dữ liệu từ database (giả sử dùng MongoDB)
     transactions = list(UserModel().mongo.db.transactions.find())  # Hoặc database tương tự
 
     # Các tham số lọc từ request
-    account = request.args.get('account', 'all')
+    account = request.args.get('account', 'all')  # Lấy giá trị mặc định là 'all' nếu không có
     time = request.args.get('time', 'all')
     transaction_type = request.args.get('type', 'all')
 
@@ -119,18 +126,52 @@ def get_filtered_transactions():
     if time != 'all':
         today = datetime.now().date()
         if time == 'today':
-            transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d').date() == today]
+            transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d %H:%M:%S').date() == today]
         elif time == 'week':
             start_week = today - timedelta(days=today.weekday())
-            transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d').date() >= start_week]
+            transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d %H:%M:%S').date() >= start_week]
         elif time == 'month':
-            transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d').date().month == today.month]
+            transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d %H:%M:%S').date().month == today.month]
 
     # Lọc theo loại giao dịch
     if transaction_type != 'all':
         transactions = [t for t in transactions if t.get('type') == transaction_type]
 
-    
-
     # Trả kết quả
     return render_template('transaction.html', transactions=transactions)
+
+
+
+
+# def get_filtered_transactions():
+#     # Lấy dữ liệu từ database (giả sử dùng MongoDB)
+#     transactions = list(UserModel().mongo.db.transactions.find())  # Hoặc database tương tự
+
+#     # Các tham số lọc từ request
+#     account = request.args.get('account', 'all')
+#     time = request.args.get('time', 'all')
+#     transaction_type = request.args.get('type', 'all')
+
+#     # Lọc theo tài khoản
+#     if account != 'all':
+#         transactions = [t for t in transactions if t.get('account') == account]
+
+#     # Lọc theo thời gian
+#     if time != 'all':
+#         today = datetime.now().date()
+#         if time == 'today':
+#             transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d').date() == today]
+#         elif time == 'week':
+#             start_week = today - timedelta(days=today.weekday())
+#             transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d').date() >= start_week]
+#         elif time == 'month':
+#             transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d').date().month == today.month]
+
+#     # Lọc theo loại giao dịch
+#     if transaction_type != 'all':
+#         transactions = [t for t in transactions if t.get('type') == transaction_type]
+
+    
+
+#     # Trả kết quả
+#     return render_template('transaction.html', transactions=transactions)

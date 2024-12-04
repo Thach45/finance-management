@@ -11,6 +11,12 @@
     margin-bottom: 24px;
 }
 
+.page-header h2 {
+    font-size: 30px;
+    color: #48af4c;
+    font-weight: 700;
+}
+
 .add-transaction-btn {
     background-color: #4CAF50;
     color: white;
