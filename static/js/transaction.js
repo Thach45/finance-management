@@ -18,30 +18,122 @@ if(cancelBtn){
     })
 }
 
+// const accountFilter = document.getElementById('accountFilter');
+// const timeFilter = document.getElementById('timeFilter');
+// const typeFilter = document.getElementById('typeFilter');
+// const tableBody = document.getElementById('transactionTableBody'); // ID của tbody trong bảng
+
+// async function fetchAndRenderTransactions() {
+//     const url = new URL(window.location.href);
+
+//     // Lấy giá trị từ các bộ lọc
+//     const time = timeFilter ? timeFilter.value : 'all';
+//     const type = typeFilter ? typeFilter.value : 'all';
+//     const account = accountFilter ? accountFilter.value : 'all';
+
+//     // Cập nhật tham số vào URL
+//     url.searchParams.set('time', time);
+//     url.searchParams.set('type', type);
+//     url.searchParams.set('account', account);
+
+//     // Cập nhật URL trên trình duyệt mà không reload trang
+//     history.replaceState(null, '', url.toString());
+
+//     // Gọi API để lấy dữ liệu
+//     const response = await fetch(url.toString());
+//     const transactions = await response.json();
+
+//     // Xóa dữ liệu cũ trong bảng
+//     tableBody.innerHTML = "";
+
+//     // Cập nhật bảng với dữ liệu mới
+//     transactions.forEach(transaction => {
+//         const row = `
+//             <tr>
+//                 <td>${transaction.date}</td>
+//                 <td><span class="badge ${transaction.type}">${transaction.type}</span></td>
+//                 <td>${transaction.account}</td>
+//                 <td>${transaction.category}</td>
+//                 <td>${transaction.description}</td>
+//                 <td class="amount ${transaction.type}">${transaction.amount}</td>
+//                 <td>
+//                     <a class="action-btn edit" href="/transaction/edit/${transaction._id}"><i class="fas fa-edit"></i></a>
+//                     <form class="delete-form" action="/transaction/delete/${transaction._id}" method="post">
+//                         <button type="submit" class="action-btn delete"><i class="fas fa-trash"></i></button>
+//                     </form>
+//                 </td>
+//             </tr>
+//         `;
+//         tableBody.innerHTML += row;
+//     });
+// }
+
+// // Gắn sự kiện thay đổi cho các bộ lọc
+// if (accountFilter) {
+//     accountFilter.addEventListener('change', fetchAndRenderTransactions);
+// }
+// if (timeFilter) {
+//     timeFilter.addEventListener('change', fetchAndRenderTransactions);
+// }
+// if (typeFilter) {
+//     typeFilter.addEventListener('change', fetchAndRenderTransactions);
+// }
+
+// // Gọi API lần đầu để hiển thị dữ liệu mặc định
+// fetchAndRenderTransactions();
+
+// Đặt giá trị hiện tại cho các bộ lọc khi tải trang
 const accountFilter = document.getElementById('accountFilter');
 const timeFilter = document.getElementById('timeFilter');
 const typeFilter = document.getElementById('typeFilter');
-if(accountFilter){
-    accountFilter.addEventListener('change', () => {
+const filterButton = document.getElementById('filterButton');
+
+// Lắng nghe sự kiện nút Lọc
+if (filterButton) {
+    filterButton.addEventListener('click', () => {
         const url = new URL(window.location.href);
         url.searchParams.set('account', accountFilter.value);
-        window.location.href = url.toString();
-    })
-}
-if(timeFilter){
-    timeFilter.addEventListener('change', () => {
-        const url = new URL(window.location.href);
         url.searchParams.set('time', timeFilter.value);
-        window.location.href = url.toString();
-    })
-}
-if(typeFilter){
-    typeFilter.addEventListener('change', () => {
-        const url = new URL(window.location.href);
         url.searchParams.set('type', typeFilter.value);
+
+        // Xóa các giá trị "all" khỏi URL
+        if (accountFilter.value === 'all') url.searchParams.delete('account');
+        if (timeFilter.value === 'all') url.searchParams.delete('time');
+        if (typeFilter.value === 'all') url.searchParams.delete('type');
+
         window.location.href = url.toString();
-    })
+    });
 }
+
+
+
+
+// const accountFilter = document.getElementById('accountFilter');
+// const timeFilter = document.getElementById('timeFilter');
+// const typeFilter = document.getElementById('typeFilter');
+
+// if(accountFilter){
+//     accountFilter.addEventListener('change', () => {
+//         const url = new URL(window.location.href);
+//         url.searchParams.set('account', accountFilter.value);
+//         window.location.href = url.toString();
+//     })
+// }
+// if(timeFilter){
+//     timeFilter.addEventListener('change', () => {
+//         const url = new URL(window.location.href);
+//         url.searchParams.set('time', timeFilter.value);
+//         window.location.href = url.toString();
+//     })
+// }
+// if(typeFilter){
+//     typeFilter.addEventListener('change', () => {
+//         const url = new URL(window.location.href);
+//         url.searchParams.set('type', typeFilter.value);
+//         window.location.href = url.toString();
+//     })
+// }
+
 const editCloseBtn = document.querySelector('.edit-close-btn');
 
 const editModal = document.getElementById('editTransactionModal');
@@ -70,12 +162,7 @@ if(btnEdit){
     });
 });
 
-    // btnEdit.forEach(btn => {
-    //     btn.addEventListener('click', () => {
-    //         editModal.classList.add('active');
-    //         const transactionId = btn.getAttribute('data-id');
-    //     })
-    // })
+
 }
 if(editCloseBtn){
     editCloseBtn.addEventListener('click', () => {

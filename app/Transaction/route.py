@@ -1,5 +1,5 @@
 from . import transaction_bp
-from .transaction_controller import home, add_transaction, delete_transaction, edit_transaction
+from .transaction_controller import home, add_transaction, delete_transaction, edit_transaction, get_filtered_transactions
 @transaction_bp.route('/transaction')
 def transaction_route():
     return home()
@@ -17,4 +17,7 @@ def edit_transaction_route(transaction_id):
     return edit_transaction(transaction_id)
 
 
+@transaction_bp.route('/transactions', methods=['GET'])
+def transactions():
+    return get_filtered_transactions()
 

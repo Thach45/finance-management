@@ -1,7 +1,9 @@
 from flask import render_template, current_app, url_for, jsonify,request,redirect
 from models.models import UserModel
 from bson.objectid import ObjectId
-from datetime import datetime
+from datetime import datetime, timedelta
+from sqlalchemy import extract
+
 def home():
     transactions =  list(UserModel().get_transactions())
     accounts = list(UserModel().get_account())
@@ -51,19 +53,6 @@ def edit_transaction(transaction_id):
         transaction = UserModel().get_transactions({"_id": ObjectId(transaction_id)}).next()
         return render_template('editTransaction.html', transaction=transaction)
 
-
-# def delete_transaction(transaction_id):
-#     try:
-#         transaction_id = ObjectId(transaction_id)
-#         # Kiểm tra nếu giao dịch tồn tại trước khi xóa
-#         if UserModel().get_transaction(transaction_id):
-#             UserModel().delete_transaction(transaction_id)
-#     except Exception as e:
-#         print(f"Error: {e}")
-    
-#     return redirect(url_for('transaction.transaction_route'))  # Quay lại trang giao dịch
-
-
 def delete_transaction(transaction_id):
     try:
         # Chuyển đổi id từ chuỗi thành ObjectId
@@ -85,3 +74,70 @@ def delete_transaction(transaction_id):
         print(f"Error during deletion: {e}")
 
     return redirect(url_for('transaction.transaction_route'))  # Quay lại trang giao dịch
+
+
+
+def get_filtered_transactions():
+    # Các tham số lọc từ request
+    account = request.args.get('account', 'all')
+    time = request.args.get('time', 'all')
+    transaction_type = request.args.get('type', 'all')
+
+    transactions = {}
+    # Lọc theo tài khoản
+    if account != 'all':
+        transactions = [t for t in transactions if t['account'] == account]
+
+    # Lọc theo thời gian
+    if time != 'all':
+        today = datetime.now().date()
+        if time == 'today':
+            transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d').date() == today]
+        elif time == 'week':
+            start_week = today - timedelta(days=today.weekday())
+            transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d').date() >= start_week]
+        elif time == 'month':
+            transactions = [t for t in transactions if datetime.strptime(t['date'], '%Y-%m-%d').date().month == today.month]
+
+    # Lọc theo loại giao dịch
+    if transaction_type != 'all':
+        transactions = [t for t in transactions if t['transaction_type'] == transaction_type]
+
+    # Trả kết quả
+    return render_template('transaction.html')
+
+# def get_filtered_transactions():
+#     filters = {}
+
+#     # Lấy các tham số từ request
+#     time_filter = request.args.get('time')  # "today", "this_week", "this_month"
+#     transaction_type = request.args.get('type')  # "income", "expense", "transfer"
+#     account = request.args.get('account')  # Tên tài khoản hoặc "all"
+
+#     # Xử lý lọc theo thời gian
+#     if time_filter == "today":
+#         start_date = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+#         end_date = datetime.now()
+#         filters["date"] = {"$gte": start_date, "$lte": end_date}
+#     elif time_filter == "week":
+#         start_date = datetime.now() - timedelta(days=datetime.now().weekday())
+#         start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
+#         end_date = datetime.now()
+#         filters["date"] = {"$gte": start_date, "$lte": end_date}
+#     elif time_filter == "month":
+#         start_date = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+#         end_date = datetime.now()
+#         filters["date"] = {"$gte": start_date, "$lte": end_date}
+
+#     # Lọc theo loại giao dịch
+#     if transaction_type and transaction_type != "all":
+#         filters["type"] = transaction_type
+
+#     # Lọc theo tài khoản
+#     if account and account != "all":
+#         filters["account"] = account
+
+    
+#     # Lấy dữ liệu từ database 
+#     transactions = list(UserModel().mongo.db.transactions.find(filters))
+#     return jsonify(transactions)  # Trả về JSON
