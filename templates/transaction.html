@@ -121,7 +121,10 @@
                     {% endif %}
                     <td>
                         <a class="action-btn edit" href="/transaction/edit/{{ transaction._id }}"><i class="fas fa-edit"></i></a>
-                        <a href="/transaction/delete/{{transaction._id}}" class="action-btn delete"><i class="fas fa-trash"></i></a>
+                        <form class="delete-form" action="/transaction/delete/{{ transaction._id }}" method="post">
+                            <button type="submit" class="action-btn delete"><i class="fas fa-trash"></i></button>
+                        </form>
+                        
                     </td>
                 </tr>
                 
@@ -141,7 +144,7 @@
             <form class="transaction-form" action="/transaction/add" method="post">
                 <div class="form-group">
                     <label>Loại giao dịch</label>
-                    <select required name="type">
+                    <select required class="typeTransaction" name="type">
                         <option value="income">Thu nhập</option>
                         <option value="expense">Chi tiêu</option>
                         <option value="transfer">Chuyển khoản</option>
@@ -150,17 +153,25 @@
                 <div class="form-group">
                     <label>Tài khoản</label>
                     <select required name="account">
-                        <option value="1">Vietcombank</option>
-                        <option value="2">Momo</option>
+                       {% for account in accounts %}
+                            <option value="{{ account.name }}">{{ account.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Danh mục</label>
-                    <select required name="category">
-                        <option value="salary" >Lương</option>
-                        <option value="food">Ăn uống</option>
-                        <option value="shopping">Mua sắm</option>
-                        <option value="transfer">Chuyển khoản</option>
+                    <select required class="categoryIncome" name="category" disabled>
+                        <option value="salary">Lương</option>
+                    </select>
+                    
+                    <select required class="categoryExpense hidden" name="category" disabled>
+                        {% for category in categories %}
+                            <option value="{{ category.category }}">{{ category.category }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <select required class="categoryTransfer hidden" name="category" disabled>
+                        <option value="none" selected>Khác</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -169,7 +180,7 @@
                 </div>
                 <div class="form-group">
                     <label>Ngày giao dịch</label>
-                    <input type="date" required name="date">
+                    <input type="datetime-local" required name="date">
                 </div>
                 <div class="form-group">
                     <label>Mô tả</label>
@@ -184,6 +195,7 @@
     </div>
 
     <!-- Modal sửa giao dịch -->
+     
    
 </div>
 <script src="{{ url_for('static', filename='js/transaction.js') }}"></script>

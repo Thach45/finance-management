@@ -29,10 +29,10 @@
       </div>
       <div class="kpi-content">
         <h3>Tổng Doanh Thu</h3>
-        <p class="kpi-value">1.234.567đ</p>
-        <span class="kpi-trend positive">
-          <i class="fas fa-arrow-up"></i>
-          12.5%
+        <p class="kpi-value">{{total_income}}đ</p>
+        <!-- <span class="kpi-trend positive">
+          <i class="fas fa-arrow-up"></i> -->
+          <!-- 12.5% -->
         </span>
       </div>
     </div>
@@ -43,10 +43,10 @@
       </div>
       <div class="kpi-content">
         <h3>Chi Phí</h3>
-        <p class="kpi-value">567.890đ</p>
-        <span class="kpi-trend negative">
-          <i class="fas fa-arrow-down"></i>
-          5.2%
+        <p class="kpi-value">{{total_expense}}</p>
+        <!-- <span class="kpi-trend negative">
+          <i class="fas fa-arrow-down"></i> -->
+          <!--5.2%-->
         </span>
       </div>
     </div>
@@ -57,10 +57,10 @@
       </div>
       <div class="kpi-content">
         <h3>Lợi Nhuận</h3>
-        <p class="kpi-value">666.677đ</p>
-        <span class="kpi-trend positive">
-          <i class="fas fa-arrow-up"></i>
-          8.3%
+        <p class="kpi-value">{{total_profit}}</p>
+        <!-- <span class="kpi-trend positive">
+          <i class="fas fa-arrow-up"></i> -->
+          <!-- 8.3% -->
         </span>
       </div>
     </div>
@@ -85,7 +85,7 @@
         <div class="chart-header">
           <h2>Cơ Cấu Chi Phí</h2>
         </div>
-        <canvas id="expenseChart"></canvas>
+        <img src="D:/VS Code/C++/OOP/finance-management/pieCategory.png" alt="Biểu đồ cơ cấu chi phí" style="width: 100%; height: auto;">
       </div>
 
       <div class="chart-container">

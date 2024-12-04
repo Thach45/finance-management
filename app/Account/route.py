@@ -1,6 +1,6 @@
 
 from . import account_bp
-from .account_controller import home, add_account, delete_account, index_account, edit_account
+from .account_controller import home, add_account, delete_account, index_account, edit_account, transfer_account, filter_account
 @account_bp.route('/account')
 def account_route():
     return home()
@@ -21,6 +21,10 @@ def edit_account_index(id):
 def edit_account_route(id):
     return edit_account(id)
 
-# @account_bp.route('/account/transfer/',methods=['POST'])
-# def tranfer_account_route():
-#     return transfer_account()
+@account_bp.route('/account/transfer',methods=['POST'])
+def tranfer_account_route():
+    return transfer_account()
+
+@account_bp.route('/account/filter',methods=['GET'])
+def filter_route():
+    return filter_account()

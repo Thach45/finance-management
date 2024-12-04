@@ -2,9 +2,12 @@ from dotenv import load_dotenv
 from flask import render_template, request, redirect, url_for
 import os
 from models.models import UserModel
+
+# from models.user import User
+
 from flask_pymongo import PyMongo
 from flask import Flask
-from app.Dashboard import dashboard_bp
+from app.dashboard import dashboard_bp
 from app.Account import account_bp
 from app.Jar import jar_bp
 from app.Transaction import transaction_bp
@@ -37,6 +40,10 @@ def check_token():
 
     if not UserModel().get_auth({"token": token}):
         return render_template("auth.html", error="Token không hợp lệ")
+    
+    # #phan chinh sua
+    # if not User().get_auth({"token": token}):
+    #     return render_template("auth.html", error="Token không hợp lệ")
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)

@@ -1,10 +1,10 @@
-from Jar import Jar
+from jar import Jar
 
 class Category:
-    purpose1 = "Chi tiêu"
-    purpose2 = "Thu nhập"
-    purpose3 = "Chuyển khoản"
-    purposes = [purpose1,purpose2,purpose3]
+    purposeSpend = "Chi tiêu"
+    purposeIncome = "Thu nhập"
+    purposeTransferAcc = "Chuyển khoản"
+    purposes = [purposeSpend,purposeIncome,purposeTransferAcc]
     jar1 = Jar("Chi tiêu cần thiết")
     jar2 = Jar("Tiết kiệm dài hạn")
     jar3 = Jar("Quỹ giáo dục")
