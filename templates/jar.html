@@ -3,10 +3,13 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/jar.css') }}">
 <div class="container">
     <h1>Quản lý Tài chính - Phương pháp 6 Lọ</h1>
-    <div class="income-input">
-        <input type="number" placeholder="Nhập thu nhập của bạn" id="income-input">
-        <button onclick="calculateJars()">Tính toán</button>
-    </div>
+    <form>
+        <div class="income-input">
+            <input type="number" placeholder="Nhập thu nhập của bạn" name="total" id="income-input">
+            <button onclick="calculate()">Tính toán</button>
+        </div>
+    </form>
+
 
     <div class="jars-container">
         <div class="jar jar-1">
@@ -14,12 +17,12 @@
                 <i class="jar-icon fas fa-home"></i>
                 <span class="jar-title">Thiết yếu</span>
             </div>
-            <div class="jar-amount">0 đ</div>
+            <div class="jar-amount">{{total*55+jar1}}đ</div>
             <div class="jar-percentage">55%</div>
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
                 <ul id="categories-1"></ul>
-                <form onsubmit="addCategory(event, 1)">
+                <form  class="formCategogy" >
                     <ul class="categogy-1">
                         {% for category in categories %}
                             {% if category["idJar"] == 1 %}
@@ -29,6 +32,7 @@
                     </ul>
                     <input type="text" placeholder="Thêm danh mục" name="1" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/1"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -37,7 +41,7 @@
                 <i class="jar-icon fas fa-piggy-bank"></i>
                 <span class="jar-title">Tiết kiệm dài hạn</span>
             </div>
-            <div class="jar-amount">0 đ</div>
+            <div class="jar-amount">{{total*10+jar2}}đ</div>
             <div class="jar-percentage">10%</div>
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
@@ -48,9 +52,10 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 2)">
+                <form  class="formCategogy" >
                     <input type="text" placeholder="Thêm danh mục" name="2" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/2"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -59,7 +64,7 @@
                 <i class="jar-icon fas fa-graduation-cap"></i>
                 <span class="jar-title">Giáo dục</span>
             </div>
-            <div class="jar-amount">0 đ</div>
+            <div class="jar-amount">{{total*10+jar3}}đ</div>
             <div class="jar-percentage">10%</div>
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
@@ -70,9 +75,10 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 3)">
+                <form  class="formCategogy" >
                     <input type="text" placeholder="Thêm danh mục" name="3" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/3"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -81,7 +87,7 @@
                 <i class="jar-icon fas fa-heart"></i>
                 <span class="jar-title">Hưởng thụ</span>
             </div>
-            <div class="jar-amount">0 đ</div>
+            <div class="jar-amount">{{total*10+jar4}}đ</div>
             <div class="jar-percentage">10%</div>
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
@@ -92,9 +98,10 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 4)">
+                <form  class="formCategogy" >
                     <input type="text" placeholder="Thêm danh mục" name="4" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/4"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -103,7 +110,7 @@
                 <i class="jar-icon fas fa-chart-line"></i>
                 <span class="jar-title">Đầu tư</span>
             </div>
-            <div class="jar-amount">0 đ</div>
+            <div class="jar-amount">{{total*10+jar5}}đ</div>
             <div class="jar-percentage">10%</div>
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
@@ -114,11 +121,10 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 5)">
+                <form  class="formCategogy" >
                     <input type="text" placeholder="Thêm danh mục" name="5" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
-                </form>
-                    <a type="submit" href="jar/delete/5"><i class="fas fa-plus-circle"></i></a>
+                    <a type="submit" href="jar/delete/5"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -127,7 +133,7 @@
                 <i class="jar-icon fas fa-gift"></i>
                 <span class="jar-title">Từ thiện</span>
             </div>
-            <div class="jar-amount">0 đ</div>
+            <div class="jar-amount">{{total*5+jar6}}đ</div>
             <div class="jar-percentage">5%</div>
             <div class="jar-categories">
                 <h3>Danh mục:</h3>
@@ -138,9 +144,10 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-                <form onsubmit="addCategory(event, 6)">
+                <form  class="formCategogy" >
                     <input type="text" placeholder="Thêm danh mục" name="6" required>
                     <button type="submit"><i class="fas fa-plus-circle"></i></button>
+                    <a type="submit" href="jar/delete/6"><i class="fas fa-minus-circle"></i></a>
                 </form>
             </div>
         </div>
@@ -148,26 +155,6 @@
 </div>
 
 </body>
-<script>
-    function addCategory(event, jarId) {
-        event.preventDefault(); // Ngăn form nạp lại trang
-        const form = event.target; // Lấy form hiện tại
-        const input = form.querySelector('input[name="' + jarId + '"]'); // Tìm input liên quan
-        const category = input.value.trim(); // Lấy giá trị danh mục
-    
-        if (category) {
-            // Thêm danh mục vào danh sách
-            const ul = document.querySelector(`.categogy-${jarId}`);
-            const li = document.createElement('li');
-            li.textContent = category;
-            ul.appendChild(li);
-    
-            // Xoá giá trị input
-            input.value = '';
-        } else {
-            alert('Vui lòng nhập danh mục!');
-        }
-    }
-</script>
+
 <script src="{{ url_for('static', filename='js/jar.js') }}"></script>
 {% endblock %}

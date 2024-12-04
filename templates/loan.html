@@ -184,10 +184,13 @@
                     <i class="fas fa-history"></i>
                     Trả tiền
                 </a>
-                <a href="/loan/delete/{{loan._id}}" class="footer-btn bg-rose-500 hover:bg-rose-600 text-white delete-loan-btn">
-                    <i class="fas fa-trash"></i>
-                    Xoá
-                </a>
+                <form method="POST" action="/loan/delete/{{loan._id}}">
+                    <button type="submit" class="footer-btn bg-rose-500 hover:bg-rose-600 text-white delete-loan-btn">
+                        <i class="fas fa-trash"></i>
+                        Xoá
+                    </button>
+                </form>
+ 
             </div>
         </div>
     </div>
@@ -286,10 +289,12 @@
                     <i class="fas fa-pencil-alt"></i>
                    Sửa
                 </a>
-                <a href="/lending/delete/{{ lending._id }}" class="footer-btn bg-rose-500 hover:bg-rose-600 text-white delete-lending-btn">
-                    <i class="fas fa-trash"></i>
-                    Xoá
-                </a>
+                <form method="POST" action="/lending/delete/{{lending._id}}">
+                    <button type="submit" class="footer-btn bg-rose-500 hover:bg-rose-600 text-white delete-loan-btn">
+                        <i class="fas fa-trash"></i>
+                        Xoá
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -352,13 +357,20 @@
                     <label>Loại lãi suất</label>
                     <div class="radio-group">
                         <label class="radio">
-                            <input type="radio" name="interestType" value="simple" checked name = "interest_type">
+                            <input type="radio" name="interestType" value="simple" checked>
                             <span>Lãi đơn</span>
                         </label>
                         <label class="radio">
                             <input type="radio" name="interestType" value="compound">
                             <span>Lãi kép</span>
                         </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Ngày đến hạn</label>
+                    <div class="input-icon">
+                        <i class="fas fa-calendar-check"></i>
+                        <input type="date" required name = "due_date">
                     </div>
                 </div>
 
@@ -371,10 +383,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Ngày đến hạn</label>
+                    <label>Tài khoản nhận/trả tiền</label>
                     <div class="input-icon">
-                        <i class="fas fa-calendar-check"></i>
-                        <input type="date" required name = "due_date">
+                        <i class="fas fa-university"></i>
+                        <select required class="p-8"name="account">
+                        {% for account in accounts %}
+                            <option value="{{ account.name }}">{{ account.name }}</option>
+                        {% endfor %}
+                        </select>
                     </div>
                 </div>
 

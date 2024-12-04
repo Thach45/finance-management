@@ -76,14 +76,54 @@ def transfer_account():
     
     source_account = source_account[0]
     target_account = target_account[0]
-    
+    src_bank = source_account['name']
+    target_bank = target_account['name']
     source_account['balance'] = int(source_account['balance'])    
     target_account['balance'] = int(target_account['balance'])
     
     source_account['balance'] -= amount
     target_account['balance'] += amount
-    
+    src_transaction= {
+        "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "type": "expense",
+        "account": src_bank,
+        "category": "Chuyển Khoản",
+        "description": "Giao dịch nội bộ",
+        "amount": amount
+
+    }
+    UserModel().create_transaction(src_transaction)
+    target_transaction = {
+        "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "type": "income",
+        "account": target_bank,
+        "category": "Chuyển Khoản",
+        "description": "Giao dịch nội bộ",
+        "amount": amount
+
+    }
+    UserModel().create_transaction(target_transaction)
     account_model.update_account(source_id,source_account)
     account_model.update_account(target_id,target_account)
 
     return redirect(url_for('account.account_route'))
+
+def filter_account():
+    account_model = UserModel()
+    accounts = list(account_model.get_account())
+        
+    bank_accounts = [account for account in accounts if account["type"] == "bank"]
+    ewallet_accounts = [account for account in accounts if account["type"] == "ewallet"]
+    cash_accounts = [account for account in accounts if account["type"] == "cash"]
+    total_balance = sum(account["balance"] for account in bank_accounts) + sum(account["balance"] for account in ewallet_accounts) + sum(account["balance"] for account in cash_accounts)
+    
+    account_type = request.args.get('type')
+    if account_type:
+        accounts = [account for account in accounts if account["type"] == account_type]
+        
+    return render_template('account.html',
+                         bank_accounts=bank_accounts,
+                         ewallet_accounts=ewallet_accounts,
+                         cash_accounts=cash_accounts,
+                         total_balance=total_balance,
+                         accounts=accounts)
