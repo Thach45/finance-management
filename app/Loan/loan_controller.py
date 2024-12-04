@@ -56,7 +56,10 @@ def add_loan():
     total_due = principal + interest
     data['remaining'] = total_due
     data["progress"] = round((data['paid']/total_due))* 100  # Tính tỷ lệ tiến độ thanh toán (%)
-
+    new_account = UserModel().get_account({"name": (data['account']), "user_id": ObjectId(request.cookies.get('user_id'))})
+    new_account = new_account[0]
+    new_account["balance"] += data['amount']
+    UserModel().update_account(new_account["_id"], new_account)
     loan_transaction = {
         "user_id": ObjectId(request.cookies.get('user_id')),
         "account": data['account'],
@@ -125,6 +128,10 @@ def payment_loan_post(id):
 
         updated_loan = updated_interest_Loan(loan,data)
         # Cập nhật thông tin khoản vay vào database
+    account = UserModel().get_account({"name": (data['account_id']), "user_id": ObjectId(request.cookies.get('user_id'))})
+    account = account[0]
+    account["balance"] -= int(data['amount'])
+    UserModel().update_account(account["_id"], account)
     loan_model.update_loan(ObjectId(id), updated_loan)
 
     # Chuyển hướng về trang danh sách khoản vay
@@ -144,6 +151,21 @@ def edit_loan_post(id):
     total_due = (float(data['amount'])- data['paid'] ) + interest
     data['remaining'] = total_due
     data["progress"] = round((data['paid']/float(data['amount'])))* 100  # Tính tỷ lệ tiến độ thanh toán (%)
+    data['amount'] = int(data['amount'])
+    account = UserModel().get_account({"name": (data['account']), "user_id": ObjectId(request.cookies.get('user_id'))})
+    account = account[0]
+    account["balance"] = account["balance"] + (data['amount'] - loan['amount'])
+    UserModel().update_account(account["_id"], account)
+    loan_transaction = {
+        "user_id": ObjectId(request.cookies.get('user_id')),
+        "account": data['account'],
+        "type": "income",
+        "amount": data['amount'],
+        "category": "Khác",
+        "description": data['description'],
+        "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+    UserModel().create_transaction(loan_transaction)
     loan_model.update_loan(ObjectId(id), data)
     return redirect(url_for('loan.loan_route'))
 
@@ -168,7 +190,12 @@ def add_lend():
     data['interest'] = interest    
     total_due = principal + interest
     data['remaining'] = total_due
+    data['amount'] = int(data['amount'])
     data["progress"] = round((data['paid']/total_due))* 100  # Tính tỷ lệ tiến độ thanh toán (%)
+    account = UserModel().get_account({"name": (data['account']), "user_id": ObjectId(request.cookies.get('user_id'))})
+    account = account[0]   
+    account["balance"] -= data['amount']
+    UserModel().update_account(account["_id"], account)
     lend_model.create_lending(data)
     return redirect(url_for('loan.loan_route'))
 
@@ -184,6 +211,21 @@ def edit_lend_post(id):
     total_due = (float(data['amount'])- data['paid'] ) + interest
     data['remaining'] = total_due
     data["progress"] = round((data['paid']/float(data['amount'])))* 100  # Tính tỷ lệ tiến độ thanh toán (%)
+    data['amount'] = int(data['amount'])
+    account = UserModel().get_account({"name": (data['account']), "user_id": ObjectId(request.cookies.get('user_id'))})
+    account = account[0]
+    account["balance"] = account["balance"] - (data['amount'] - lend['amount'])
+    UserModel().update_account(account["_id"], account)
+    lend_transaction = {
+        "user_id": ObjectId(request.cookies.get('user_id')),
+        "account": data['account'],
+        "type": "expense",
+        "amount": data['amount'],
+        "category": "Khác",
+        "description": data['description'],
+        "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+    UserModel().create_transaction(lend_transaction)
     lend_model.update_lending(ObjectId(id), data)
     return redirect(url_for('loan.loan_route'))
 def delete_lend(id):

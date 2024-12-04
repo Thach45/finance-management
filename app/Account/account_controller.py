@@ -105,7 +105,7 @@ def transfer_account():
 
 def filter_account():
     account_model = UserModel()
-    accounts = list(account_model.get_account())
+    accounts = list(account_model.get_account({"user_id": ObjectId(request.cookies.get('user_id'))}))
         
     bank_accounts = [account for account in accounts if account["type"] == "bank"]
     ewallet_accounts = [account for account in accounts if account["type"] == "ewallet"]
