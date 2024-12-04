@@ -82,28 +82,30 @@ if(cancelBtn){
 // // Gọi API lần đầu để hiển thị dữ liệu mặc định
 // fetchAndRenderTransactions();
 
-// Đặt giá trị hiện tại cho các bộ lọc khi tải trang
 const accountFilter = document.getElementById('accountFilter');
 const timeFilter = document.getElementById('timeFilter');
 const typeFilter = document.getElementById('typeFilter');
-const filterButton = document.getElementById('filterButton');
+const filterButton = document.querySelector('button[type="submit"]'); // Tìm nút submit
 
-// Lắng nghe sự kiện nút Lọc
 if (filterButton) {
-    filterButton.addEventListener('click', () => {
+    filterButton.addEventListener('click', (event) => {
+        event.preventDefault(); // Ngăn form submit mặc định
         const url = new URL(window.location.href);
+
+        // Cập nhật tham số URL
         url.searchParams.set('account', accountFilter.value);
         url.searchParams.set('time', timeFilter.value);
         url.searchParams.set('type', typeFilter.value);
 
-        // Xóa các giá trị "all" khỏi URL
+        // Xóa các tham số nếu giá trị là "all"
         if (accountFilter.value === 'all') url.searchParams.delete('account');
         if (timeFilter.value === 'all') url.searchParams.delete('time');
         if (typeFilter.value === 'all') url.searchParams.delete('type');
 
-        window.location.href = url.toString();
+        window.location.href = url.toString(); // Chuyển hướng với URL mới
     });
 }
+
 
 
 

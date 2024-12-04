@@ -52,22 +52,18 @@
     min-width: 150px;
 }
 
-#filterButton {
+.btn.btn-primary {
     background-color: #4CAF50; 
     color: white; 
     border: none;
     padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
-#filterButton:hover {
-    background-color: #45a049; 
+.btn.btn-primary:hover {
+    background-color: #45a049;
 }
-
 
 .search-btn {
     background-color: #007bff;

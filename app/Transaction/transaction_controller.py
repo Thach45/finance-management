@@ -63,7 +63,7 @@ def edit_transaction(transaction_id):
     if request.method == 'POST':
         data = request.form
         updated_transaction = {
-            "date": datetime.strptime(data.get('date'), '%Y-%m-%d'),
+            "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             "type": data.get('type'),
             "account": data.get('account'),
             "category": data.get('category'),
@@ -103,15 +103,17 @@ def delete_transaction(transaction_id):
 
 
 def get_filtered_transactions():
+    # Lấy dữ liệu từ database (giả sử dùng MongoDB)
+    transactions = list(UserModel().mongo.db.transactions.find())  # Hoặc database tương tự
+
     # Các tham số lọc từ request
     account = request.args.get('account', 'all')
     time = request.args.get('time', 'all')
     transaction_type = request.args.get('type', 'all')
 
-    transactions = {}
     # Lọc theo tài khoản
     if account != 'all':
-        transactions = [t for t in transactions if t['account'] == account]
+        transactions = [t for t in transactions if t.get('account') == account]
 
     # Lọc theo thời gian
     if time != 'all':
@@ -126,43 +128,9 @@ def get_filtered_transactions():
 
     # Lọc theo loại giao dịch
     if transaction_type != 'all':
-        transactions = [t for t in transactions if t['transaction_type'] == transaction_type]
-
-    # Trả kết quả
-    return render_template('transaction.html')
-
-# def get_filtered_transactions():
-#     filters = {}
-
-#     # Lấy các tham số từ request
-#     time_filter = request.args.get('time')  # "today", "this_week", "this_month"
-#     transaction_type = request.args.get('type')  # "income", "expense", "transfer"
-#     account = request.args.get('account')  # Tên tài khoản hoặc "all"
-
-#     # Xử lý lọc theo thời gian
-#     if time_filter == "today":
-#         start_date = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-#         end_date = datetime.now()
-#         filters["date"] = {"$gte": start_date, "$lte": end_date}
-#     elif time_filter == "week":
-#         start_date = datetime.now() - timedelta(days=datetime.now().weekday())
-#         start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
-#         end_date = datetime.now()
-#         filters["date"] = {"$gte": start_date, "$lte": end_date}
-#     elif time_filter == "month":
-#         start_date = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-#         end_date = datetime.now()
-#         filters["date"] = {"$gte": start_date, "$lte": end_date}
-
-#     # Lọc theo loại giao dịch
-#     if transaction_type and transaction_type != "all":
-#         filters["type"] = transaction_type
-
-#     # Lọc theo tài khoản
-#     if account and account != "all":
-#         filters["account"] = account
+        transactions = [t for t in transactions if t.get('type') == transaction_type]
 
     
-#     # Lấy dữ liệu từ database 
-#     transactions = list(UserModel().mongo.db.transactions.find(filters))
-#     return jsonify(transactions)  # Trả về JSON
+
+    # Trả kết quả
+    return render_template('transaction.html', transactions=transactions)

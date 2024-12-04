@@ -1,5 +1,5 @@
-from account import Account 
-from category import Category
+from Account import Account 
+from Category import Category
 from datetime import date
 
 

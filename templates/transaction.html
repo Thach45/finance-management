@@ -63,7 +63,7 @@
         <div class="transaction-filters">
             <div class="filter-group">
                 <label>Thời gian:</label>
-                <select id="timeFilter">
+                <select id="timeFilter" name="time">
                     <option value="all">Tất cả</option>
                     <option value="today">Hôm nay</option>
                     <option value="week">Tuần này</option>
@@ -73,7 +73,7 @@
             </div>
             <div class="filter-group">
                 <label>Loại giao dịch:</label>
-                <select id="typeFilter">
+                <select id="typeFilter" name="type">
                     <option value="all">Tất cả</option>
                     <option value="income">Thu nhập</option>
                     <option value="expense">Chi tiêu</option>
@@ -82,7 +82,7 @@
             </div>
             <div class="filter-group">
                 <label>Tài khoản:</label>
-                <select id="accountFilter">
+                <select id="accountFilter" name="account">
                     <option value="all">Tất cả tài khoản</option>
                     {% for account in accounts %}
                     <option value="{{ account.name }}">{{ account.name }}</option>
@@ -90,7 +90,7 @@
                 </select>
             </div>
             <div class="filter-group">
-                <button id="filterButton" class="btn btn-primary">Lọc</button>
+                <button type="submit" class="btn btn-primary">Lọc</button>
             </div>
         </div>
     </form>
