@@ -23,23 +23,12 @@ const timeFilter = document.getElementById('timeFilter');
 const typeFilter = document.getElementById('typeFilter');
 if(accountFilter){
     accountFilter.addEventListener('change', () => {
-        const url = new URL(window.location.href);
-        url.searchParams.set('account', accountFilter.value);
-        window.location.href = url.toString();
-    })
-}
-if(timeFilter){
-    timeFilter.addEventListener('change', () => {
-        const url = new URL(window.location.href);
-        url.searchParams.set('time', timeFilter.value);
-        window.location.href = url.toString();
+    window.location.href = "/transaction?account=" + accountFilter.value;
     })
 }
 if(typeFilter){
     typeFilter.addEventListener('change', () => {
-        const url = new URL(window.location.href);
-        url.searchParams.set('type', typeFilter.value);
-        window.location.href = url.toString();
+         window.location.href = "/transaction?type=" + typeFilter.value;
     })
 }
 const editCloseBtn = document.querySelector('.edit-close-btn');
@@ -138,5 +127,25 @@ const typeSelect = document.querySelector('.typeTransaction');
             categoryTransfer.disabled = false;
         }
     });
+
+let accountSelect = document.querySelector('.accountSelect');
+const typeTransaction = document.querySelector('.typeTransaction');
+accountSelect.addEventListener('change', () => {
+    // Lấy thuộc tính `balance` từ tùy chọn được chọn
+    let selectedOption = accountSelect.options[accountSelect.selectedIndex];
+    console.log(selectedOption);
+    let buget = parseInt(selectedOption.getAttribute('balance')) || 0;
+    // Cập nhật thuộc tính `max` cho trường nhập liệu
+    let amountInput = document.querySelector('.amountAccount');
+    console.log(typeof buget);
+    if(typeTransaction.value === 'expense'){
+        amountInput.setAttribute('max', buget);
+        if(amountInput.value > buget){
+            amountInput.value = buget;
+        }
+    }
+});
+
+
 
 

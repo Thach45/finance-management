@@ -41,7 +41,7 @@ def add_transaction():
         data = request.form
         new_transaction = {
             "user_id": ObjectId(request.cookies.get('user_id')),
-            "date": str(datetime.fromisoformat(data.get('date'))),
+            "date": datetime.now().replace(microsecond=0),
             "type": data.get('type'),
             "account": data.get('account'),
             "category": data.get('category'),
@@ -76,7 +76,7 @@ def edit_transaction(transaction_id):
     if request.method == 'POST':
         data = request.form
         updated_transaction = {
-            "date": datetime.strptime(data.get('date'), '%Y-%m-%d'),
+            "date": datetime.now().replace(microsecond=0),
             "type": data.get('type'),
             "account": data.get('account'),
             "category": data.get('category'),
@@ -87,9 +87,9 @@ def edit_transaction(transaction_id):
         UserModel().update_transaction(ObjectId(transaction_id), updated_transaction)
         return redirect(url_for('transaction.transaction_route'))  # Quay lại trang giao dịch
     else:
-        # Lấy thông tin giao dịch để hiển thị trong form
+        categories = list(UserModel().get_jars({"user_id": ObjectId(request.cookies.get('user_id'))}))
         transaction = UserModel().get_transactions({"_id": ObjectId(transaction_id)}).next()
-        return render_template('editTransaction.html', transaction=transaction)
+        return render_template('editTransaction.html', transaction=transaction, categories=categories)
 
 def delete_transaction(transaction_id):
     try:

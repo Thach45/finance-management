@@ -1,5 +1,16 @@
 _id,user_id,date,type,account,category,description,amount
-67500f8e03f52c91ea2a2141,674fc5b5cc0b5f22c3db80f6,2024-12-04 15:15:00,income,MB Bank,,,1.0
-67500f9c03f52c91ea2a2142,674fc5b5cc0b5f22c3db80f6,2024-12-05 15:15:00,income,MB Bank,,,99.0
-67500fac03f52c91ea2a2143,674fc5b5cc0b5f22c3db80f6,2025-01-17 15:15:00,income,MB Bank,,,100.0
-6750168c174607db828cc104,674fc5b5cc0b5f22c3db80f6,2024-12-14 15:44:00,income,MB Bank,,,1000.0
+6750504a19c67ea8cca51abc,67504fdb19c67ea8cca51ab7,2024-12-04 19:51:22,income,Momo,Chuyển Khoản,Giao dịch nội bộ,100
+675050d319c67ea8cca51abd,67504fdb19c67ea8cca51ab7,2024-12-04 19:53:00,income,Momo,salary,"Chúc vui vẻ
+",100.0
+675051f619c67ea8cca51abe,67504fdb19c67ea8cca51ab7,2024-12-04 19:58:30,income,ZaloPay,Vay,Vay tiền,100
+6750522f19c67ea8cca51ac0,67504fdb19c67ea8cca51ab7,2024-12-04 19:59:27,expense,ZaloPay,Cho vay,Cho vay tiền,1000
+6750526419c67ea8cca51ac2,67504fdb19c67ea8cca51ab7,2024-12-04 20:00:20,income,ZaloPay,Khác,Sửa tiền,5
+6750528219c67ea8cca51ac3,67504fdb19c67ea8cca51ab7,2024-12-04 20:00:50,expense,ZaloPay,Trả nợ,Trả nợ khoản vay,3
+675052ad19c67ea8cca51ac4,67504fdb19c67ea8cca51ab7,2024-12-04 20:01:33,expense,ZaloPay,Khác,"Cho vay
+",100
+675052d419c67ea8cca51ac5,67504fdb19c67ea8cca51ab7,2024-12-04 20:02:12,income,Momo,Vay,Vay tiền,1000
+6750531219c67ea8cca51ac7,67504fdb19c67ea8cca51ab7,2024-12-04 20:03:14,income,Momo,Khác,Vay,1000
+6750532d19c67ea8cca51ac8,67504fdb19c67ea8cca51ab7,2024-12-04 20:03:41,income,Momo,Khác,"Cập nhật
+",1000000
+6750534a19c67ea8cca51ac9,67504fdb19c67ea8cca51ab7,2024-12-04 20:04:10,income,Momo,Khác,cập nhật,1000000
+675053fe19c67ea8cca51ad1,67504fdb19c67ea8cca51ab7,2024-12-04 20:07:00,expense,Momo,Ăn uống,Ăn cơm,100.0

@@ -1,38 +1,20 @@
 from datetime import datetime
 from calendar import monthrange
 
+from datetime import datetime
+
 def get_loan_due_dates(loans):
-    # Hàm để tính số ngày còn lại đến hạn trả nợ của từng khoản vay
     loan_due_dates = []
-
-    current_date = datetime.now()
-    current_year = current_date.year
-    current_month = current_date.month
-
+    current_date = datetime.now().replace(microsecond=0) 
     for loan in loans:
-        due_date_str = loan['due_date']  # Ngày đến hạn của khoản vay
-        due_date = datetime.strptime(due_date_str, '%Y-%m-%d')
+        due_date = loan["due_date"]
+        delta = current_date - due_date
+        if delta.days > 0:
+            loan_due_dates.append({"day": delta.days, "amount": loan['amount']})
 
-        # Kiểm tra nếu ngày đến hạn nằm trong tháng và năm hiện tại
-        if due_date.year == current_year and due_date.month == current_month:
-            # Tính số ngày còn lại hoặc quá hạn
-            days_left = (due_date - current_date).days + 1
-
-            loan_due_dates.append({
-                'loan_id': loan['_id'],  # ID khoản vay
-                'amount_due': loan['remaining'],  # Số tiền cần trả
-                'days_left': days_left,  # Số ngày còn lại đến hạn
-                'due_date': due_date_str  # Ngày đến hạn
-            })
-
-    # Sắp xếp danh sách các khoản vay theo số ngày còn lại đến hạn
-    loan_due_dates.sort(key=lambda x: x['days_left'])
-
-    # Trả về khoản vay có ngày đến hạn gần nhất trong tháng này (nếu có)
-    return loan_due_dates[0] if loan_due_dates else None
-
-
-
+    loan_due_dates.sort(key=lambda x: x['day'])
+    return loan_due_dates
+            
 def compare_loan_debt(loans):
     # Lấy ngày hiện tại
     current_date = datetime.now()
@@ -52,8 +34,8 @@ def compare_loan_debt(loans):
     last_month_loans = []
     
     for loan in loans:
-        due_date_str = loan['loan_date']
-        due_date = datetime.strptime(due_date_str, '%Y-%m-%d')
+        due_date = loan['loan_date']
+    
 
         # Kiểm tra nếu ngày đến hạn nằm trong tháng hiện tại
         if due_date.year == current_year and due_date.month == current_month:
@@ -73,7 +55,7 @@ def compare_loan_debt(loans):
         # So sánh nợ tháng trước và tháng này
         compare = ((current_month_debt - last_month_debt)/last_month_debt)*100
     else:
-        compare = float('inf')
+        compare = float('100')
     return compare
 
 def compare_lend_debt(lendings):
@@ -95,9 +77,7 @@ def compare_lend_debt(lendings):
     last_month_lendings = []
     
     for lending in lendings:
-        due_date_str = lending['loan_date']
-        due_date = datetime.strptime(due_date_str, '%Y-%m-%d')
-
+        due_date = lending['loan_date']
         # Kiểm tra nếu ngày đến hạn nằm trong tháng hiện tại
         if due_date.year == current_year and due_date.month == current_month:
             current_month_lendings.append(lending)
@@ -118,34 +98,33 @@ def compare_lend_debt(lendings):
         compare = float('inf')
     return compare
 
+
 def caculator_interest(data):
     principal = float(data['amount'])
     interest_rate = float(data['interest_rate'])
     interest_type = data['interestType']
-    due_date = datetime.strptime(data['due_date'], '%Y-%m-%d')  # Ngày đến hạn, chuyển đổi từ chuỗi thành datetime
-    current_date = datetime.strptime(data['loan_date'], '%Y-%m-%d') 
-    date_gap = abs(due_date - current_date)
+    # Tính khoảng cách giữa hai ngày
+    date_gap = abs(data['due_date'] - data['loan_date'])
+    time_in_years = date_gap.days / 365.25  # Dùng 365.25 để tính cả năm nhuận
+    
     if interest_type == 'simple':
-        # Công thức tính lãi đơn: Lãi = Số tiền vay * Lãi suất * Thời gian (tính theo năm)
-        time_in_years = date_gap.days / 365  # Thời gian tính theo năm
-        interest = principal * (interest_rate / 100) * (time_in_years)  # Tính lãi đơn
-        print(interest)
+        # Công thức tính lãi đơn: Lãi = Số tiền vay * Lãi suất * Thời gian
+        interest = principal * (interest_rate / 100) * time_in_years  # Tính lãi đơn
     elif interest_type == 'compound':
-            # Công thức tính lãi kép: A = P * (1 + r/n)^(nt), trong đó n = 1 (lãi kép hàng năm)
-        time_in_years = date_gap.days / 365  # Thời gian tính theo năm
+        # Công thức tính lãi kép: A = P * (1 + r/n)^(nt), n = 1 (lãi kép hàng năm)
         interest = principal * ((1 + interest_rate / 100) ** time_in_years - 1)  # Tính lãi kép
         
-    print(interest_type)
-    
     return interest
+
+
 
 def updated_interest_Loan(loan,data):
     paid = loan['paid']  # Số tiền đã trả
     principal = float(loan['amount'])
     interest_rate = float(loan['interest_rate'])  # Lãi suất
     interest_type = loan['interestType']  # Loại lãi suất (lãi đơn hay lãi kép)
-    due_date = datetime.strptime(loan['due_date'], '%Y-%m-%d')  # Ngày đến hạn, chuyển đổi từ chuỗi thành datetime
-    current_date = datetime.strptime(data['date'], '%Y-%m-%d')  # Ngày thanh toán, chuyển đổi từ chuỗi thành datetime
+    due_date = loan['due_date']  # Ngày đến hạn, chuyển đổi từ chuỗi thành datetime
+    current_date = data['date']  # Ngày thanh toán, chuyển đổi từ chuỗi thành datetime
     date_gap = abs(due_date - current_date)
     # Tính toán số tiền lãi cần trả dựa trên loại lãi suất (lãi đơn hay lãi kép)
     if interest_type == 'simple':

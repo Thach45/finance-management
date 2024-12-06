@@ -21,7 +21,7 @@ def home():
     monthly_revenue = {}
     for transaction in transaction_model:
         if transaction["type"] == "income":
-            date = datetime.fromisoformat(transaction["date"])
+            date = transaction["date"]
             month = date.strftime("%Y-%m")
             monthly_revenue[month] = monthly_revenue.get(month, 0) + transaction["amount"]
 

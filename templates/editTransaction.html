@@ -10,8 +10,7 @@
         <form class="transaction-form" action="/transaction/edit/{{ transaction._id }}" method="post">
             <div class="form-group">
                 <label>Loại giao dịch</label>
-                <select required name="type" >
-                    <option value="{{ transaction.type }}">{{ transaction.type }}</option>
+                <select required class="typeTransaction" name="type">
                     <option value="income">Thu nhập</option>
                     <option value="expense">Chi tiêu</option>
                     <option value="transfer">Chuyển khoản</option>
@@ -27,12 +26,18 @@
             </div>
             <div class="form-group">
                 <label>Danh mục</label>
-                <select required name="category">
-                    <option value="{{ transaction.category }}">{{ transaction.category }}</option>
-                    <option value="salary">Lương</option>
-                    <option value="food">Ăn uống</option>
-                    <option value="shopping">Mua sắm</option>
-                    <option value="transfer">Chuyển khoản</option>
+                <select required class="categoryIncome" name="category" disabled>
+                    <option value="Lương">Lương</option>
+                </select>
+                
+                <select required class="categoryExpense hidden" name="category" disabled>
+                    {% for category in categories %}
+                        <option value="{{ category.category }}">{{ category.category }}</option>
+                    {% endfor %}
+                </select>
+                
+                <select required class="categoryTransfer hidden" name="category" disabled>
+                    <option value="Khác" selected>Khác</option>
                 </select>
             </div>
             <div class="form-group">
@@ -41,7 +46,7 @@
             </div>
             <div class="form-group">
                 <label>Ngày giao dịch</label>
-                <input type="date" required name="date" value="{{ transaction.date.strftime('%Y-%m-%d') }}">
+                <input type="date" required name="date" value="{{ transaction.date}}">
             </div>
             
            
@@ -56,5 +61,34 @@
         </form>
     </div>
 </div>
+<script >
+    const typeSelect = document.querySelector('.typeTransaction');
+    const categoryIncome = document.querySelector('.categoryIncome');
+    const categoryExpense = document.querySelector('.categoryExpense');
+    const categoryTransfer = document.querySelector('.categoryTransfer');
 
+    typeSelect.addEventListener('change', () => {
+        // Reset tất cả danh mục
+        categoryIncome.classList.add('hidden');
+        categoryExpense.classList.add('hidden');
+        categoryTransfer.classList.add('hidden');
+        categoryIncome.disabled = true;
+        categoryExpense.disabled = true;
+        categoryTransfer.disabled = true;
+
+        // Hiển thị danh mục phù hợp
+        const selectedType = typeSelect.value;
+        if (selectedType === 'income') {
+            categoryIncome.classList.remove('hidden');
+            categoryIncome.disabled = false;
+        } else if (selectedType === 'expense') {
+            categoryExpense.classList.remove('hidden');
+            categoryExpense.disabled = false;
+        } else if (selectedType === 'transfer') {
+            categoryTransfer.classList.remove('hidden');
+            categoryTransfer.disabled = false;
+        }
+    });
+
+</script>
 {% endblock %}

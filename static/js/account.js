@@ -36,8 +36,6 @@ if (addTransferBtn && addTransferModal && closeTransferBtn && cancelTransferBtn)
     cancelTransferBtn.addEventListener('click', () => {
         addTransferModal.classList.toggle('active');
     });
-} else {
-    console.error('Xem lỗi ở file account.js line 25-31');
 }
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -163,7 +163,7 @@
                     <select id="sourceAccount" required name="sourceAccount" onchange="MaxAmount(); validateAccounts();">
                         <option value="">Chọn tài khoản nguồn</option>
                         {% for account in accounts %}
-                            <option value="{{ account._id }}" source-balance="{{ account.balance }}">{{ account.name }} - {{ account.balance }} ₫</option>
+                            <option value="{{ account._id }}" source-balance="{{ account.balance }}">{{ account.name }} - {{"{:,.0f}".format(account.balance) }} ₫</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -172,7 +172,7 @@
                     <select id="targetAccount" required name="targetAccount" onchange="validateAccounts();">
                         <option value="">Chọn tài khoản đích</option>
                         {% for account in accounts %}
-                            <option value="{{ account._id }}">{{ account.name }} - {{ account.balance }} ₫</option>
+                            <option value="{{ account._id }}">{{ account.name }} - {{ "{:,.0f}".format(account.balance) }} ₫</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -185,11 +185,7 @@
                     <span>
                         Tài khoản nguồn và tài khoản đích không được giống nhau!<br>
                     </span>
-                </div>
-                <div class="form-group">
-                    <label>Ghi chú</label>
-                    <textarea name="note" placeholder="Nhập ghi chú cho giao dịch (nếu có)"></textarea>
-                </div>    
+                </div>  
                 <div class="form-actions">
                     <button type="button" class="cancel-btn cancel-transfer-btn">Hủy</button>
                     <button type="submit" class="submit-btn submit-transfer-btn">Xác nhận chuyển khoản</button>

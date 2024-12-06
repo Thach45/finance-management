@@ -144,16 +144,16 @@
                 </div>
                 <div class="form-group">
                     <label>Tài khoản</label>
-                    <select required name="account">
+                    <select required name="account" class="accountSelect">
                        {% for account in accounts %}
-                            <option value="{{ account.name }}">{{ account.name }}</option>
+                            <option value="{{ account.name }}" class="balance" balance={{account.balance}}>{{ account.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Danh mục</label>
                     <select required class="categoryIncome" name="category" disabled>
-                        <option value="salary">Lương</option>
+                        <option value="Lương">Lương</option>
                     </select>
                     
                     <select required class="categoryExpense hidden" name="category" disabled>
@@ -163,12 +163,12 @@
                     </select>
                     
                     <select required class="categoryTransfer hidden" name="category" disabled>
-                        <option value="none" selected>Khác</option>
+                        <option value="Khác" selected>Khác</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Số tiền</label>
-                    <input type="number" required name="amount" placeholder="Nhập số tiền">
+                    <input type="number" required min=1  max=1000000000 name="amount" class="amountAccount" placeholder="Nhập số tiền">
                 </div>
                 <div class="form-group">
                     <label>Ngày giao dịch</label>

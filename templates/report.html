@@ -25,7 +25,7 @@
       </div>
       <div class="kpi-content">
         <h3>Tổng Doanh Thu</h3>
-        <p class="kpi-value">{{total_income}}đ</p>
+        <p class="kpi-value">{{"{:,.0f}".format(total_income)}}đ</p>
         </span>
       </div>
     </div>
@@ -36,7 +36,7 @@
       </div>
       <div class="kpi-content">
         <h3>Chi Phí</h3>
-        <p class="kpi-value">{{total_expense}}</p>
+        <p class="kpi-value">{{"{:,.0f}".format(total_expense)}}</p>
         </span>
       </div>
     </div>

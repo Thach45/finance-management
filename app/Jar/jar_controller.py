@@ -6,7 +6,8 @@ import matplotlib.animation as animation
 import numpy as np
 import io
 
-def home():
+
+def add_category():
     id1 = request.args.get('1')
     id2 = request.args.get('2')
     id3 = request.args.get('3')
@@ -25,8 +26,9 @@ def home():
         UserModel().create_jar({"idJar": 5, "name": "Jar 5", "balance": 0, "category": id5, "type":"expense", "user_id": ObjectId(request.cookies.get('user_id'))})
     if id6:
         UserModel().create_jar({"idJar": 6, "name": "Jar 6", "balance": 0, "category": id6, "type":"expense", "user_id": ObjectId(request.cookies.get('user_id'))})
-    
-    
+    return redirect(url_for('jar.jar_route'))  
+
+def home():
     total = (request.args.get('total')) 
     if total:
         total = float(total)
@@ -42,7 +44,9 @@ def home():
 
     jar_model = UserModel()
     jars = list(jar_model.get_jars({"user_id": ObjectId(request.cookies.get('user_id'))}))
-    jar1 = [jar for jar in jars if jar["idJar"] == 1]
+    jars = list({str(jar['category']): jar for jar in jars}.values())
+    print(jars)
+    jar1 = ([jar for jar in jars if jar["idJar"] == 1])
     sum1 = sum(jar["balance"] for jar in jar1)
     jar2 = [jar for jar in jars if jar["idJar"] == 2]
     sum2 = sum(jar["balance"] for jar in jar2)

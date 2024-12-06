@@ -26,7 +26,7 @@ def add_account():
     account_model = UserModel()
     data = request.form.to_dict()
     data['balance'] = int(data['balance'])
-    data['createTime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data['createTime'] = datetime.now().replace(microsecond=0)
     data['user_id'] = ObjectId(request.cookies.get('user_id'))
     account_model.create_account(data)
     return redirect(url_for('account.account_route'))
@@ -48,8 +48,8 @@ def index_account(id):
 def edit_account(id):
     account_model = UserModel()
     data = request.form.to_dict()
-    data['balance'] = int(data['balance'])
-    data['createTime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data['balance'] = float(data['balance'])
+    data['createTime'] = datetime.now().replace(microsecond=0)
     account_model.update_account(ObjectId(id), data)
     return redirect(url_for('account.account_route')) 
 
@@ -78,7 +78,7 @@ def transfer_account():
     target_account["user_id"] = ObjectId(request.cookies.get('user_id'))
     src_transaction= {
         "user_id": ObjectId(request.cookies.get('user_id')),
-        "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "date": datetime.now().replace(microsecond=0),
         "type": "expense",
         "account": src_bank,
         "category": "Chuyển Khoản",
@@ -89,7 +89,7 @@ def transfer_account():
     UserModel().create_transaction(src_transaction)
     target_transaction = {
         "user_id": ObjectId(request.cookies.get('user_id')),
-        "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "date": datetime.now().replace(microsecond=0),
         "type": "income",
         "account": target_bank,
         "category": "Chuyển Khoản",

@@ -12,28 +12,27 @@ def home():
     account = list(UserModel().get_account({"user_id": ObjectId(request.cookies.get('user_id'))}))
     total_loan = 0
     total_lending = 0
-    amount_due = 0
-    day_left = 0
+    due_date = 0
+    amount = 0
     compare_loan = 0
     compare_lend = 0
     current_month = datetime.now().month
     current_year = datetime.now().year
     if loans:   
-        total_loan = sum(float(loan['amount']) for loan in loans if datetime.strptime(loan['loan_date'], '%Y-%m-%d').month == current_month 
-                         and datetime.strptime(loan['loan_date'], '%Y-%m-%d').year == current_year)
-
-       
-
-        due_date = get_loan_due_dates(loans)
-
-        amount_due = due_date['amount_due']
-        day_left = due_date['days_left']
-        
+        total_loan = sum(float(loan['amount']) for loan in loans if loan["loan_date"].month == current_month 
+                         and loan["loan_date"].year == current_year)
         compare_loan = compare_loan_debt(loans)
-       
+        print(compare_loan)
+        due_dates = get_loan_due_dates(loans)
+        if due_dates:
+            due_date = due_dates[0]["day"]
+            amount = due_dates[0]["amount"]
+        else:
+            due_date = 0
+            amount = 0
     if lendings:
-        total_lending = sum(float(lend['amount']) for lend in lendings if datetime.strptime(lend['loan_date'], '%Y-%m-%d').month == current_month 
-                         and datetime.strptime(lend['loan_date'], '%Y-%m-%d').year == current_year)
+        total_lending = sum(float(lend['amount']) for lend in lendings if lend['loan_date'].month == current_month 
+                         and lend['loan_date'].year == current_year)
 
         compare_lend = compare_lend_debt(lendings)
     
@@ -43,8 +42,8 @@ def home():
                            total_loan=total_loan,
                            total_lending=total_lending,
                            accounts=account,
-                           amount_due = amount_due,
-                           day_left = day_left,
+                            amount_due = amount,
+                            due_date = due_date,
                            compareloan=compare_loan,
                            comparelend=compare_lend
                            )
@@ -54,9 +53,11 @@ def add_loan():
     data = request.form.to_dict()
     data['user_id'] = ObjectId(request.cookies.get('user_id'))
     data['paid'] = 0
-    data['createTime'] = datetime.now() # thời gian tạo 
+    data['createTime'] = datetime.now().replace(microsecond=0),
     data['amount'] = int(data['amount'])
     principal = float(data['amount'])
+    data["due_date"] = datetime.strptime(data["due_date"], '%Y-%m-%d')
+    data["loan_date"] = datetime.strptime(data["loan_date"], '%Y-%m-%d')
     interest = caculator_interest(data)
     data['interest'] = interest    
     total_due = principal + interest
@@ -73,7 +74,7 @@ def add_loan():
         "amount": data['amount'],
         "category": "Vay",
         "description": "Vay tiền",
-        "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        "date": datetime.now().replace(microsecond=0),
     }
     UserModel().create_transaction(loan_transaction)
     loan_model.create_loan(data)
@@ -116,7 +117,11 @@ def payment_loan_post(id):
     data = request.form.to_dict()  # Lấy dữ liệu từ form gửi lên (dưới dạng dictionary)
 
     # Lấy thông tin khoản vay từ database dựa trên ID
+    data['date'] = datetime.strptime(data['date'], '%Y-%m-%d')
+   
     loan = list(loan_model.get_loans({"_id": ObjectId(id)}))
+    if not data["description"]:
+        data["description"] = "Thanh toán khoản vay"
 
     if loan:
         loan = loan[0] 
@@ -126,8 +131,8 @@ def payment_loan_post(id):
             "type": "expense",
             "amount": int(data['amount']),
             "category": "Trả nợ",
-            "description": "Trả nợ khoản vay",
-            "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            "description": data['description'],
+            "date": datetime.now().replace(microsecond=0),
 
         }
         UserModel().create_transaction(payment_transaction)
@@ -151,7 +156,10 @@ def edit_loan_post(id):
     loan = list(loan_model.get_loans({"_id": ObjectId(id)}))
     loan = loan[0]
     data['paid'] = loan['paid']
-    data['createTime'] = datetime.now() # thời gian tạo 
+    data['createTime'] = datetime.now().replace(microsecond=0), # thời gian tạo 
+    data["due_date"] = datetime.strptime(data["due_date"], '%Y-%m-%d')
+    data["loan_date"] = datetime.strptime(data["loan_date"], '%Y-%m-%d')
+
     interest =  caculator_interest(data)
     data['interest'] = interest
     total_due = (float(data['amount'])- data['paid'] ) + interest
@@ -162,6 +170,8 @@ def edit_loan_post(id):
     account = account[0]
     account["balance"] = account["balance"] + (data['amount'] - loan['amount'])
     UserModel().update_account(account["_id"], account)
+    if not data["description"]:
+        data["description"] = "Cập nhật khoản vay"
     loan_transaction = {
         "user_id": ObjectId(request.cookies.get('user_id')),
         "account": data['account'],
@@ -169,7 +179,7 @@ def edit_loan_post(id):
         "amount": data['amount'],
         "category": "Khác",
         "description": data['description'],
-        "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        "date": datetime.now().replace(microsecond=0),
     }
     UserModel().create_transaction(loan_transaction)
     loan_model.update_loan(ObjectId(id), data)
@@ -180,16 +190,20 @@ def add_lend():
     data = request.form.to_dict()
     data['paid'] = 0
     data['user_id'] = ObjectId(request.cookies.get('user_id'))
-    data['createTime'] = datetime.now() # thời gian tạo 
+    data['createTime'] = datetime.now().replace(microsecond=0),
+    data["due_date"] = datetime.strptime(data["due_date"], '%Y-%m-%d')
+    data["loan_date"] = datetime.strptime(data["loan_date"], '%Y-%m-%d')
     data['amount'] = int(data['amount'])
+    if not data["description"]:
+        data["description"] = "Cho vay tiền"
     lend_transaction = {
         "user_id": ObjectId(request.cookies.get('user_id')),
         "account": data['account'],
         "type": "expense",
         "amount": data['amount'],
         "category": "Cho vay",
-        "description": "Cho vay tiền",
-        "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        "description": data['description'],
+        "date": datetime.now().replace(microsecond=0),
     }
     UserModel().create_transaction(lend_transaction)
     principal = float(data['amount'])
@@ -212,7 +226,9 @@ def edit_lend_post(id):
     lend = list(lend_model.get_lendings({"_id": ObjectId(id)}))
     lend = lend[0]
     data['paid'] = lend['paid']
-    data['createTime'] = datetime.now() # thời gian tạo 
+    data['createTime'] = datetime.now().replace(microsecond=0),
+    data["due_date"] = datetime.strptime(data["due_date"], '%Y-%m-%d')
+    data["loan_date"] = datetime.strptime(data["loan_date"], '%Y-%m-%d')
     interest =  caculator_interest(data)
     data['interest'] = interest
     total_due = (float(data['amount'])- data['paid'] ) + interest
@@ -223,6 +239,8 @@ def edit_lend_post(id):
     account = account[0]
     account["balance"] = account["balance"] - (data['amount'] - lend['amount'])
     UserModel().update_account(account["_id"], account)
+    if not data["description"]:
+        data["description"] = "Cập nhật khoản cho vay"
     lend_transaction = {
         "user_id": ObjectId(request.cookies.get('user_id')),
         "account": data['account'],
@@ -230,7 +248,7 @@ def edit_lend_post(id):
         "amount": data['amount'],
         "category": "Khác",
         "description": data['description'],
-        "date": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        "date": datetime.now().replace(microsecond=0),
     }
     UserModel().create_transaction(lend_transaction)
     lend_model.update_lending(ObjectId(id), data)
