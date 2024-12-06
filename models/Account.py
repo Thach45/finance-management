@@ -1,5 +1,5 @@
 class Account:
-    def __init__(self,name='',type = "",balance = 0) :
+    def __init__(self,name='',balance = 0,type = '') :
         self.__name = name
         if balance < 0:
             self.__balance = 0
@@ -15,10 +15,10 @@ class Account:
         self.__name = value
 
     @property
-    def money(self):
+    def balance(self):
         return self.__balance
-    @money.setter
-    def money(self,value):
+    @balance.setter
+    def balance(self,value):
         if value>=0:
             self.__balance = value
         else:
@@ -33,6 +33,6 @@ class Account:
 
     def SetMoney(self,value):
         if value>=0:
-            self.money = value
+            self.balance = value
         else:
             return False

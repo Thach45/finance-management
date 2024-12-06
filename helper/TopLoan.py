@@ -9,8 +9,7 @@ def get_loan_due_dates(loans):
     for loan in loans:
         due_date = loan["due_date"]
         delta = current_date - due_date
-        if delta.days > 0:
-            loan_due_dates.append({"day": delta.days, "amount": loan['amount']})
+        loan_due_dates.append({"day": delta.days, "amount": loan['amount']})
 
     loan_due_dates.sort(key=lambda x: x['day'])
     return loan_due_dates
@@ -55,7 +54,7 @@ def compare_loan_debt(loans):
         # So sánh nợ tháng trước và tháng này
         compare = ((current_month_debt - last_month_debt)/last_month_debt)*100
     else:
-        compare = float('100')
+        compare = float('inf')
     return compare
 
 def compare_lend_debt(lendings):

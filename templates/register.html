@@ -133,7 +133,7 @@
         <form class="register-form" action="/register" method="POST">
             <h2>Đăng ký</h2>
             <div class="input-group">
-                <input type="phone" id="phone" name="phone" required>
+                <input type="tel" id="phone" name="phone" required>
                 <label for="phone">Số điện thoại</label>
             </div>
             <div class="input-group">
@@ -148,5 +148,15 @@
         </form>
     </div>
 </body>
+<script>
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('blur', () => {
+        const phonePattern = /^[0-9]{10}$/;
+        if (!phonePattern.test(phoneInput.value)) {
+            alert('Số điện thoại không hợp lệ! Vui lòng nhập đúng 10 chữ số.');
+            phoneInput.focus();
+        }
+});
+</script>
 </html>
 

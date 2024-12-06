@@ -4,7 +4,7 @@ from datetime import date
 
 
 class Transaction:
-    def __init__(self,id, date=date.today(),type='',account="",category="",
+    def __init__(self,id=0, date=date.today(),type='',account="",category="",
                    description ="",amount=0):
         self.__id = id
         self.__date = date
@@ -66,6 +66,7 @@ class Transaction:
     def note(self, value):
         self.__note = value
 
+    
     # def to_dict(self):
     #     return {
     #         "id": self.__id,

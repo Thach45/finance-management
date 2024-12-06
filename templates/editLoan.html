@@ -24,7 +24,7 @@
                         <label>Số tiền</label>
                         <div class="input-icon">
                             <i class="fas fa-money-bill-wave"></i>
-                            <input type="number" required placeholder="Nhập số tiền" value="{{ loan.amount }}" name = "amount">
+                            <input type="number" min = 0 required placeholder="Nhập số tiền" value="{{ loan.amount }}" name = "amount">
                             <span class="currency">₫</span>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                         <label>Lãi suất (%/năm)</label>
                         <div class="input-icon">
                             <i class="fas fa-percentage"></i>
-                            <input type="number" step="0.1" placeholder="Nhập lãi suất" value="{{ loan.interest_rate }}" name = "interest_rate">
+                            <input type="number" step="0.1" min=0 placeholder="Nhập lãi suất" value="{{ loan.interest_rate }}" name = "interest_rate">
                         </div>
                     </div>
     

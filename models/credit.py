@@ -3,37 +3,31 @@ from account import Account
 from category import Category
 from datetime import date
 
-class Credit():
-    def __init__(self,id,type,crediter,amount,interest_rate,interes_type,credit_date,
-                 due_date,contact,paid,interest,remaining,progress,description):
-        self.__type = id
-        self.__type = type
+class Credit(Transaction):
+    def __init__(self,id=0,amount=0,credit_date=date.today(),type='',account='',category='',name_credit ="",interest_rate=0,interes_type='',
+                 due_date=date.today(),crediter='',contact='',description=''):
+        super().__init__(id,credit_date,type,account,category,description,amount)
+        self.__name_credit = name_credit
         self.__crediter = crediter
-        self.__amount = amount
         self.__interest_rate = interest_rate
         self.__interest_type = interes_type
-        self.__due_date = credit_date
         self.__due_date = due_date
         self.__contact = contact
-        self.__progress = paid
-        self.__interest = interest
-        self.__remaining = remaining
-        self.__progress = progress
-        self.__description = description
+        self.__paid = 0
+        self.__interest = (due_date-credit_date).days/365*interest_rate
+        self.__remaining = 0
+        self.__progress = 0
+
+    def updateProgressCredit(self):
+        self.__remaining = self.amount+self.__interest-self.__paid
+        self.__progress = self.__paid/(self.amount+self.__interest)
 
     @property
-    def id(self):
-        return self.__id
-    @id.setter
-    def id(self,value):
-        self.__id = value
-
-    @property
-    def type(self):
-        return self.__type
-    @type.setter
-    def type(self,value):
-        self.__type = value
+    def name_credit(self):
+        return self.__name_credit
+    @name_credit.setter
+    def name_credit(self,value):
+        self.__name_credit = value
 
     @property
     def crediter(self):
@@ -42,14 +36,14 @@ class Credit():
     def crediter(self,value):
         self.__crediter = value
 
-    @property
-    def amount(self):
-        return self.__amount
-    @amount.setter
-    def amount(self,value):
-        if value >= 0:
-            self.__amount = value
-        return False
+    # @property
+    # def amount(self):
+    #     return self.__amount
+    # @amount.setter
+    # def amount(self,value):
+    #     if value >= 0:
+    #         self.__amount = value
+    #     return False
 
     @property
     def interest_rate(self):
@@ -135,5 +129,5 @@ class Credit():
     def description(self,value):
         self.__description = value
 
-    
-
+    def info(self):
+        print(f'id: {self.id} ,tên kv: {self.name_credit}, danh mục: {self.category},tổng số nợ: {self.amount+self.interest}, đã trả: {self.paid}, hạn trả: {self.due_date}')

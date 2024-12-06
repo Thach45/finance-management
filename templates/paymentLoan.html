@@ -17,7 +17,7 @@
                     <label>Số tiền thanh toán</label>
                     <div class="input-icon">
                         <i class="fas fa-money-bill-wave"></i>
-                        <input type="number" name="amount" required placeholder="Nhập số tiền thanh toán">
+                        <input type="number" min =0 max = {{loan.remaining}} name="amount" required placeholder="Nhập số tiền thanh toán">
                         <span class="currency">₫</span>
                     </div>
                 </div>
